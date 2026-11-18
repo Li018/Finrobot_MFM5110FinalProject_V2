@@ -1,2 +1,0 @@
-# Finrobot_MFM5110FinalProject
-finrobot
