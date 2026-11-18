@@ -1,0 +1,25 @@
+{
+  "input_rows": 1455,
+  "output_rows": 1455,
+  "duplicate_dates_removed": 0,
+  "missing_rows_removed": 0,
+  "date_sorted": true,
+  "volume_conversion": "adapter lots multiplied by 100 to shares",
+  "missing_dates": "No imputation; no synthetic bars added",
+  "adjust": "qfq",
+  "symbol": "600031",
+  "requested_start": "2020-01-01",
+  "requested_end": "2025-12-31",
+  "fetched_at": "2026-11-18T12:30:00.988146+00:00",
+  "provider": {
+    "source": "akshare_tencent",
+    "endpoint": "stock_zh_a_hist_tx",
+    "adjust": "qfq",
+    "volume_unit": "lots (100 shares)",
+    "turnover_unit": "percent",
+    "akshare_version": "1.20.7"
+  },
+  "raw_definition": "CNStockUtils response after adapter normalization",
+  "raw_sha256": "0d204cd7bb661e045c8828146b02f91e8308146141b78411f564720e82c1cf73",
+  "clean_sha256": "5ff2bdfc8535a073b5cba10aa385e50721a884d4841ac0fe998ad641250b766f"
+}

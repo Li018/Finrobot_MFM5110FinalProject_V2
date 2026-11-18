@@ -1,0 +1,30 @@
+{
+  "name": "three_symbols_three_windows",
+  "symbols": [
+    "000001",
+    "000651",
+    "600031"
+  ],
+  "data_start": "2020-01-01",
+  "data_end": "2025-12-31",
+  "adjust": "qfq",
+  "windows": [
+    {
+      "name": "2021_2022",
+      "start": "2021-01-01",
+      "end": "2022-12-31"
+    },
+    {
+      "name": "2023_2024",
+      "start": "2023-01-01",
+      "end": "2024-12-31"
+    },
+    {
+      "name": "2025",
+      "start": "2025-01-01",
+      "end": "2025-12-31"
+    }
+  ],
+  "design": "Replay the same five frozen model-generated strategies across all symbol/window pairs. No new LLM calls or parameter selection.",
+  "limits": "Finite-case functional generalization of a fixed SMA implementation, not a test of investment alpha or an LLM predictive model. Symbols and windows are fixed before fetching results."
+}

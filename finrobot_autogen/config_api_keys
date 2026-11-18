@@ -1,6 +1,0 @@
-{
-    "_README_TUSHARE_TOKEN": "OPTIONAL. Leave empty to use the free AkShare data source. To use Tushare Pro: register at https://tushare.pro/register then copy the token from https://tushare.pro/user/token and paste it below.",
-    "_README_CN_DATA_PROVIDER": "auto = Tushare first, fallback to AkShare | akshare = free AkShare only | tushare = Tushare only (fails with an explicit error)",
-    "TUSHARE_TOKEN": "",
-    "CN_DATA_PROVIDER": "auto"
-}

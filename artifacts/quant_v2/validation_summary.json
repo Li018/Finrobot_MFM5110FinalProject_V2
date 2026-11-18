@@ -1,0 +1,33 @@
+{
+  "ok": true,
+  "python_environment": "v2_verify_env",
+  "api_calls_requested": 0,
+  "checks": [
+    {
+      "check": "unit_tests",
+      "ok": true,
+      "seconds": 9.675,
+      "tests": 22
+    },
+    {
+      "check": "dependency_check",
+      "ok": true,
+      "seconds": 1.144
+    },
+    {
+      "check": "offline_replay",
+      "ok": true,
+      "seconds": 53.261
+    },
+    {
+      "check": "resume_pipeline",
+      "ok": true,
+      "seconds": 11.043
+    },
+    {
+      "check": "generalization",
+      "ok": true,
+      "seconds": 9.368
+    }
+  ]
+}

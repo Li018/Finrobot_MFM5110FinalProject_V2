@@ -1,0 +1,1484 @@
+{
+  "ok": true,
+  "cases": 9,
+  "symbols": [
+    "000001",
+    "000651",
+    "600031"
+  ],
+  "windows": [
+    {
+      "name": "2021_2022",
+      "start": "2021-01-01",
+      "end": "2022-12-31"
+    },
+    {
+      "name": "2023_2024",
+      "start": "2023-01-01",
+      "end": "2024-12-31"
+    },
+    {
+      "name": "2025",
+      "start": "2025-01-01",
+      "end": "2025-12-31"
+    }
+  ],
+  "frozen_strategies": 5,
+  "replays": 45,
+  "passed_replays": 45,
+  "new_llm_requests": 0,
+  "investment_alpha_tested": false,
+  "scope": "Finite-case functional generalization of a fixed SMA implementation, not a test of investment alpha or an LLM predictive model. Symbols and windows are fixed before fetching results.",
+  "warmup_policy": "Past-only warm-up excluded from all metrics; first evaluation close forms the first executable signal.",
+  "case_summaries": [
+    {
+      "symbol": "000001",
+      "window": {
+        "name": "2021_2022",
+        "start": "2021-01-01",
+        "end": "2022-12-31"
+      },
+      "evaluation_start": "2021-01-04",
+      "evaluation_end": "2022-12-30",
+      "observations": 485,
+      "warmup_observations": 60,
+      "data_sha256": "fbe2ccc6559462303f8a03f72dd5a9f7f1e4eb47059a8f31fb78d83dbb0b7ea1",
+      "config": {
+        "experiment": "quant_v2_sma_000001",
+        "symbol": "000001",
+        "start_date": "2021-01-01",
+        "end_date": "2025-12-31",
+        "adjust": "qfq",
+        "fast": 20,
+        "slow": 60,
+        "initial_cash": 100000.0,
+        "max_position": 0.8,
+        "lot_size": 100,
+        "commission": 0.0003,
+        "min_commission": 5.0,
+        "slippage": 0.0005,
+        "annual_periods": 252,
+        "risk_free_rate": 0.0,
+        "repeats": 5,
+        "model": "deepseek-flash",
+        "assumptions": [
+          "Fixed rule: target 1 when SMA(fast) > SMA(slow), otherwise 0; warm-up target 0.",
+          "A signal computed at a close is executed no earlier than the next observed trading-day open.",
+          "Long only; entry budget is at most max_position of equity, including estimated costs; holding weight can drift with prices.",
+          "Commission, minimum commission and slippage are simplified experimental assumptions, not a reconstruction of historical exchange fees.",
+          "Forward-adjusted OHLC is used consistently; this is an adjusted-price experiment, not a replication of actual cash dividends and corporate actions.",
+          "Suspensions without bars are not filled; price limits, liquidity and stamp duty are not separately simulated.",
+          "No parameter optimization; one preselected stock is an implementation case, not evidence of general investment performance."
+        ],
+        "evaluation_start": "2021-01-04"
+      },
+      "manual_metrics": {
+        "initial_cash": 100000.0,
+        "final_equity": 96910.11046855,
+        "total_return": -0.030898895314499963,
+        "annual_return": -0.01620884432946823,
+        "sharpe": 0.021995469994695833,
+        "max_drawdown": 0.29481781298252496,
+        "observations": 485,
+        "return_periods": 484,
+        "executed_orders": 9,
+        "total_commission": 220.09103144999995,
+        "min_cash": 19870.110468550007
+      },
+      "buy_hold_metrics": {
+        "initial_cash": 100000.0,
+        "final_equity": 75252.5849119,
+        "total_return": -0.247474150881,
+        "annual_return": -0.1375985045214705,
+        "sharpe": -0.2733260280497635,
+        "max_drawdown": 0.5476511698607639,
+        "observations": 485,
+        "return_periods": 484,
+        "executed_orders": 1,
+        "total_commission": 23.788088099999996,
+        "min_cash": 20682.58491190001
+      },
+      "manual_audit": {
+        "ok": true,
+        "errors": [],
+        "ledger_rows": 485
+      },
+      "buy_hold_audit": {
+        "ok": true,
+        "errors": [],
+        "ledger_rows": 485
+      },
+      "generations": [
+        {
+          "name": "generation_01",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_02",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_03",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_04",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_05",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "identical_to_manual": true
+        }
+      ],
+      "ok": true
+    },
+    {
+      "symbol": "000001",
+      "window": {
+        "name": "2023_2024",
+        "start": "2023-01-01",
+        "end": "2024-12-31"
+      },
+      "evaluation_start": "2023-01-03",
+      "evaluation_end": "2024-12-31",
+      "observations": 484,
+      "warmup_observations": 60,
+      "data_sha256": "fbe2ccc6559462303f8a03f72dd5a9f7f1e4eb47059a8f31fb78d83dbb0b7ea1",
+      "config": {
+        "experiment": "quant_v2_sma_000001",
+        "symbol": "000001",
+        "start_date": "2021-01-01",
+        "end_date": "2025-12-31",
+        "adjust": "qfq",
+        "fast": 20,
+        "slow": 60,
+        "initial_cash": 100000.0,
+        "max_position": 0.8,
+        "lot_size": 100,
+        "commission": 0.0003,
+        "min_commission": 5.0,
+        "slippage": 0.0005,
+        "annual_periods": 252,
+        "risk_free_rate": 0.0,
+        "repeats": 5,
+        "model": "deepseek-flash",
+        "assumptions": [
+          "Fixed rule: target 1 when SMA(fast) > SMA(slow), otherwise 0; warm-up target 0.",
+          "A signal computed at a close is executed no earlier than the next observed trading-day open.",
+          "Long only; entry budget is at most max_position of equity, including estimated costs; holding weight can drift with prices.",
+          "Commission, minimum commission and slippage are simplified experimental assumptions, not a reconstruction of historical exchange fees.",
+          "Forward-adjusted OHLC is used consistently; this is an adjusted-price experiment, not a replication of actual cash dividends and corporate actions.",
+          "Suspensions without bars are not filled; price limits, liquidity and stamp duty are not separately simulated.",
+          "No parameter optimization; one preselected stock is an implementation case, not evidence of general investment performance."
+        ],
+        "evaluation_start": "2023-01-03"
+      },
+      "manual_metrics": {
+        "initial_cash": 100000.0,
+        "final_equity": 84038.41181130006,
+        "total_return": -0.15961588188699938,
+        "annual_return": -0.08673433136774211,
+        "sharpe": -0.439218067434029,
+        "max_drawdown": 0.24645343313023638,
+        "observations": 484,
+        "return_periods": 483,
+        "executed_orders": 13,
+        "total_commission": 296.4781887,
+        "min_cash": 17951.41181130006
+      },
+      "buy_hold_metrics": {
+        "initial_cash": 100000.0,
+        "final_equity": 94540.08801875,
+        "total_return": -0.054599119812499985,
+        "annual_return": -0.028868784098646683,
+        "sharpe": -0.021991989527470997,
+        "max_drawdown": 0.375753149298089,
+        "observations": 484,
+        "return_periods": 483,
+        "executed_orders": 1,
+        "total_commission": 23.974481249999997,
+        "min_cash": 20061.08801875
+      },
+      "manual_audit": {
+        "ok": true,
+        "errors": [],
+        "ledger_rows": 484
+      },
+      "buy_hold_audit": {
+        "ok": true,
+        "errors": [],
+        "ledger_rows": 484
+      },
+      "generations": [
+        {
+          "name": "generation_01",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 484
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_02",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 484
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_03",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 484
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_04",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 484
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_05",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 484
+          },
+          "identical_to_manual": true
+        }
+      ],
+      "ok": true
+    },
+    {
+      "symbol": "000001",
+      "window": {
+        "name": "2025",
+        "start": "2025-01-01",
+        "end": "2025-12-31"
+      },
+      "evaluation_start": "2025-01-02",
+      "evaluation_end": "2025-12-31",
+      "observations": 243,
+      "warmup_observations": 60,
+      "data_sha256": "fbe2ccc6559462303f8a03f72dd5a9f7f1e4eb47059a8f31fb78d83dbb0b7ea1",
+      "config": {
+        "experiment": "quant_v2_sma_000001",
+        "symbol": "000001",
+        "start_date": "2021-01-01",
+        "end_date": "2025-12-31",
+        "adjust": "qfq",
+        "fast": 20,
+        "slow": 60,
+        "initial_cash": 100000.0,
+        "max_position": 0.8,
+        "lot_size": 100,
+        "commission": 0.0003,
+        "min_commission": 5.0,
+        "slippage": 0.0005,
+        "annual_periods": 252,
+        "risk_free_rate": 0.0,
+        "repeats": 5,
+        "model": "deepseek-flash",
+        "assumptions": [
+          "Fixed rule: target 1 when SMA(fast) > SMA(slow), otherwise 0; warm-up target 0.",
+          "A signal computed at a close is executed no earlier than the next observed trading-day open.",
+          "Long only; entry budget is at most max_position of equity, including estimated costs; holding weight can drift with prices.",
+          "Commission, minimum commission and slippage are simplified experimental assumptions, not a reconstruction of historical exchange fees.",
+          "Forward-adjusted OHLC is used consistently; this is an adjusted-price experiment, not a replication of actual cash dividends and corporate actions.",
+          "Suspensions without bars are not filled; price limits, liquidity and stamp duty are not separately simulated.",
+          "No parameter optimization; one preselected stock is an implementation case, not evidence of general investment performance."
+        ],
+        "evaluation_start": "2025-01-02"
+      },
+      "manual_metrics": {
+        "initial_cash": 100000.0,
+        "final_equity": 96201.89230410002,
+        "total_return": -0.03798107695899977,
+        "annual_return": -0.0395191224678888,
+        "sharpe": -0.27721277892753815,
+        "max_drawdown": 0.1046610465307305,
+        "observations": 243,
+        "return_periods": 242,
+        "executed_orders": 8,
+        "total_commission": 184.5406959,
+        "min_cash": 18338.089396450006
+      },
+      "buy_hold_metrics": {
+        "initial_cash": 100000.0,
+        "final_equity": 104382.1528309,
+        "total_return": 0.04382152830899999,
+        "annual_return": 0.04567308447387464,
+        "sharpe": 0.38927518066234584,
+        "max_drawdown": 0.12330516311116502,
+        "observations": 243,
+        "return_periods": 242,
+        "executed_orders": 1,
+        "total_commission": 23.950169099999997,
+        "min_cash": 20142.152830900002
+      },
+      "manual_audit": {
+        "ok": true,
+        "errors": [],
+        "ledger_rows": 243
+      },
+      "buy_hold_audit": {
+        "ok": true,
+        "errors": [],
+        "ledger_rows": 243
+      },
+      "generations": [
+        {
+          "name": "generation_01",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 243
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_02",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 243
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_03",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 243
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_04",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 243
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_05",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 243
+          },
+          "identical_to_manual": true
+        }
+      ],
+      "ok": true
+    },
+    {
+      "symbol": "000651",
+      "window": {
+        "name": "2021_2022",
+        "start": "2021-01-01",
+        "end": "2022-12-31"
+      },
+      "evaluation_start": "2021-01-04",
+      "evaluation_end": "2022-12-30",
+      "observations": 485,
+      "warmup_observations": 60,
+      "data_sha256": "83a0beb1633249398486b6a981a6d466f73418c543cab893927c9d45db67078c",
+      "config": {
+        "experiment": "quant_v2_sma_000001",
+        "symbol": "000651",
+        "start_date": "2021-01-01",
+        "end_date": "2025-12-31",
+        "adjust": "qfq",
+        "fast": 20,
+        "slow": 60,
+        "initial_cash": 100000.0,
+        "max_position": 0.8,
+        "lot_size": 100,
+        "commission": 0.0003,
+        "min_commission": 5.0,
+        "slippage": 0.0005,
+        "annual_periods": 252,
+        "risk_free_rate": 0.0,
+        "repeats": 5,
+        "model": "deepseek-flash",
+        "assumptions": [
+          "Fixed rule: target 1 when SMA(fast) > SMA(slow), otherwise 0; warm-up target 0.",
+          "A signal computed at a close is executed no earlier than the next observed trading-day open.",
+          "Long only; entry budget is at most max_position of equity, including estimated costs; holding weight can drift with prices.",
+          "Commission, minimum commission and slippage are simplified experimental assumptions, not a reconstruction of historical exchange fees.",
+          "Forward-adjusted OHLC is used consistently; this is an adjusted-price experiment, not a replication of actual cash dividends and corporate actions.",
+          "Suspensions without bars are not filled; price limits, liquidity and stamp duty are not separately simulated.",
+          "No parameter optimization; one preselected stock is an implementation case, not evidence of general investment performance."
+        ],
+        "evaluation_start": "2021-01-04"
+      },
+      "manual_metrics": {
+        "initial_cash": 100000.0,
+        "final_equity": 68297.92180900004,
+        "total_return": -0.3170207819099996,
+        "annual_return": -0.1800593617329791,
+        "sharpe": -1.2687869625635964,
+        "max_drawdown": 0.32086078190999967,
+        "observations": 485,
+        "return_periods": 484,
+        "executed_orders": 11,
+        "total_commission": 210.787191,
+        "min_cash": 15497.92180900003
+      },
+      "buy_hold_metrics": {
+        "initial_cash": 100000.0,
+        "final_equity": 58524.9385782,
+        "total_return": -0.41475061421799997,
+        "annual_return": -0.24340497986268916,
+        "sharpe": -0.8538494582620529,
+        "max_drawdown": 0.5112955591815689,
+        "observations": 485,
+        "return_periods": 484,
+        "executed_orders": 1,
+        "total_commission": 23.655421799999996,
+        "min_cash": 21124.938578200014
+      },
+      "manual_audit": {
+        "ok": true,
+        "errors": [],
+        "ledger_rows": 485
+      },
+      "buy_hold_audit": {
+        "ok": true,
+        "errors": [],
+        "ledger_rows": 485
+      },
+      "generations": [
+        {
+          "name": "generation_01",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_02",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_03",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_04",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_05",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "identical_to_manual": true
+        }
+      ],
+      "ok": true
+    },
+    {
+      "symbol": "000651",
+      "window": {
+        "name": "2023_2024",
+        "start": "2023-01-01",
+        "end": "2024-12-31"
+      },
+      "evaluation_start": "2023-01-03",
+      "evaluation_end": "2024-12-31",
+      "observations": 484,
+      "warmup_observations": 60,
+      "data_sha256": "83a0beb1633249398486b6a981a6d466f73418c543cab893927c9d45db67078c",
+      "config": {
+        "experiment": "quant_v2_sma_000001",
+        "symbol": "000651",
+        "start_date": "2021-01-01",
+        "end_date": "2025-12-31",
+        "adjust": "qfq",
+        "fast": 20,
+        "slow": 60,
+        "initial_cash": 100000.0,
+        "max_position": 0.8,
+        "lot_size": 100,
+        "commission": 0.0003,
+        "min_commission": 5.0,
+        "slippage": 0.0005,
+        "annual_periods": 252,
+        "risk_free_rate": 0.0,
+        "repeats": 5,
+        "model": "deepseek-flash",
+        "assumptions": [
+          "Fixed rule: target 1 when SMA(fast) > SMA(slow), otherwise 0; warm-up target 0.",
+          "A signal computed at a close is executed no earlier than the next observed trading-day open.",
+          "Long only; entry budget is at most max_position of equity, including estimated costs; holding weight can drift with prices.",
+          "Commission, minimum commission and slippage are simplified experimental assumptions, not a reconstruction of historical exchange fees.",
+          "Forward-adjusted OHLC is used consistently; this is an adjusted-price experiment, not a replication of actual cash dividends and corporate actions.",
+          "Suspensions without bars are not filled; price limits, liquidity and stamp duty are not separately simulated.",
+          "No parameter optimization; one preselected stock is an implementation case, not evidence of general investment performance."
+        ],
+        "evaluation_start": "2023-01-03"
+      },
+      "manual_metrics": {
+        "initial_cash": 100000.0,
+        "final_equity": 135108.03977615002,
+        "total_return": 0.35108039776150024,
+        "annual_return": 0.1699882279088607,
+        "sharpe": 0.7933613221129512,
+        "max_drawdown": 0.2253629793544364,
+        "observations": 484,
+        "return_periods": 483,
+        "executed_orders": 10,
+        "total_commission": 274.85672385000004,
+        "min_cash": 20016.052012000007
+      },
+      "buy_hold_metrics": {
+        "initial_cash": 100000.0,
+        "final_equity": 162072.052012,
+        "total_return": 0.6207205201199999,
+        "annual_return": 0.28650932310054755,
+        "sharpe": 1.041174509291344,
+        "max_drawdown": 0.2630748015546315,
+        "observations": 484,
+        "return_periods": 483,
+        "executed_orders": 1,
+        "total_commission": 23.987987999999994,
+        "min_cash": 20016.052012000007
+      },
+      "manual_audit": {
+        "ok": true,
+        "errors": [],
+        "ledger_rows": 484
+      },
+      "buy_hold_audit": {
+        "ok": true,
+        "errors": [],
+        "ledger_rows": 484
+      },
+      "generations": [
+        {
+          "name": "generation_01",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 484
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_02",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 484
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_03",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 484
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_04",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 484
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_05",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 484
+          },
+          "identical_to_manual": true
+        }
+      ],
+      "ok": true
+    },
+    {
+      "symbol": "000651",
+      "window": {
+        "name": "2025",
+        "start": "2025-01-01",
+        "end": "2025-12-31"
+      },
+      "evaluation_start": "2025-01-02",
+      "evaluation_end": "2025-12-31",
+      "observations": 243,
+      "warmup_observations": 60,
+      "data_sha256": "83a0beb1633249398486b6a981a6d466f73418c543cab893927c9d45db67078c",
+      "config": {
+        "experiment": "quant_v2_sma_000001",
+        "symbol": "000651",
+        "start_date": "2021-01-01",
+        "end_date": "2025-12-31",
+        "adjust": "qfq",
+        "fast": 20,
+        "slow": 60,
+        "initial_cash": 100000.0,
+        "max_position": 0.8,
+        "lot_size": 100,
+        "commission": 0.0003,
+        "min_commission": 5.0,
+        "slippage": 0.0005,
+        "annual_periods": 252,
+        "risk_free_rate": 0.0,
+        "repeats": 5,
+        "model": "deepseek-flash",
+        "assumptions": [
+          "Fixed rule: target 1 when SMA(fast) > SMA(slow), otherwise 0; warm-up target 0.",
+          "A signal computed at a close is executed no earlier than the next observed trading-day open.",
+          "Long only; entry budget is at most max_position of equity, including estimated costs; holding weight can drift with prices.",
+          "Commission, minimum commission and slippage are simplified experimental assumptions, not a reconstruction of historical exchange fees.",
+          "Forward-adjusted OHLC is used consistently; this is an adjusted-price experiment, not a replication of actual cash dividends and corporate actions.",
+          "Suspensions without bars are not filled; price limits, liquidity and stamp duty are not separately simulated.",
+          "No parameter optimization; one preselected stock is an implementation case, not evidence of general investment performance."
+        ],
+        "evaluation_start": "2025-01-02"
+      },
+      "manual_metrics": {
+        "initial_cash": 100000.0,
+        "final_equity": 89581.79349125005,
+        "total_return": -0.1041820650874995,
+        "annual_return": -0.10824539087500173,
+        "sharpe": -0.7974474909388474,
+        "max_drawdown": 0.13293629123422335,
+        "observations": 243,
+        "return_periods": 242,
+        "executed_orders": 7,
+        "total_commission": 154.21000874999996,
+        "min_cash": 18863.793491250042
+      },
+      "buy_hold_metrics": {
+        "initial_cash": 100000.0,
+        "final_equity": 93915.59568885,
+        "total_return": -0.060844043111500046,
+        "annual_return": -0.06327701508145944,
+        "sharpe": -0.33496617881299806,
+        "max_drawdown": 0.13030707951252773,
+        "observations": 243,
+        "return_periods": 242,
+        "executed_orders": 1,
+        "total_commission": 23.03381115,
+        "min_cash": 23197.595688849997
+      },
+      "manual_audit": {
+        "ok": true,
+        "errors": [],
+        "ledger_rows": 243
+      },
+      "buy_hold_audit": {
+        "ok": true,
+        "errors": [],
+        "ledger_rows": 243
+      },
+      "generations": [
+        {
+          "name": "generation_01",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 243
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_02",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 243
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_03",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 243
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_04",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 243
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_05",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 243
+          },
+          "identical_to_manual": true
+        }
+      ],
+      "ok": true
+    },
+    {
+      "symbol": "600031",
+      "window": {
+        "name": "2021_2022",
+        "start": "2021-01-01",
+        "end": "2022-12-31"
+      },
+      "evaluation_start": "2021-01-04",
+      "evaluation_end": "2022-12-30",
+      "observations": 485,
+      "warmup_observations": 60,
+      "data_sha256": "5ff2bdfc8535a073b5cba10aa385e50721a884d4841ac0fe998ad641250b766f",
+      "config": {
+        "experiment": "quant_v2_sma_000001",
+        "symbol": "600031",
+        "start_date": "2021-01-01",
+        "end_date": "2025-12-31",
+        "adjust": "qfq",
+        "fast": 20,
+        "slow": 60,
+        "initial_cash": 100000.0,
+        "max_position": 0.8,
+        "lot_size": 100,
+        "commission": 0.0003,
+        "min_commission": 5.0,
+        "slippage": 0.0005,
+        "annual_periods": 252,
+        "risk_free_rate": 0.0,
+        "repeats": 5,
+        "model": "deepseek-flash",
+        "assumptions": [
+          "Fixed rule: target 1 when SMA(fast) > SMA(slow), otherwise 0; warm-up target 0.",
+          "A signal computed at a close is executed no earlier than the next observed trading-day open.",
+          "Long only; entry budget is at most max_position of equity, including estimated costs; holding weight can drift with prices.",
+          "Commission, minimum commission and slippage are simplified experimental assumptions, not a reconstruction of historical exchange fees.",
+          "Forward-adjusted OHLC is used consistently; this is an adjusted-price experiment, not a replication of actual cash dividends and corporate actions.",
+          "Suspensions without bars are not filled; price limits, liquidity and stamp duty are not separately simulated.",
+          "No parameter optimization; one preselected stock is an implementation case, not evidence of general investment performance."
+        ],
+        "evaluation_start": "2021-01-04"
+      },
+      "manual_metrics": {
+        "initial_cash": 100000.0,
+        "final_equity": 80917.64839140004,
+        "total_return": -0.19082351608599957,
+        "annual_return": -0.10438430910572616,
+        "sharpe": -0.3321041431350113,
+        "max_drawdown": 0.408893431221545,
+        "observations": 485,
+        "return_periods": 484,
+        "executed_orders": 9,
+        "total_commission": 191.38960859999997,
+        "min_cash": 16765.648391400042
+      },
+      "buy_hold_metrics": {
+        "initial_cash": 100000.0,
+        "final_equity": 57554.087593599994,
+        "total_return": -0.4244591240640001,
+        "annual_return": -0.24996594491362456,
+        "sharpe": -0.6974287835089104,
+        "max_drawdown": 0.6062381524784539,
+        "observations": 485,
+        "return_periods": 484,
+        "executed_orders": 1,
+        "total_commission": 23.2244064,
+        "min_cash": 22562.08759359999
+      },
+      "manual_audit": {
+        "ok": true,
+        "errors": [],
+        "ledger_rows": 485
+      },
+      "buy_hold_audit": {
+        "ok": true,
+        "errors": [],
+        "ledger_rows": 485
+      },
+      "generations": [
+        {
+          "name": "generation_01",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_02",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_03",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_04",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_05",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "identical_to_manual": true
+        }
+      ],
+      "ok": true
+    },
+    {
+      "symbol": "600031",
+      "window": {
+        "name": "2023_2024",
+        "start": "2023-01-01",
+        "end": "2024-12-31"
+      },
+      "evaluation_start": "2023-01-03",
+      "evaluation_end": "2024-12-31",
+      "observations": 484,
+      "warmup_observations": 60,
+      "data_sha256": "5ff2bdfc8535a073b5cba10aa385e50721a884d4841ac0fe998ad641250b766f",
+      "config": {
+        "experiment": "quant_v2_sma_000001",
+        "symbol": "600031",
+        "start_date": "2021-01-01",
+        "end_date": "2025-12-31",
+        "adjust": "qfq",
+        "fast": 20,
+        "slow": 60,
+        "initial_cash": 100000.0,
+        "max_position": 0.8,
+        "lot_size": 100,
+        "commission": 0.0003,
+        "min_commission": 5.0,
+        "slippage": 0.0005,
+        "annual_periods": 252,
+        "risk_free_rate": 0.0,
+        "repeats": 5,
+        "model": "deepseek-flash",
+        "assumptions": [
+          "Fixed rule: target 1 when SMA(fast) > SMA(slow), otherwise 0; warm-up target 0.",
+          "A signal computed at a close is executed no earlier than the next observed trading-day open.",
+          "Long only; entry budget is at most max_position of equity, including estimated costs; holding weight can drift with prices.",
+          "Commission, minimum commission and slippage are simplified experimental assumptions, not a reconstruction of historical exchange fees.",
+          "Forward-adjusted OHLC is used consistently; this is an adjusted-price experiment, not a replication of actual cash dividends and corporate actions.",
+          "Suspensions without bars are not filled; price limits, liquidity and stamp duty are not separately simulated.",
+          "No parameter optimization; one preselected stock is an implementation case, not evidence of general investment performance."
+        ],
+        "evaluation_start": "2023-01-03"
+      },
+      "manual_metrics": {
+        "initial_cash": 100000.0,
+        "final_equity": 128585.06197310006,
+        "total_return": 0.2858506197310007,
+        "annual_return": 0.140168310494021,
+        "sharpe": 0.7724828563275699,
+        "max_drawdown": 0.17842588361075884,
+        "observations": 484,
+        "return_periods": 483,
+        "executed_orders": 8,
+        "total_commission": 213.34902689999996,
+        "min_cash": 21205.002590200005
+      },
+      "buy_hold_metrics": {
+        "initial_cash": 100000.0,
+        "final_equity": 105607.0025902,
+        "total_return": 0.05607002590199994,
+        "annual_return": 0.02887216311670726,
+        "sharpe": 0.23737052512303863,
+        "max_drawdown": 0.3013447927034598,
+        "observations": 484,
+        "return_periods": 483,
+        "executed_orders": 1,
+        "total_commission": 23.631409799999997,
+        "min_cash": 21205.002590200005
+      },
+      "manual_audit": {
+        "ok": true,
+        "errors": [],
+        "ledger_rows": 484
+      },
+      "buy_hold_audit": {
+        "ok": true,
+        "errors": [],
+        "ledger_rows": 484
+      },
+      "generations": [
+        {
+          "name": "generation_01",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 484
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_02",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 484
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_03",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 484
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_04",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 484
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_05",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 484
+          },
+          "identical_to_manual": true
+        }
+      ],
+      "ok": true
+    },
+    {
+      "symbol": "600031",
+      "window": {
+        "name": "2025",
+        "start": "2025-01-01",
+        "end": "2025-12-31"
+      },
+      "evaluation_start": "2025-01-02",
+      "evaluation_end": "2025-12-31",
+      "observations": 243,
+      "warmup_observations": 60,
+      "data_sha256": "5ff2bdfc8535a073b5cba10aa385e50721a884d4841ac0fe998ad641250b766f",
+      "config": {
+        "experiment": "quant_v2_sma_000001",
+        "symbol": "600031",
+        "start_date": "2021-01-01",
+        "end_date": "2025-12-31",
+        "adjust": "qfq",
+        "fast": 20,
+        "slow": 60,
+        "initial_cash": 100000.0,
+        "max_position": 0.8,
+        "lot_size": 100,
+        "commission": 0.0003,
+        "min_commission": 5.0,
+        "slippage": 0.0005,
+        "annual_periods": 252,
+        "risk_free_rate": 0.0,
+        "repeats": 5,
+        "model": "deepseek-flash",
+        "assumptions": [
+          "Fixed rule: target 1 when SMA(fast) > SMA(slow), otherwise 0; warm-up target 0.",
+          "A signal computed at a close is executed no earlier than the next observed trading-day open.",
+          "Long only; entry budget is at most max_position of equity, including estimated costs; holding weight can drift with prices.",
+          "Commission, minimum commission and slippage are simplified experimental assumptions, not a reconstruction of historical exchange fees.",
+          "Forward-adjusted OHLC is used consistently; this is an adjusted-price experiment, not a replication of actual cash dividends and corporate actions.",
+          "Suspensions without bars are not filled; price limits, liquidity and stamp duty are not separately simulated.",
+          "No parameter optimization; one preselected stock is an implementation case, not evidence of general investment performance."
+        ],
+        "evaluation_start": "2025-01-02"
+      },
+      "manual_metrics": {
+        "initial_cash": 100000.0,
+        "final_equity": 108111.4812564,
+        "total_return": 0.081114812564,
+        "annual_return": 0.08460469392395265,
+        "sharpe": 0.5355170221435622,
+        "max_drawdown": 0.10538057789935085,
+        "observations": 243,
+        "return_periods": 242,
+        "executed_orders": 4,
+        "total_commission": 99.19374359999999,
+        "min_cash": 20741.632120749997
+      },
+      "buy_hold_metrics": {
+        "initial_cash": 100000.0,
+        "final_equity": 131471.38807500002,
+        "total_return": 0.3147138807500003,
+        "annual_return": 0.32966314209866,
+        "sharpe": 1.3147094572090527,
+        "max_drawdown": 0.1266244528175695,
+        "observations": 243,
+        "return_periods": 242,
+        "executed_orders": 1,
+        "total_commission": 23.861924999999992,
+        "min_cash": 20436.388075000013
+      },
+      "manual_audit": {
+        "ok": true,
+        "errors": [],
+        "ledger_rows": 243
+      },
+      "buy_hold_audit": {
+        "ok": true,
+        "errors": [],
+        "ledger_rows": 243
+      },
+      "generations": [
+        {
+          "name": "generation_01",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 243
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_02",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 243
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_03",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 243
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_04",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 243
+          },
+          "identical_to_manual": true
+        },
+        {
+          "name": "generation_05",
+          "ok": true,
+          "checks": {
+            "ast_passed": true,
+            "fixed_rule_equal": true,
+            "prefix_causality_passed": true,
+            "trusted_engine_equal": true
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 243
+          },
+          "identical_to_manual": true
+        }
+      ],
+      "ok": true
+    }
+  ]
+}

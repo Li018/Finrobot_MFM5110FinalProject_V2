@@ -74,9 +74,9 @@ def main():
     parser.add_argument(
         "--role",
         default="A_Share_Analyst",
-        help="角色名：A_Share_Analyst（默认）/ Market_Analyst / Expert_Investor",
+        help="角色名：A_Share_Analyst（默认）/ Market_Analyst / Expert_Investor / Quant_Analyst",
     )
-    parser.add_argument("--model", default="gpt-4o")
+    parser.add_argument("--model", default="deepseek-flash")
     parser.add_argument(
         "--provider",
         choices=["auto", "akshare", "tushare"],
@@ -102,6 +102,7 @@ def main():
     assistant = SingleAssistant(
         args.role,
         llm_config=llm_config,
+        **({"code_execution_config": False} if args.role == "Quant_Analyst" else {}),
         # AutoGen 约定：收到含 TERMINATE 的回复即结束本轮对话
         is_termination_msg=lambda x: "TERMINATE" in (x.get("content") or ""),
     )

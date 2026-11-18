@@ -1,0 +1,99 @@
+{
+  "attempts": [
+    {
+      "attempt": "generation_01",
+      "ok": true,
+      "initial_execution_ok": false,
+      "initial_json_valid": true,
+      "without_model_repair_ok": true,
+      "model_repairs": 0,
+      "execution_source": "generation_01\\execution.json",
+      "initial_error": "Disallowed attribute: index",
+      "checks": {
+        "ast_passed": true,
+        "fixed_rule_equal": true,
+        "prefix_causality_passed": true,
+        "trusted_engine_equal": true
+      },
+      "identical_to_manual": true
+    },
+    {
+      "attempt": "generation_02",
+      "ok": true,
+      "initial_execution_ok": true,
+      "initial_json_valid": true,
+      "without_model_repair_ok": true,
+      "model_repairs": 0,
+      "execution_source": "generation_02\\execution.json",
+      "checks": {
+        "ast_passed": true,
+        "fixed_rule_equal": true,
+        "prefix_causality_passed": true,
+        "trusted_engine_equal": true
+      },
+      "identical_to_manual": true
+    },
+    {
+      "attempt": "generation_03",
+      "ok": true,
+      "initial_execution_ok": true,
+      "initial_json_valid": true,
+      "without_model_repair_ok": true,
+      "model_repairs": 0,
+      "execution_source": "generation_03\\execution.json",
+      "checks": {
+        "ast_passed": true,
+        "fixed_rule_equal": true,
+        "prefix_causality_passed": true,
+        "trusted_engine_equal": true
+      },
+      "identical_to_manual": true
+    },
+    {
+      "attempt": "generation_04",
+      "ok": true,
+      "initial_execution_ok": true,
+      "initial_json_valid": true,
+      "without_model_repair_ok": true,
+      "model_repairs": 0,
+      "execution_source": "generation_04\\execution.json",
+      "checks": {
+        "ast_passed": true,
+        "fixed_rule_equal": true,
+        "prefix_causality_passed": true,
+        "trusted_engine_equal": true
+      },
+      "identical_to_manual": true
+    },
+    {
+      "attempt": "generation_05",
+      "ok": true,
+      "initial_execution_ok": false,
+      "initial_json_valid": false,
+      "without_model_repair_ok": false,
+      "model_repairs": 1,
+      "execution_source": "generation_05\\repair_01\\execution.json",
+      "initial_error": "Expecting ',' delimiter: line 1 column 812 (char 811)",
+      "checks": {
+        "ast_passed": true,
+        "fixed_rule_equal": true,
+        "prefix_causality_passed": true,
+        "trusted_engine_equal": true
+      },
+      "identical_to_manual": true
+    }
+  ],
+  "requested_repeats": 5,
+  "completed_attempts": 5,
+  "initial_execution_success_rate": 0.6,
+  "validated_success_rate": 1.0,
+  "complete": true,
+  "initial_json_valid_rate": 0.8,
+  "without_model_repair_success_rate": 0.8,
+  "model_repair_requests": 1,
+  "successful_generations": 5,
+  "all_audits_passed": true,
+  "design": "Fixed-rule implementation evaluation; not evidence of LLM investment alpha.",
+  "autogen_response_cache_disabled": true,
+  "data_sha256": "44c486eefd66b37452d0ea05ed234e51a07be4150a7ee1d605457ea1d8435568"
+}

@@ -7,6 +7,13 @@ __pycache__/
 *.csv
 *.jpg
 *.png
+!data/quant_v2/*.csv
+!data/quant_generalization/**/*.csv
+!artifacts/quant_v2/**/*.csv
+!artifacts/quant_v2/*.csv
+!artifacts/quant_v2/*.png
+!artifacts/quant_generalization/**/*.csv
+!artifacts/quant_generalization/**/*.png
 !finrobot_equity/web_app/static/*.png
 !figs/*.png
 quant/

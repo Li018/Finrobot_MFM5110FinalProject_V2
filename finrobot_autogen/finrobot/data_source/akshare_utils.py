@@ -97,6 +97,8 @@ def _date_dash(value: str) -> str:
 
 
 _PRICE_RENAME = {
+    "date": "Date", "open": "Open", "close": "Close", "high": "High",
+    "low": "Low", "volume": "Volume", "amount": "Amount", "turnover": "Turnover",
     "日期": "Date",
     "开盘": "Open",
     "收盘": "Close",
@@ -194,6 +196,8 @@ class AkShareUtils:
         start, end = _date8(start_date), _date8(end_date)
 
         df = pd.DataFrame()
+        source = "akshare_eastmoney"
+        endpoint = "stock_zh_a_hist"
         try:
             df = _standardize_price(
                 ak.stock_zh_a_hist(
@@ -208,6 +212,7 @@ class AkShareUtils:
             print(f"[AkShareUtils] 东方财富行情获取失败（{exc}），回退到腾讯行情。")
 
         if df.empty:
+            source, endpoint = "akshare_tencent", "stock_zh_a_hist_tx"
             df = _standardize_price(
                 ak.stock_zh_a_hist_tx(
                     symbol=_tx_symbol(code),
@@ -224,8 +229,17 @@ class AkShareUtils:
             if "amount" in df.columns:
                 df = df.rename(columns={"amount": "Amount"})
             if "Volume" in df.columns:
-                df["Volume"] = pd.to_numeric(df["Volume"], errors="coerce") / 100
+                # AkShare 1.20.7 mistakenly skips shares conversion for sz000 stocks.
+                already_lots = getattr(ak, "__version__", "") == "1.20.7" and code.startswith("000")
+                df["Volume"] = pd.to_numeric(df["Volume"], errors="coerce")
+                if not already_lots:
+                    df["Volume"] = df["Volume"] / 100
+            if "Turnover" in df.columns:
+                df["Turnover"] = pd.to_numeric(df["Turnover"], errors="coerce") * 100
 
+        df.attrs.update(source=source, endpoint=endpoint, adjust=adjust,
+                        volume_unit="lots (100 shares)", turnover_unit="percent",
+                        akshare_version=getattr(ak, "__version__", "unknown"))
         save_output(df, f"Stock data for {code}", save_path)
         return df
 

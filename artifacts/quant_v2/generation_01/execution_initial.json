@@ -1,0 +1,5 @@
+{
+  "ok": false,
+  "error_type": "ValueError",
+  "error": "Disallowed attribute: index"
+}

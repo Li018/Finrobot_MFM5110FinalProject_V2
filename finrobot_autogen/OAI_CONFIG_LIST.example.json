@@ -1,0 +1,8 @@
+[
+  {
+    "model": "deepseek-flash",
+    "api_key": "REPLACE_ME_DEEPSEEK_API_KEY",
+    "base_url": "https://api.deepseek.com/v1",
+    "extra_body": {"thinking": {"type": "disabled"}}
+  }
+]

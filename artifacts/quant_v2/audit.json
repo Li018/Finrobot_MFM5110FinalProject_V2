@@ -1,0 +1,37 @@
+{
+  "manual_sma": {
+    "ok": true,
+    "errors": [],
+    "ledger_rows": 1212
+  },
+  "buy_hold": {
+    "ok": true,
+    "errors": [],
+    "ledger_rows": 1212
+  },
+  "generation_01": {
+    "ok": true,
+    "errors": [],
+    "ledger_rows": 1212
+  },
+  "generation_02": {
+    "ok": true,
+    "errors": [],
+    "ledger_rows": 1212
+  },
+  "generation_03": {
+    "ok": true,
+    "errors": [],
+    "ledger_rows": 1212
+  },
+  "generation_04": {
+    "ok": true,
+    "errors": [],
+    "ledger_rows": 1212
+  },
+  "generation_05": {
+    "ok": true,
+    "errors": [],
+    "ledger_rows": 1212
+  }
+}

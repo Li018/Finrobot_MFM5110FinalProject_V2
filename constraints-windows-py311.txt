@@ -1,0 +1,23 @@
+# FinRobot uses the AutoGen 0.2 API (autogen.agentchat.contrib).
+pyautogen==0.2.35
+
+# Keep the OpenAI client and its HTTP transport compatible with AutoGen 0.2.
+openai==1.55.3
+httpx==0.27.2
+typing_extensions==4.12.2
+
+# The PDF scripts import marker.convert and marker.models from Marker 0.2.
+marker-pdf==0.2.15
+surya-ocr==0.4.14
+
+# Requests 2.31 checks chardet's runtime version, beyond its dependency metadata.
+chardet==5.2.0
+
+# The separate ragquery module uses the LangChain 0.1 / Chroma 0.5 integration.
+langchain-chroma==0.1.2
+chromadb==0.5.23
+posthog<6
+
+# Keep native Windows runtimes compatible with this project's pandas 2.0 stack.
+torch==2.5.1
+onnxruntime==1.19.2

@@ -1,0 +1,28 @@
+{
+  "experiment": "quant_v2_sma_000001",
+  "symbol": "000001",
+  "start_date": "2021-01-01",
+  "end_date": "2025-12-31",
+  "adjust": "qfq",
+  "fast": 20,
+  "slow": 60,
+  "initial_cash": 100000.0,
+  "max_position": 0.8,
+  "lot_size": 100,
+  "commission": 0.0003,
+  "min_commission": 5.0,
+  "slippage": 0.0005,
+  "annual_periods": 252,
+  "risk_free_rate": 0.0,
+  "repeats": 5,
+  "model": "deepseek-flash",
+  "assumptions": [
+    "Fixed rule: target 1 when SMA(fast) > SMA(slow), otherwise 0; warm-up target 0.",
+    "A signal computed at a close is executed no earlier than the next observed trading-day open.",
+    "Long only; entry budget is at most max_position of equity, including estimated costs; holding weight can drift with prices.",
+    "Commission, minimum commission and slippage are simplified experimental assumptions, not a reconstruction of historical exchange fees.",
+    "Forward-adjusted OHLC is used consistently; this is an adjusted-price experiment, not a replication of actual cash dividends and corporate actions.",
+    "Suspensions without bars are not filled; price limits, liquidity and stamp duty are not separately simulated.",
+    "No parameter optimization; one preselected stock is an implementation case, not evidence of general investment performance."
+  ]
+}

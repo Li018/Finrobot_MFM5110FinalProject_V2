@@ -1,0 +1,161 @@
+{
+  "symbol": "600031",
+  "window": {
+    "name": "2023_2024",
+    "start": "2023-01-01",
+    "end": "2024-12-31"
+  },
+  "evaluation_start": "2023-01-03",
+  "evaluation_end": "2024-12-31",
+  "observations": 484,
+  "warmup_observations": 60,
+  "data_sha256": "5ff2bdfc8535a073b5cba10aa385e50721a884d4841ac0fe998ad641250b766f",
+  "config": {
+    "experiment": "quant_v2_sma_000001",
+    "symbol": "600031",
+    "start_date": "2021-01-01",
+    "end_date": "2025-12-31",
+    "adjust": "qfq",
+    "fast": 20,
+    "slow": 60,
+    "initial_cash": 100000.0,
+    "max_position": 0.8,
+    "lot_size": 100,
+    "commission": 0.0003,
+    "min_commission": 5.0,
+    "slippage": 0.0005,
+    "annual_periods": 252,
+    "risk_free_rate": 0.0,
+    "repeats": 5,
+    "model": "deepseek-flash",
+    "assumptions": [
+      "Fixed rule: target 1 when SMA(fast) > SMA(slow), otherwise 0; warm-up target 0.",
+      "A signal computed at a close is executed no earlier than the next observed trading-day open.",
+      "Long only; entry budget is at most max_position of equity, including estimated costs; holding weight can drift with prices.",
+      "Commission, minimum commission and slippage are simplified experimental assumptions, not a reconstruction of historical exchange fees.",
+      "Forward-adjusted OHLC is used consistently; this is an adjusted-price experiment, not a replication of actual cash dividends and corporate actions.",
+      "Suspensions without bars are not filled; price limits, liquidity and stamp duty are not separately simulated.",
+      "No parameter optimization; one preselected stock is an implementation case, not evidence of general investment performance."
+    ],
+    "evaluation_start": "2023-01-03"
+  },
+  "manual_metrics": {
+    "initial_cash": 100000.0,
+    "final_equity": 128585.06197310006,
+    "total_return": 0.2858506197310007,
+    "annual_return": 0.140168310494021,
+    "sharpe": 0.7724828563275699,
+    "max_drawdown": 0.17842588361075884,
+    "observations": 484,
+    "return_periods": 483,
+    "executed_orders": 8,
+    "total_commission": 213.34902689999996,
+    "min_cash": 21205.002590200005
+  },
+  "buy_hold_metrics": {
+    "initial_cash": 100000.0,
+    "final_equity": 105607.0025902,
+    "total_return": 0.05607002590199994,
+    "annual_return": 0.02887216311670726,
+    "sharpe": 0.23737052512303863,
+    "max_drawdown": 0.3013447927034598,
+    "observations": 484,
+    "return_periods": 483,
+    "executed_orders": 1,
+    "total_commission": 23.631409799999997,
+    "min_cash": 21205.002590200005
+  },
+  "manual_audit": {
+    "ok": true,
+    "errors": [],
+    "ledger_rows": 484
+  },
+  "buy_hold_audit": {
+    "ok": true,
+    "errors": [],
+    "ledger_rows": 484
+  },
+  "generations": [
+    {
+      "name": "generation_01",
+      "ok": true,
+      "checks": {
+        "ast_passed": true,
+        "fixed_rule_equal": true,
+        "prefix_causality_passed": true,
+        "trusted_engine_equal": true
+      },
+      "audit": {
+        "ok": true,
+        "errors": [],
+        "ledger_rows": 484
+      },
+      "identical_to_manual": true
+    },
+    {
+      "name": "generation_02",
+      "ok": true,
+      "checks": {
+        "ast_passed": true,
+        "fixed_rule_equal": true,
+        "prefix_causality_passed": true,
+        "trusted_engine_equal": true
+      },
+      "audit": {
+        "ok": true,
+        "errors": [],
+        "ledger_rows": 484
+      },
+      "identical_to_manual": true
+    },
+    {
+      "name": "generation_03",
+      "ok": true,
+      "checks": {
+        "ast_passed": true,
+        "fixed_rule_equal": true,
+        "prefix_causality_passed": true,
+        "trusted_engine_equal": true
+      },
+      "audit": {
+        "ok": true,
+        "errors": [],
+        "ledger_rows": 484
+      },
+      "identical_to_manual": true
+    },
+    {
+      "name": "generation_04",
+      "ok": true,
+      "checks": {
+        "ast_passed": true,
+        "fixed_rule_equal": true,
+        "prefix_causality_passed": true,
+        "trusted_engine_equal": true
+      },
+      "audit": {
+        "ok": true,
+        "errors": [],
+        "ledger_rows": 484
+      },
+      "identical_to_manual": true
+    },
+    {
+      "name": "generation_05",
+      "ok": true,
+      "checks": {
+        "ast_passed": true,
+        "fixed_rule_equal": true,
+        "prefix_causality_passed": true,
+        "trusted_engine_equal": true
+      },
+      "audit": {
+        "ok": true,
+        "errors": [],
+        "ledger_rows": 484
+      },
+      "identical_to_manual": true
+    }
+  ],
+  "ok": true
+}

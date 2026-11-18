@@ -1,0 +1,2 @@
+# Preserve exact bytes for data hashes, frozen generated code and share manifests.
+* -text

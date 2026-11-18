@@ -1,0 +1,13 @@
+{
+  "reasoning": "策略为固定规则的双均线趋势跟随：对 Close 计算 trailing SMA(fast=20) 与 SMA(slow=60)，当快线严格大于慢线时目标仓位为 1，否则为 0；rolling 使用默认 min_periods 等于窗口长度，因此前 59 个交易日（慢线未满窗）信号为 0，属于预热期空仓。信号仅使用当日及之前收盘价，不做 shift，也不使用未来数据；执行器按前一日信号在下一交易日开盘成交，符合时间顺序。该实现不针对收益做参数优化，仅作为固定规则的可核验实现；实际收益、Sharpe、最大回撤等指标由执行器中的 run_signal_backtest 用 Python 计算，本代码不生成也不替换任何指标。",
+  "risk_notes": [
+    "单标的、单参数组合（20/60）的固定规则，未做参数稳健性检验，结果不代表一般化表现。",
+    "仅做多且目标仓位为 0/1，趋势策略在震荡市中可能频繁进出并承受反复止损成本。",
+    "使用 qfq 前复权价格，属于复权价格实验，不等同于真实现金分红与公司行动复现。",
+    "成交模型简化为次日开盘执行，含固定佣金、最低佣金与滑点假设，未模拟涨跌停、停牌、流动性与印花税等真实约束。",
+    "预热期（慢线未满窗）信号为 0，会错过样本初期可能的行情，且信号在收盘计算、次日开盘执行存在一日的执行滞后。",
+    "仓位受 max_position=0.8 与整手 lot_size=100 约束，持仓权重会随价格漂移，实际暴露可能与目标不完全一致。",
+    "所有回测指标由执行器计算，本代码不预测、不引用未执行的结果。"
+  ],
+  "code": "def generate_signals(data, fast, slow):\n    close = data['Close']\n    sma_fast = close.rolling(fast).mean()\n    sma_slow = close.rolling(slow).mean()\n    signals = (sma_fast > sma_slow).astype(int)\n    signals = signals.fillna(0).astype(int)\n    return signals.reindex(data.index).fillna(0).astype(int)\n\n\ndef run_strategy(data, config):\n    signals = generate_signals(data, config['fast'], config['slow'])\n    return run_signal_backtest(data, signals, config)"
+}

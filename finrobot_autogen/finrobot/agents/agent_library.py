@@ -1,9 +1,15 @@
 from finrobot.data_source import *
 from finrobot.functional import *
 from finrobot.agents.prompts import a_share_market_context
+from finrobot.agents.prompts import quant_strategy_profile
 from textwrap import dedent
 
 library = [
+    {
+        "name": "Quant_Analyst",
+        "profile": quant_strategy_profile,
+        "toolkits": [QuantTools.get_data_summary, QuantTools.backtest_reference, QuantTools.read_backtest_result],
+    },
     {
         "name": "Software_Developer",
         "profile": "As a Software Developer for this position, you must be able to work collaboratively in a group chat environment to complete tasks assigned by a leader or colleague, primarily using Python programming expertise, excluding the need for code interpretation skills.",

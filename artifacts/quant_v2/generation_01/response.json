@@ -1,0 +1,14 @@
+{
+  "reasoning": "策略为固定规则的双均线趋势跟踪：仅使用 Close 的 trailing rolling 均值，SMA(fast=20) 严格大于 SMA(slow=60) 时目标仓位为 1，否则为 0；rolling 默认 min_periods 等于窗口长度，因此前 59 个交易日预热期信号为 0。信号不做 shift，由执行器按前一日收盘信号在下一交易日开盘执行，避免未来函数。run_strategy 先调用 generate_signals 生成与 data.index 对齐的整型 Series，再原样传入执行器提供的 run_signal_backtest 完成 Backtrader 回测与风险约束（max_position=0.8、lot_size=100、佣金 0.0003 且最低 5 元、滑点 0.0005）。本实现不修改 config、不优化参数、不自行计算或替换任何回测指标。",
+  "risk_notes": [
+    "单标的（000001）实现案例，不构成组合分散或一般化投资业绩证据。",
+    "固定参数 fast=20/slow=60，未做参数优化或稳健性搜索，存在参数选择偏差风险。",
+    "使用前复权（qfq）价格，属调整价实验，不等同于实际现金分红与公司行为复现。",
+    "成交模型简化：次日开盘执行、固定滑点与佣金假设，未模拟涨跌停、停牌、流动性与印花税。",
+    "仅做多且目标仓位 0/1，持仓权重随价格漂移，可能超过或低于 max_position 的初始预算。",
+    "均线策略在震荡市易产生频繁假信号与交易成本累积，回撤可能显著。",
+    "预热期信号为 0，回测早期不持仓，实际有效样本少于输入行数。",
+    "所有收益、Sharpe、回撤等指标由执行器 Python 计算，本代码不生成也不推断任何数值结果。"
+  ],
+  "code": "def generate_signals(data, fast, slow):\n    close = data['Close']\n    sma_fast = close.rolling(window=fast).mean()\n    sma_slow = close.rolling(window=slow).mean()\n    signals = (sma_fast > sma_slow).astype(int)\n    signals = signals.fillna(0).astype(int)\n    return signals.reindex(data.index).fillna(0).astype(int)\n\n\ndef run_strategy(data, config):\n    signals = generate_signals(data, config['fast'], config['slow'])\n    return run_signal_backtest(data, signals, config)"
+}

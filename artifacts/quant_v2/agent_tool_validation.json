@@ -1,0 +1,17 @@
+{
+  "ok": true,
+  "numeric_checks": {
+    "sma_total_return": true,
+    "sma_max_drawdown": true,
+    "buy_hold_total_return": true,
+    "buy_hold_max_drawdown": true
+  },
+  "tool_calls": 5,
+  "answer": {
+    "sma_total_return": -0.2796955838714993,
+    "buy_hold_total_return": -0.242374150881,
+    "sma_max_drawdown": 0.35485942525899217,
+    "buy_hold_max_drawdown": 0.5863088994979943,
+    "termination": "TERMINATE"
+  }
+}

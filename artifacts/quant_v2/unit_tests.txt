@@ -1,0 +1,30 @@
+[AkShareUtils] 东方财富行情获取失败（test provider fallback），回退到腾讯行情。
+D:\Desktop\Finrobot_MFM5110FinalProject-main\.cache\v2_verify_env\Lib\site-packages\flaml\__init__.py:20: UserWarning: flaml.automl is not available. Please install flaml[automl] to enable AutoML functionalities.
+  warnings.warn("flaml.automl is not available. Please install flaml[automl] to enable AutoML functionalities.")
+test_actual_snapshot_and_legacy_entry (test_quant_v2.QuantTests.test_actual_snapshot_and_legacy_entry) ... ok
+test_bad_ohlc_rejected (test_quant_v2.QuantTests.test_bad_ohlc_rejected) ... ok
+test_cleaning_no_imputed_bars (test_quant_v2.QuantTests.test_cleaning_no_imputed_bars) ... ok
+test_external_actions_rejected (test_quant_v2.QuantTests.test_external_actions_rejected) ... ok
+test_flat_sharpe_is_undefined (test_quant_v2.QuantTests.test_flat_sharpe_is_undefined) ... ok
+test_future_shift_rejected (test_quant_v2.QuantTests.test_future_shift_rejected) ... ok
+test_generalization_windows_must_not_overlap (test_quant_v2.QuantTests.test_generalization_windows_must_not_overlap) ... ok
+test_generated_code_matches_rule (test_quant_v2.QuantTests.test_generated_code_matches_rule) ... ok
+test_generated_index_alignment_allowed (test_quant_v2.QuantTests.test_generated_index_alignment_allowed) ... ok
+test_incorrect_strategy_rejected (test_quant_v2.QuantTests.test_incorrect_strategy_rejected) ... ok
+test_independent_cash_ledger (test_quant_v2.QuantTests.test_independent_cash_ledger) ... ok
+test_metrics_known_equity (test_quant_v2.QuantTests.test_metrics_known_equity) ... ok
+test_next_open_and_entry_budget (test_quant_v2.QuantTests.test_next_open_and_entry_budget) ... ok
+test_short_evaluation_rejected (test_quant_v2.QuantTests.test_short_evaluation_rejected) ... ok
+test_signal_warmup_and_prefix (test_quant_v2.QuantTests.test_signal_warmup_and_prefix) ... ok
+test_tencent_000_volume_regression (test_quant_v2.QuantTests.test_tencent_000_volume_regression) ... ok
+test_tencent_columns_standardized (test_quant_v2.QuantTests.test_tencent_columns_standardized) ... ok
+test_too_little_cash_has_no_trades (test_quant_v2.QuantTests.test_too_little_cash_has_no_trades) ... ok
+test_unauthorized_signal_rejected (test_quant_v2.QuantTests.test_unauthorized_signal_rejected) ... ok
+test_warmup_excluded_from_performance_and_trades (test_quant_v2.QuantTests.test_warmup_excluded_from_performance_and_trades) ... ok
+test_window_has_only_past_context (test_quant_v2.QuantTests.test_window_has_only_past_context) ... ok
+test_window_rejects_insufficient_warmup (test_quant_v2.QuantTests.test_window_rejects_insufficient_warmup) ... ok
+
+----------------------------------------------------------------------
+Ran 22 tests in 0.303s
+
+OK
