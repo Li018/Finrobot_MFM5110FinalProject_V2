@@ -1,0 +1,38 @@
+{
+  "ok": true,
+  "python_environment": "v2_verify_env",
+  "api_calls_requested": 0,
+  "checks": [
+    {
+      "check": "unit_tests",
+      "ok": true,
+      "seconds": 11.324,
+      "tests": 22
+    },
+    {
+      "check": "dependency_check",
+      "ok": true,
+      "seconds": 1.286
+    },
+    {
+      "check": "offline_replay",
+      "ok": true,
+      "seconds": 62.817
+    },
+    {
+      "check": "resume_pipeline",
+      "ok": true,
+      "seconds": 11.907
+    },
+    {
+      "check": "generalization",
+      "ok": true,
+      "seconds": 19.321
+    }
+  ],
+  "archive": "Finrobot_MFM5110FinalProject_V2_20261118_205021.zip",
+  "archive_sha256": "915840b4a648cc542019dad279827461acfce189aa0d332178d2939386d53dbc",
+  "manifest_files": 480,
+  "no_local_key_files": true,
+  "validation_mode": "Install extracted share source with pip and replay offline in a separate Python environment without local key files."
+}

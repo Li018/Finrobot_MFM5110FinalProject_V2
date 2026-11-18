@@ -10,9 +10,10 @@
 | V1 来源 | [组员 1 分享的项目](https://github.com/yjt2003/Finrobot_MFM5110FinalProject)；“组员 1 的版本”为用户确认的来源 |
 | V1 发布历史基线 | `8d2cc02dde93053b0a4faeec9efd19ec618ff75a`。上传时取得的 V1 上游提交；quantitative、agent_library、prompts、akshare_utils 四个核心文件均与本轮开发前备份一致。最初 ZIP 本身没有 Git 元数据 |
 | V2 定位 | 在组员 1 版本上补充开发、量化实验和复现材料 |
-| V2 当前状态 | 首轮实验及 3 标的 × 3 时段通用性验证完成，22 项测试及独立 Python 环境复验通过；正在执行分享包复验与发布 |
+| V2 当前状态 | 首轮实验、3 标的 × 3 时段验证和解压分享包复验完成，V2 代码已上传私有仓库 |
 | 后续交接对象 | 另外两名组员，完成后通过版本链接接续开发 |
-| 私有分享仓库 | [ohayoo335/Finrobot_MFM5110FinalProject_V2](https://github.com/ohayoo335/Finrobot_MFM5110FinalProject_V2)，已按用户选择创建；V2 上传是否完成以远程提交及最终发布回执为准 |
+| 私有分享仓库 | [ohayoo335/Finrobot_MFM5110FinalProject_V2](https://github.com/ohayoo335/Finrobot_MFM5110FinalProject_V2)，已按用户选择创建并上传 |
+| 已上传的代码与实验提交 | [`0433dcbbd59efc021830188991a78a749f16fa9e`](https://github.com/ohayoo335/Finrobot_MFM5110FinalProject_V2/commit/0433dcbbd59efc021830188991a78a749f16fa9e)，父提交为 V1 基线；后续交接文字更新单独记录，不改变该代码快照 |
 
 `V2` 是本组项目的交付版本标识，独立于上游 FinRobot 软件包版本 `0.1.5`。
 
@@ -85,6 +86,8 @@
 
 架构图和完整安装步骤已写入 README。真实 Key、虚拟环境和缓存排除在分享包之外；本地 Key 不写入提交。
 
+分享包已在独立目录解压，核对全部清单哈希后使用 pip 安装解压源码；在没有本地 Key 配置的副本中，22 项测试、依赖检查、5 份代码重跑、完整断点续跑和 45 次通用性回放均通过，约 107 秒。检查记录见 `artifacts/quant_v2/share_validation.json`。Git 仓库保留 V1 历史；本地 V1 PDF 和生成站点等未参与分享的文件仍保留，未删除。
+
 ## 2026-11-18 开发 checkpoint（早期记录）
 
 - 已固定 `000001`、2021–2025 年日线、20/60 均线规则及显式费用与仓位假设，配置见 `finrobot_autogen/experiments/quant_v2_config.json`。
@@ -111,10 +114,10 @@
 - [x] 完成首轮传统方法对照与稳定性、合理性检查，明确仍未解决的问题。
 - [x] 更新本文件中的改动、验证结果、遗留问题和下一位组员的继续位置。
 - [x] 准备 `Finrobot_MFM5110FinalProject_V2` 的分享内容，提供环境重建说明和不含真实 Key 的配置模板。
-- [ ] 分享清单排除真实 Key、`.venv/`、`.cache/` 及个人临时文件。ZIP 打包也需明确排除这些内容，不能依赖 `.gitignore` 自动过滤。
+- [x] 分享清单排除真实 Key、`.venv/`、`.cache/` 及个人临时文件，解压包哈希核对与无 Key 复现已通过。
 - [x] 为组内复现保留实际数据快照、必要实验结果与图表，并按目录放行 CSV/PNG；`.gitattributes` 保留原始字节，防止 Git 换行转换破坏数据哈希。
 - [x] 用户已确认在自己账号下新建私有仓库；账号已核验为 `ohayoo335`，目标仓库已创建。发布会保留 V1 上游历史。
-- [ ] 上传后核对远程提交及私有可见性，提供固定提交和下载链接。
+- [x] V2 代码已通过普通 push 上传到私有仓库，无 force push；代码快照链接见上表。最终交接文字提交与远程核对结果以发布回执为准。
 
 ## 交接给另外两名组员
 

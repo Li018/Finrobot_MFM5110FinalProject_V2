@@ -51,3 +51,10 @@ venv/
 finrobot_equity/logs/
 finrobot_equity/web_app/data/*.db
 finrobot_equity/core/output/build/
+
+# V1 local examples and generated documentation are outside the V2 development share.
+finrobot_autogen/report/
+finrobot_autogen/OAI_CONFIG_LIST_sample
+finrobot_autogen/config_api_keys_sample
+finrobot_autogen/FinNLP/docs/FinNLP/site/
+finrobot_autogen/FinNLP/test/en
