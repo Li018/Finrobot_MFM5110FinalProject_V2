@@ -1,0 +1,17 @@
+[
+    {
+        "model": "deepseek-flash",
+        "api_key": "sk-REPLACE_ME_DEEPSEEK_API_KEY__get_it_at_https://platform.deepseek.com/api_keys",
+        "base_url": "https://api.deepseek.com/v1"
+    },
+    {
+        "model": "gpt-4o",
+        "api_key": "REPLACE_ME_PROJECT_PROXY_KEY__see_finrobot_autogen/CONFIG_README.md",
+        "base_url": "http://117.72.29.113:4000/v1"
+    },
+    {
+        "model": "gpt-4o-mini",
+        "api_key": "REPLACE_ME_PROJECT_PROXY_KEY__see_finrobot_autogen/CONFIG_README.md",
+        "base_url": "http://117.72.29.113:4000/v1"
+    }
+]
