@@ -6,8 +6,8 @@
   },
   {
     "path": ".gitignore",
-    "bytes": 1058,
-    "sha256": "6898851c6f7c1951eda9c74596b63f8f94581259ea3e5fffa831005985ea94bf"
+    "bytes": 1081,
+    "sha256": "7b6b321d72bd47b137917d3b55057bedd1e7b6f2a682e4d601900ada1ba0abce"
   },
   {
     "path": "artifacts/quant_generalization/declared_design.json",
@@ -1070,6 +1070,11 @@
     "sha256": "a1a90efd25cf3b5db22bd73662dff04d95ffbfd894f5ed76a3dadae24e40c68b"
   },
   {
+    "path": "artifacts/quant_v2/console_output_validation.json",
+    "bytes": 693,
+    "sha256": "ee3614d38e26c421d7f5efc6963bdc7af5f94232284e81e5d8bad495d1dd8378"
+  },
+  {
     "path": "artifacts/quant_v2/dependency_check.txt",
     "bytes": 31,
     "sha256": "672aec65a45bed50e70229c70934a7eebf0462595c459b83023027645d57cccf"
@@ -2106,8 +2111,8 @@
   },
   {
     "path": "finrobot_autogen/finrobot/agents/prompts.py",
-    "bytes": 9733,
-    "sha256": "645a892439138222a5a354d93c0e61d3c96a8a6293362b057a9382dd9823f7f6"
+    "bytes": 10626,
+    "sha256": "3393760e1eba8ffa0accf7619f481adc51811eed8a64708013c22e1f1b898ed2"
   },
   {
     "path": "finrobot_autogen/finrobot/agents/utils.py",
@@ -2346,8 +2351,8 @@
   },
   {
     "path": "finrobot_autogen/run_agent.py",
-    "bytes": 4612,
-    "sha256": "02b6ba8cfc38d82d5a6e2aea058cc3fa30b5eb9ef7c44222dbe801e8579f396c"
+    "bytes": 9352,
+    "sha256": "6843d8554e0ad9436b1d33a53d9dfe640e23c35f51f2f2a7ce73426ae6b727a7"
   },
   {
     "path": "finrobot_autogen/test_module.py",
@@ -2366,13 +2371,13 @@
   },
   {
     "path": "PROJECT_STATUS.md",
-    "bytes": 14657,
-    "sha256": "9d3f8281259f06fb85cdad8baf2a02c9a07967072cbb32e566eb2c6a62683621"
+    "bytes": 16211,
+    "sha256": "d59a365c2cccaead996259e6f292e9eaa3d30f06a74dfdf1cc6eeeb2f090cd90"
   },
   {
     "path": "README.md",
-    "bytes": 17438,
-    "sha256": "ce1c26c41e362d76d80943bb377c7e6bb928cbceacc08698c3fd593a64c00e14"
+    "bytes": 18331,
+    "sha256": "b598f82e7d7a8d913a0e449544785d93726bd192c0d74284bdcd28d34036d216"
   },
   {
     "path": "requirements-windows-py311.lock.txt",
@@ -2413,6 +2418,11 @@
     "path": "setup.py",
     "bytes": 1870,
     "sha256": "0bf351a2d06d03782bba110c75ffa6f9458216303419bc455e6e23c5cf70b30c"
+  },
+  {
+    "path": "tests/test_console_output.py",
+    "bytes": 5930,
+    "sha256": "bc21e113ac6dbc8fbeb9019f960223b54eca774b71fcf900985d201e1fe98785"
   },
   {
     "path": "tests/test_quant_dialogue.py",

@@ -28,6 +28,7 @@ dist/
 tmp/
 data/quant_dialogue/
 artifacts/quant_dialogue/
+artifacts/agent_chats/
 filings/
 
 # Compiled Python

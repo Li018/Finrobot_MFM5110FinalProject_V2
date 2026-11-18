@@ -22,6 +22,16 @@
 现在换成600031，2025年，20/60均线，开仓预算50%，重新比较并解释结果。
 ```
 
+默认终端只显示“正在分析”、本轮最终分析和分析文件位置。工具参数、原始 JSON、执行进度及框架警告写入同目录的 `.log`，完整会话保存在 `.json`，可直接阅读的最终分析另存为 `.md`。Quant_Analyst 的记录位于 `artifacts/quant_dialogue/chats/`，其他角色位于 `artifacts/agent_chats/`，均不随分享包上传。
+
+需要排查问题时显式开启调试输出：
+
+```powershell
+.\run_finrobot.cmd --role Quant_Analyst --verbose
+```
+
+本次修复了 AutoGen 历史中最终答复的角色识别问题，防止把用户提问或上一轮文本当成分析。模型未完成或请求失败时会明确显示失败与日志位置，不输出旧轮次作为结果。修改后须退出旧会话，再重新启动命令。
+
 角色会实际调用 `prepare_quant_experiment`、`compare_quant_strategies`、`execute_quant_code` 和 `check_quant_risk`。每个实验使用独立 ID，改标的、日期或参数不会覆盖原 V2 实验。已保存的行情只有在代码、复权、覆盖范围及历史预热满足要求且哈希正确时才复用，否则通过原数据层取真实行情。
 
 结果在 `artifacts/quant_dialogue/<experiment_id>/`，包含图表、指标、交易、风险检查、生成代码及失败记录；每轮对话也保存到 `artifacts/quant_dialogue/chats/`。这些交互数据与聊天记录默认被 Git 忽略，不自动公开。
@@ -117,7 +127,7 @@ flowchart LR
 
 新建 Python 3.11 环境的完整复验本机约 132 秒，`all --resume` 约 11 秒，包含解释器导入开销。初次重建环境还需完成下方依赖安装和 NLTK 数据下载。
 
-上述 132 秒为首轮 17 项测试版本的历史测量；本次已扩展到 29 项测试，并加入交互工具链与通用性复验，最新实测时间见 `artifacts/quant_v2/validation_summary.json`，并非对其他机器的耗时保证。
+上述 132 秒为首轮 17 项测试版本的历史测量；交互工具链版本扩展为 29 项，本次控制台修复后共有 37 项测试。控制台实测摘要见 `artifacts/quant_v2/console_output_validation.json`，此前完整流水线时间保留在 `artifacts/quant_v2/validation_summary.json`，均非对其他机器的耗时保证。
 
 ### 多标的、多时段验证
 

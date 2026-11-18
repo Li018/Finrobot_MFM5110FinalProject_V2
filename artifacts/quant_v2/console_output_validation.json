@@ -1,0 +1,20 @@
+{
+  "ok": true,
+  "checks": {
+    "process_exit_zero": true,
+    "no_framework_noise": true,
+    "three_final_answers_saved": true,
+    "all_saved_answers_visible": true,
+    "new_stock_is_in_last_answer": true,
+    "previous_full_answer_not_repeated": true
+  },
+  "noise_found": [],
+  "console_characters": 3320,
+  "observations": {
+    "last_answer_briefly_mentions_previous_symbol": true
+  },
+  "scope_note": "No prior complete answer is replayed. A brief contextual reference is recorded separately, not classified as repeated tool output.",
+  "validation_date": "2026-11-19",
+  "unit_tests": 37,
+  "raw_console_and_chats": "Kept locally; excluded from public share"
+}
