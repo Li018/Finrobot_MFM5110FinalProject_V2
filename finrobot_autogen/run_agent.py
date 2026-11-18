@@ -37,15 +37,27 @@ def with_terminate_hint(prompt: str) -> str:
 
 def ask(assistant: SingleAssistant, message: str, clear_history: bool = False):
     # 直接调用 initiate_chat 并保留历史，不用 chat()（它结束后会 reset 清空上下文）
-    assistant.user_proxy.initiate_chat(
+    result = assistant.user_proxy.initiate_chat(
         assistant.assistant,
         message=with_terminate_hint(message),
         clear_history=clear_history,
     )
+    if assistant.assistant.name == "Quant_Analyst":
+        import json
+        from datetime import datetime, timezone
+        folder = BASE_DIR.parent / "artifacts/quant_dialogue/chats"
+        folder.mkdir(parents=True, exist_ok=True)
+        path = folder / (datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%f") + ".json")
+        path.write_text(json.dumps(result.chat_history, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        print(f"本轮对话记录：{path}")
+    return result
 
 
 def repl(assistant: SingleAssistant):
     print(f"已进入交互模式（角色: {assistant.assistant.name}）。输入 exit / quit / :q 退出。")
+    if assistant.assistant.name == "Quant_Analyst":
+        print("示例：回测000651在2023-2024年的10/30均线，本金10万，开仓预算60%，比较买入持有并检查风险。")
+        print("后续可输入：继续生成并运行同规则Python代码，再检查生成策略的风险。")
     first_turn = True
     while True:
         try:
@@ -98,6 +110,8 @@ def main():
         "timeout": 120,
         "temperature": 0,
     }
+    if args.role == "Quant_Analyst":
+        llm_config.update(cache_seed=None, max_tokens=3500)
 
     assistant = SingleAssistant(
         args.role,

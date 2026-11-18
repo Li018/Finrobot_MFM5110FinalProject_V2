@@ -19,6 +19,7 @@ def main():
     checks = []
     commands = [("unit_tests", ["-X", "utf8", "-m", "unittest", "discover", "-s", "tests", "-v"]),
                 ("dependency_check", ["-m", "pip", "check"]),
+                ("dialogue_offline", ["-X", "utf8", "scripts/validate_quant_dialogue.py", "--offline"]),
                 ("offline_replay", ["-X", "utf8", "finrobot_autogen/experiments/run_quant_experiment.py", "verify"]),
                 ("resume_pipeline", ["-X", "utf8", "finrobot_autogen/experiments/run_quant_experiment.py", "all", "--resume"]),
                 ("generalization", ["-X", "utf8", "finrobot_autogen/experiments/run_generalization.py", "evaluate"])]

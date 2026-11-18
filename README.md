@@ -6,6 +6,39 @@
 
 版本来源、进度和交接见 [项目状态](PROJECT_STATUS.md)，开发步骤见 [补全计划](COMPLETION_PLAN.md)，环境与验证范围见 [环境状态](ENVIRONMENT_STATUS.md)。本轮只处理开发、实验和复现交接。
 
+## 交互使用（本次 V2 更新）
+
+在现有 `Quant_Analyst` 对话入口中，已接入按用户指定股票、日期、均线参数、资金和开仓预算建立实验、生成执行代码及独立风险检查的能力。本次更新包含这些交互工具及验证脚本。
+
+```powershell
+.\run_finrobot.cmd --role Quant_Analyst
+```
+
+进入 `你 >` 后，可以连续输入：
+
+```text
+回测000651在2023-2024年的10/30均线，本金10万，开仓预算60%，比较买入持有并检查风险。
+继续生成并运行同规则的Python代码，再检查生成策略的风险。
+现在换成600031，2025年，20/60均线，开仓预算50%，重新比较并解释结果。
+```
+
+角色会实际调用 `prepare_quant_experiment`、`compare_quant_strategies`、`execute_quant_code` 和 `check_quant_risk`。每个实验使用独立 ID，改标的、日期或参数不会覆盖原 V2 实验。已保存的行情只有在代码、复权、覆盖范围及历史预热满足要求且哈希正确时才复用，否则通过原数据层取真实行情。
+
+结果在 `artifacts/quant_dialogue/<experiment_id>/`，包含图表、指标、交易、风险检查、生成代码及失败记录；每轮对话也保存到 `artifacts/quant_dialogue/chats/`。这些交互数据与聊天记录默认被 Git 忽略，不自动公开。
+
+当前交互支持参数化 SMA 与 buy-and-hold 对照。生成代码仍需遵守已验证的 SMA 接口，任意新策略或自动择优尚未实现。`max_position` 表示开仓预算比例，独立风险检查会报告实际持仓权重的漂移，不能当成持续硬性仓位上限。
+
+离线测试：`.\.venv\Scripts\python.exe -m unittest discover -s tests -v`。完整复验还会检查交互工具链：
+
+```powershell
+# 使用保存的数据和已有模型代码检查工具链，不发出模型请求，不需要 Key
+.\.venv\Scripts\python.exe scripts/validate_quant_dialogue.py --offline
+# 实际执行三轮模型对话，会产生 API 用量，需要自己配置 Key
+.\.venv\Scripts\python.exe scripts/validate_quant_dialogue.py --online
+```
+
+此前真实三轮对话的脱敏核对摘要见 `artifacts/quant_v2/dialogue_online_validation.json`；个人聊天记录和临时交互实验仍留在本地，不随包上传。
+
 ## 快速开始：环境与依赖
 
 已验证环境为 **Windows x64、Python 3.11.16、CPU**，无需独立显卡。项目要求 Python 3.10–3.11，V2 推荐使用已验证的 3.11；Python 3.13 不适用。其他操作系统的完整安装尚未验证，Windows 锁定文件含平台专用依赖。
@@ -53,6 +86,7 @@ flowchart LR
 | --- | --- |
 | `finrobot_autogen/finrobot/data_source/` | A 股数据获取与来源路由 |
 | `finrobot_autogen/finrobot/functional/quant_tools.py` | 数据清洗、保存和 Agent 工具 |
+| `finrobot_autogen/finrobot/functional/quant_dialogue.py` | 交互工具：参数化实验、对比、独立风险检查及代码执行 |
 | `finrobot_autogen/finrobot/functional/quantitative.py` | 回测、费用、资金约束、绩效和账本审计 |
 | `finrobot_autogen/finrobot/functional/strategy_codegen.py` | 生成代码的语法、规则及因果性检查 |
 | `finrobot_autogen/finrobot/agents/prompts.py` | 实际使用的量化提示词模板 |
@@ -60,7 +94,7 @@ flowchart LR
 | `finrobot_autogen/experiments/` | 固定案例与多标的、多时段实验入口及配置 |
 | `data/` / `artifacts/` / `tests/` | 真实数据快照、完整实验产物与测试 |
 
-风险约束已经在回测与代码校验中执行；当前没有独立的风险查询工具。AST 限制和进程超时用于约束该固定生成任务，不等同于通用操作系统沙箱。
+风险约束在回测与代码校验中执行，交互入口另提供 `check_quant_risk` 独立查询和账本审计。AST 限制和进程超时用于约束该固定生成任务，不等同于通用操作系统沙箱。
 
 ## V2 实验与复现
 
@@ -83,7 +117,7 @@ flowchart LR
 
 新建 Python 3.11 环境的完整复验本机约 132 秒，`all --resume` 约 11 秒，包含解释器导入开销。初次重建环境还需完成下方依赖安装和 NLTK 数据下载。
 
-上述 132 秒为首轮 17 项测试版本的历史测量；当前已扩展到 22 项测试并加入通用性复验，最新实测时间见 `artifacts/quant_v2/validation_summary.json`，并非对其他机器的耗时保证。
+上述 132 秒为首轮 17 项测试版本的历史测量；本次已扩展到 29 项测试，并加入交互工具链与通用性复验，最新实测时间见 `artifacts/quant_v2/validation_summary.json`，并非对其他机器的耗时保证。
 
 ### 多标的、多时段验证
 

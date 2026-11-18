@@ -8,7 +8,9 @@ library = [
     {
         "name": "Quant_Analyst",
         "profile": quant_strategy_profile,
-        "toolkits": [QuantTools.get_data_summary, QuantTools.backtest_reference, QuantTools.read_backtest_result],
+        "toolkits": [QuantTools.get_data_summary, QuantTools.backtest_reference, QuantTools.read_backtest_result,
+                     QuantDialogueTools.prepare_quant_experiment, QuantDialogueTools.compare_quant_strategies,
+                     QuantDialogueTools.check_quant_risk, QuantDialogueTools.execute_quant_code],
     },
     {
         "name": "Software_Developer",

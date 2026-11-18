@@ -26,6 +26,8 @@ coding/
 projects/
 dist/
 tmp/
+data/quant_dialogue/
+artifacts/quant_dialogue/
 filings/
 
 # Compiled Python

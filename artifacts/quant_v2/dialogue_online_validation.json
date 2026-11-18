@@ -1,0 +1,54 @@
+{
+  "ok": true,
+  "turns": [
+    {
+      "turn": 1,
+      "ok": true,
+      "tool_calls": [
+        "prepare_quant_experiment",
+        "compare_quant_strategies",
+        "check_quant_risk"
+      ],
+      "answer": {
+        "experiment_id": "3830681edf8e8266",
+        "sma_total_return": 0.20953856610100052,
+        "buy_hold_total_return": 0.4655403900899999,
+        "risk_ok": true,
+        "termination": "TERMINATE"
+      }
+    },
+    {
+      "turn": 2,
+      "ok": true,
+      "tool_calls": [
+        "execute_quant_code",
+        "check_quant_risk"
+      ],
+      "answer": {
+        "experiment_id": "3830681edf8e8266",
+        "generated_strategy": "generated_002",
+        "generated_total_return": 0.20953856610100052,
+        "risk_ok": true,
+        "termination": "TERMINATE"
+      }
+    },
+    {
+      "turn": 3,
+      "ok": true,
+      "tool_calls": [
+        "prepare_quant_experiment",
+        "compare_quant_strategies",
+        "check_quant_risk"
+      ],
+      "answer": {
+        "experiment_id": "d06277404e9ec68e",
+        "sma_total_return": 0.05012514376400001,
+        "buy_hold_total_return": 0.19595392575000004,
+        "risk_ok": true,
+        "termination": "TERMINATE"
+      }
+    }
+  ],
+  "scenario": "User parameters, multi-turn code generation, then a different stock and period through run_agent.ask",
+  "record_note": "Sanitized summary of the previously completed real three-turn CLI validation. Raw conversations and local runtime files are excluded from this share."
+}
