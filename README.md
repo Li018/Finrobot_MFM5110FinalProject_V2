@@ -116,3 +116,37 @@ python run_agent.py --role A_Share_Analyst --model deepseek-flash
   ```bash
   git update-index --no-skip-worktree finrobot_autogen/OAI_CONFIG_LIST finrobot_autogen/config_api_keys
   ```
+
+---
+
+## 5. 换成其他模型
+
+在 `OAI_CONFIG_LIST` 数组里加一项，运行时用 `--model` 选择：
+
+```json
+{
+    "model": "qwen-plus",
+    "api_key": "你的key",
+    "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1"
+}
+```
+
+```bash
+python run_agent.py "分析一下 600519" --role A_Share_Analyst --model qwen-plus
+```
+
+常见服务地址：
+
+| 服务 | base_url | key 申请 |
+| --- | --- | --- |
+| DeepSeek | `https://api.deepseek.com/v1` | https://platform.deepseek.com/api_keys |
+| OpenAI | `https://api.openai.com/v1` | https://platform.openai.com/api-keys |
+| 通义千问 | `https://dashscope.aliyuncs.com/compatible-mode/v1` | https://bailian.console.aliyun.com/ |
+| 智谱 GLM | `https://open.bigmodel.cn/api/paas/v4` | https://open.bigmodel.cn/ |
+| 本地 Ollama | `http://localhost:11434/v1`（key 随便填） | 本地运行 `ollama serve` |
+
+注意：
+
+- `--model` 必须和配置里的 `"model"` 完全一致
+- 模型必须支持 function calling（工具调用），本地小模型通常不支持
+- `run_agent.py` 默认 `--model gpt-4o`，用别的模型一定要加 `--model`
