@@ -10,9 +10,9 @@
 | V1 来源 | [组员 1 分享的项目](https://github.com/yjt2003/Finrobot_MFM5110FinalProject)；“组员 1 的版本”为用户确认的来源 |
 | V1 发布历史基线 | `8d2cc02dde93053b0a4faeec9efd19ec618ff75a`。上传时取得的 V1 上游提交；quantitative、agent_library、prompts、akshare_utils 四个核心文件均与本轮开发前备份一致。最初 ZIP 本身没有 Git 元数据 |
 | V2 定位 | 在组员 1 版本上补充开发、量化实验和复现材料 |
-| V2 当前状态 | 首轮实验、3 标的 × 3 时段验证和解压分享包复验完成，V2 代码已上传私有仓库 |
+| V2 当前状态 | 首轮实验、3 标的 × 3 时段验证和解压分享包复验完成，V2 代码已上传，按用户最新指令设为公开 |
 | 后续交接对象 | 另外两名组员，完成后通过版本链接接续开发 |
-| 私有分享仓库 | [ohayoo335/Finrobot_MFM5110FinalProject_V2](https://github.com/ohayoo335/Finrobot_MFM5110FinalProject_V2)，已按用户选择创建并上传 |
+| 公开分享仓库 | [ohayoo335/Finrobot_MFM5110FinalProject_V2](https://github.com/ohayoo335/Finrobot_MFM5110FinalProject_V2)，初始按用户选择创建为私有，2026-11-18 按最新指令改为公开 |
 | 已上传的代码与实验提交 | [`0433dcbbd59efc021830188991a78a749f16fa9e`](https://github.com/ohayoo335/Finrobot_MFM5110FinalProject_V2/commit/0433dcbbd59efc021830188991a78a749f16fa9e)，父提交为 V1 基线；后续交接文字更新单独记录，不改变该代码快照 |
 
 `V2` 是本组项目的交付版本标识，独立于上游 FinRobot 软件包版本 `0.1.5`。
@@ -116,11 +116,11 @@
 - [x] 准备 `Finrobot_MFM5110FinalProject_V2` 的分享内容，提供环境重建说明和不含真实 Key 的配置模板。
 - [x] 分享清单排除真实 Key、`.venv/`、`.cache/` 及个人临时文件，解压包哈希核对与无 Key 复现已通过。
 - [x] 为组内复现保留实际数据快照、必要实验结果与图表，并按目录放行 CSV/PNG；`.gitattributes` 保留原始字节，防止 Git 换行转换破坏数据哈希。
-- [x] 用户已确认在自己账号下新建私有仓库；账号已核验为 `ohayoo335`，目标仓库已创建。发布会保留 V1 上游历史。
-- [x] V2 代码已通过普通 push 上传到私有仓库，无 force push；代码快照链接见上表。最终交接文字提交与远程核对结果以发布回执为准。
+- [x] 仓库位于已核验的账号 `ohayoo335`，保留 V1 上游历史；按用户最新指令将可见性从私有改为公开。
+- [x] V2 代码已通过普通 push 上传，无 force push；代码快照链接见上表。最终交接文字提交与远程核对结果以发布回执为准。
 
 ## 交接给另外两名组员
 
 先按 README 重建 Windows/Python 3.11 环境，再执行 `run_quant_v2.cmd all --resume`、`run_generalization.cmd evaluate --resume` 和 `python scripts/validate_v2.py`。这些复现命令使用保存的模型输出，不需要真实 Key，也不算新的独立生成。
 
-后续可选工作：将已有风险检查封装为独立工具、扩展策略类型、进一步增加标的和时段、独立设计 LLM 样本外策略选择实验。新实验应保留现有失败记录和对照结果。仓库为私有，两名组员需要仓库协作者权限才能访问链接。
+后续可选工作：将已有风险检查封装为独立工具、扩展策略类型、进一步增加标的和时段、独立设计 LLM 样本外策略选择实验。新实验应保留现有失败记录和对照结果。仓库现为公开，组员可以直接访问和下载；推送权限仍需单独授予。

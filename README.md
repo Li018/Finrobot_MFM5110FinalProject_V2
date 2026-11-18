@@ -2,7 +2,7 @@
 
 版本：**V2**。基于 [组员 1 分享的 V1](https://github.com/yjt2003/Finrobot_MFM5110FinalProject) 补充开发与实验，供组内继续开发。V2 已完成真实数据、LLM 代码生成、传统方法对照，以及 3 个标的 × 3 个时段的通用性验证；范围与遗留项见下文。
 
-组内入口：[GitHub 私有仓库](https://github.com/ohayoo335/Finrobot_MFM5110FinalProject_V2)。组员获得协作者权限后，可从仓库的 Code 菜单下载 ZIP 或使用 Git 克隆。本仓库不分发真实 API Key。
+分享入口：[GitHub 公开仓库](https://github.com/ohayoo335/Finrobot_MFM5110FinalProject_V2)。可直接访问，从仓库的 Code 菜单下载 ZIP 或使用 Git 克隆，无需协作者权限。本仓库不分发真实 API Key。
 
 版本来源、进度和交接见 [项目状态](PROJECT_STATUS.md)，开发步骤见 [补全计划](COMPLETION_PLAN.md)，环境与验证范围见 [环境状态](ENVIRONMENT_STATUS.md)。本轮只处理开发、实验和复现交接。
 
