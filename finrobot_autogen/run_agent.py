@@ -14,6 +14,7 @@
 """
 import argparse
 import os
+import re
 from pathlib import Path
 
 import autogen
@@ -35,21 +36,53 @@ def with_terminate_hint(prompt: str) -> str:
     return prompt + TERMINATE_HINT
 
 
+def _final_answer(result):
+    """最后一个不含工具调用的 assistant 文本消息，去掉结尾的 TERMINATE 行。"""
+    for msg in reversed(result.chat_history):
+        if msg.get("role") == "assistant" and msg.get("content") and "tool_calls" not in msg:
+            content = re.sub(r"(?m)^\s*TERMINATE\s*$", "", msg["content"]).strip()
+            if content:
+                return content
+    return ""
+
+
+def _called_tools(result):
+    """按出现顺序去重后的工具名列表。"""
+    names = []
+    for msg in result.chat_history:
+        for call in msg.get("tool_calls") or []:
+            name = call.get("function", {}).get("name")
+            if name and (not names or names[-1] != name):
+                names.append(name)
+    return names
+
+
 def ask(assistant: SingleAssistant, message: str, clear_history: bool = False):
-    # 直接调用 initiate_chat 并保留历史，不用 chat()（它结束后会 reset 清空上下文）
+    is_quant = assistant.assistant.name == "Quant_Analyst"
+    # 直接调用 initiate_chat 并保留历史，不用 chat()（它结束后会 reset 清空上下文）。
+    # Quant_Analyst 走 silent：屏蔽 AutoGen 原始的工具调用/返回 JSON 刷屏，只保留
+    # “EXECUTING FUNCTION ...” 进度行，结束后再单独打印干净的回答。
     result = assistant.user_proxy.initiate_chat(
         assistant.assistant,
         message=with_terminate_hint(message),
         clear_history=clear_history,
+        silent=is_quant,
     )
-    if assistant.assistant.name == "Quant_Analyst":
+    if is_quant:
         import json
         from datetime import datetime, timezone
         folder = BASE_DIR.parent / "artifacts/quant_dialogue/chats"
         folder.mkdir(parents=True, exist_ok=True)
         path = folder / (datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%f") + ".json")
         path.write_text(json.dumps(result.chat_history, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-        print(f"本轮对话记录：{path}")
+
+        tools = _called_tools(result)
+        if tools:
+            print("\n已调用工具：" + " → ".join(tools))
+        answer = _final_answer(result)
+        if answer:
+            print("\n" + answer)
+        print(f"\n（对话记录已保存：{path}）")
     return result
 
 
