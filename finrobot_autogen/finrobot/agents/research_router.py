@@ -135,8 +135,17 @@ class AutoResearch:
         try:
             role_name = role.get("name") if isinstance(role, dict) else role
             is_review = role_name in REVIEW_ROLE_NAMES
-            llm_config = {key: value for key, value in self.llm_config.items()
-                          if not is_review or key not in {"tools", "functions"}}
+            llm_config = dict(self.llm_config)
+            if is_review:
+                tool_settings = {"tools", "functions", "tool_choice", "function_call", "parallel_tool_calls"}
+                llm_config = {key: value for key, value in llm_config.items() if key not in tool_settings}
+                if llm_config.get("config_list"):
+                    # Provider-specific settings override the top-level config.
+                    # Copy each entry so review never alters the research agent.
+                    llm_config["config_list"] = [
+                        {key: value for key, value in config.items() if key not in tool_settings}
+                        for config in llm_config["config_list"]
+                    ]
             agent = SingleAssistant(
                 dict(role) if isinstance(role, dict) else role,
                 llm_config=llm_config,

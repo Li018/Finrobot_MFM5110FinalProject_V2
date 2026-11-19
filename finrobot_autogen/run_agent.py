@@ -374,6 +374,8 @@ def main():
         resume_args = f"--session {memory.session_id}"
         if mode == "single":
             resume_args += f" --role {args.role or DEFAULT_ROLE}"
+        if args.review:
+            resume_args += " --review"
         print(f"会话：{memory.session_id}（{resume_args} 可继续；使用相同 --memory-db）")
     # Local memory management must also work before API keys are configured.
     if args.prompt is not None and handle_local_command(args.prompt, memory):

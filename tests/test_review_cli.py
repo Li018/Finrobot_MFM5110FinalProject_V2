@@ -1,5 +1,6 @@
 """Opt-in review integration retains the original research and real AutoGen boundaries."""
 import contextlib
+from copy import deepcopy
 import io
 import json
 from pathlib import Path
@@ -132,12 +133,58 @@ class ReviewCliTests(unittest.TestCase):
         with patch.object(sys, "argv", argv), patch.dict(API["main"].__globals__,
                 {"run_auto": runner, "register_keys_from_json": lambda *a: None, "describe_provider": lambda: "offline"}), \
                 patch("autogen.config_list_from_json", return_value=[{"model": "offline", "api_key": "offline"}]), \
-                contextlib.redirect_stdout(io.StringIO()):
+                contextlib.redirect_stdout(io.StringIO()) as output:
             API["main"]()
         self.assertEqual(runner.call_args.kwargs["fixed_role"], "Quant_Analyst")
         self.assertTrue(runner.call_args.kwargs["review"])
         resumed = ResearchMemory(self.path, session_id="review-single", mode="single", role="Quant_Analyst")
         self.assertEqual(resumed.session_id, "review-single")
+        self.assertIn("--session review-single --role Quant_Analyst --review", output.getvalue())
+
+    def test_actual_provider_config_strips_tool_settings_only_for_review(self):
+        original = router.SingleAssistant
+        settings = {
+            "tools": [{"type": "function", "function": {"name": "old_retrieval", "parameters": {"type": "object"}}}],
+            "functions": [{"name": "legacy_retrieval", "parameters": {"type": "object"}}],
+            "tool_choice": "required",
+            "function_call": {"name": "legacy_retrieval"},
+            "parallel_tool_calls": True,
+        }
+        llm = {**deepcopy(settings), "temperature": 0.7, "config_list": [
+            {"model": "offline", "api_key": "offline", **deepcopy(settings)},
+            {"model": "fallback", "api_key": "offline", "temperature": 0.2, **deepcopy(settings)},
+        ]}
+        unchanged = deepcopy(llm)
+        for role_name in ("Bull_Reviewer", "Plain_Analyst"):
+            with self.subTest(role=role_name):
+                created = []
+                def factory(*args, **kwargs):
+                    agent = original(*args, **kwargs)
+                    agent.assistant.register_reply([Agent, None],
+                        lambda recipient, messages=None, sender=None, config=None:
+                            (True, '{"arguments": []}\nTERMINATE'), position=0)
+                    created.append(agent)
+                    return agent
+
+                # Keep OpenAIWrapper's real top-level/config-list merge. Only
+                # replace SDK construction and reply generation; no API calls.
+                with patch("autogen.oai.client.OpenAI") as sdk, \
+                        patch.object(router, "SingleAssistant", side_effect=factory), \
+                        contextlib.redirect_stdout(io.StringIO()):
+                    result = router.AutoResearch(llm, review=True)._reply(
+                        {"name": role_name, "profile": "Current material only.", "toolkits": []}, "sources")
+                self.assertEqual(json.loads(result["answer"]), {"arguments": []})
+                provider_configs = created[0].assistant.client._config_list
+                self.assertEqual(len(provider_configs), 2)
+                self.assertEqual([config["temperature"] for config in provider_configs], [0.7, 0.2])
+                for config in [created[0].assistant.llm_config, *provider_configs]:
+                    for key in settings:
+                        if role_name == "Bull_Reviewer":
+                            self.assertNotIn(key, config)
+                        else:
+                            self.assertEqual(config[key], settings[key])
+                self.assertEqual(llm, unchanged)
+                sdk.return_value.chat.completions.create.assert_not_called()
 
 
 if __name__ == "__main__":
