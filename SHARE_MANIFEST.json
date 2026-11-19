@@ -2371,13 +2371,13 @@
   },
   {
     "path": "PROJECT_STATUS.md",
-    "bytes": 16211,
-    "sha256": "d59a365c2cccaead996259e6f292e9eaa3d30f06a74dfdf1cc6eeeb2f090cd90"
+    "bytes": 17749,
+    "sha256": "0865d101cc1d65d425bdf585af08b5b711199069664cfc69391915dcacf3bd71"
   },
   {
     "path": "README.md",
-    "bytes": 18331,
-    "sha256": "b598f82e7d7a8d913a0e449544785d93726bd192c0d74284bdcd28d34036d216"
+    "bytes": 28491,
+    "sha256": "f346f3e0d7aab27d76795ae4efc6527adca52d9f40d866ccf05553e5d9c66d92"
   },
   {
     "path": "requirements-windows-py311.lock.txt",
