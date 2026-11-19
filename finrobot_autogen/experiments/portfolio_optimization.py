@@ -35,7 +35,7 @@ user_proxy = autogen.UserProxyAgent(
     },
 )
 
-rag_func = get_rag_function(
+rag_func, rag_assistant = get_rag_function(
     retrieve_config={
         "task": "qa",
         "docs_path": "https://www.sec.gov/Archives/edgar/data/1737806/000110465923049927/pdd-20221231x20f.htm",

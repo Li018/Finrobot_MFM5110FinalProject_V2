@@ -18,12 +18,14 @@ A_Share_Factor_Ideator（因子创意与规则回测）、Quant_Analyst（固定
 """
 import argparse
 import contextlib
+import json
 import logging
 import os
 import re
 import sys
 import traceback
 import warnings
+import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
 from uuid import uuid4
@@ -35,6 +37,8 @@ with warnings.catch_warnings(record="--verbose" not in sys.argv) as startup_warn
 
     from finrobot.agents.research_router import AutoResearch, DEFAULT_ROLE
     from finrobot.agents.workflow import SingleAssistant
+    from finrobot.agents.memory import ResearchMemory
+    from finrobot.agents.memory_tools import context_text, register_memory_tool, save_turn
     from finrobot.data_source import describe_provider
     from finrobot.utils import register_keys_from_json
 
@@ -56,7 +60,7 @@ def with_terminate_hint(prompt: str) -> str:
     return prompt + TERMINATE_HINT
 
 
-def _final_answer(result, assistant_name="Quant_Analyst", start_index=0):
+def _final_answer(result, assistant_name="Quant_Analyst", start_index=0, require_termination=False):
     """AutoGen proxy histories can label the analyst's final message as role=user."""
     messages = result.chat_history[start_index:]
     last_tool = max((i for i, msg in enumerate(messages)
@@ -65,6 +69,8 @@ def _final_answer(result, assistant_name="Quant_Analyst", start_index=0):
         author = msg.get("name")
         is_analyst = author == assistant_name or (msg.get("role") == "assistant" and not author)
         if is_analyst and isinstance(msg.get("content"), str) and not msg.get("tool_calls") and not msg.get("function_call"):
+            if require_termination and not re.search(r"(?:^|\n)\s*TERMINATE\s*$", msg["content"]):
+                return ""
             content = re.sub(r"(?m)^\s*TERMINATE\s*$", "", msg["content"]).strip()
             content = re.sub(r"\x1b\[[0-?]*[ -/]*[@-~]", "", content)
             if content:
@@ -110,12 +116,27 @@ def _capture_output(path):
 
 
 def ask(assistant: SingleAssistant, message: str, clear_history: bool = False):
+    clear_history = clear_history or getattr(assistant, "memory_reset_history", False)
+    assistant.memory_reset_history = False
     is_quant = assistant.assistant.name == "Quant_Analyst"
     verbose = getattr(assistant, "show_debug", False)
     start_index = 0 if clear_history else len(assistant.user_proxy.chat_messages.get(assistant.assistant, []))
     folder = BASE_DIR.parent / ("artifacts/quant_dialogue/chats" if is_quant else "artifacts/agent_chats")
     folder.mkdir(parents=True, exist_ok=True)
     path = folder / datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%f")
+    memory = getattr(assistant, "research_memory", None)
+    if memory is not None:
+        # Replace the temporary system context on every turn. Persist only the
+        # original question, so forgetting a note does not leave old injected
+        # notes inside the proxy's retained user messages.
+        if not hasattr(assistant, "memory_base_prompt"):
+            assistant.memory_base_prompt = assistant.assistant.system_message
+        try:
+            context = context_text(memory, message, include_recent=True)
+        except (sqlite3.Error, OSError, ValueError) as exc:
+            context = ""
+            print(f"本轮记忆暂时不可读（{type(exc).__name__}），继续处理当前问题。")
+        assistant.assistant.update_system_message(assistant.memory_base_prompt + "\n\n" + context)
     print("\n正在分析，请稍候…", flush=True)
     try:
         with contextlib.nullcontext() if verbose else _capture_output(path.with_suffix(".log")):
@@ -128,12 +149,23 @@ def ask(assistant: SingleAssistant, message: str, clear_history: bool = False):
                     traceback.print_exc()
                 raise
     except Exception as exc:
+        if memory is not None:
+            error = save_turn(memory, message, "", [assistant.assistant.name], [], "failed")
+            if error:
+                print(f"本轮记忆未保存（{error}）。")
         details = "详见上方调试输出。" if verbose else f"详细原因：{path.with_suffix('.log')}"
         print(f"\n本轮分析未完成（{type(exc).__name__}）。{details}")
         raise
     import json
     path.with_suffix(".json").write_text(json.dumps(result.chat_history, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     answer = _final_answer(result, assistant.assistant.name, start_index)
+    if memory is not None:
+        error = save_turn(memory, message, answer, [assistant.assistant.name],
+                          [{"role": assistant.assistant.name, "history": result.chat_history[start_index:]}],
+                          "completed" if _final_answer(result, assistant.assistant.name, start_index,
+                                                       require_termination=True) else "partial")
+        if error:
+            print(f"本轮记忆未保存（{error}），分析结果仍可查看。")
     if answer:
         path.with_suffix(".md").write_text(answer + "\n", encoding="utf-8")
         print("\n" + answer)
@@ -167,6 +199,8 @@ def repl(assistant: SingleAssistant):
         print("后续可输入：继续生成并运行同规则Python代码，再检查生成策略的风险。")
     first_turn = True
     for message in interactive_questions():
+        if handle_memory_command(message, getattr(assistant, "research_memory", None), assistant=assistant):
+            continue
         try:
             ask(assistant, message, clear_history=first_turn)
         except Exception:
@@ -200,15 +234,21 @@ def ask_auto(research, question, verbose=False):
     print("\n" + answer)
     if not record["ok"]:
         print("\n本轮包含未完成的分项，请查看记录中的错误类型。")
+    if record.get("memory_error"):
+        print(f"\n本轮记忆未保存（{record['memory_error']}），分析结果仍可查看。")
+    if record.get("memory_read_error"):
+        print(f"\n本轮未能读取记忆（{record['memory_read_error']}），已依据当前问题和本次会话作答。")
     print(f"\n本轮记录已保存：{path.with_suffix('.md')}")
     return record
 
 
-def run_auto(llm_config, prompt, verbose=False):
-    research = AutoResearch(llm_config)
+def run_auto(llm_config, prompt, verbose=False, memory=None):
+    research = AutoResearch(llm_config, memory=memory) if memory is not None else AutoResearch(llm_config)
     if prompt is None:
         print("已进入交互模式（自动分派）。输入 exit / quit / :q 退出。")
     for question in interactive_questions() if prompt is None else (prompt,):
+        if handle_memory_command(question, memory):
+            continue
         try:
             record = ask_auto(research, question, verbose)
         except Exception:
@@ -219,6 +259,39 @@ def run_auto(llm_config, prompt, verbose=False):
             continue
         if prompt is not None and not record["ok"]:
             raise SystemExit(1)
+
+
+def handle_memory_command(message, memory, *, assistant=None):
+    command, _, argument = message.strip().partition(" ")
+    if command not in {"/memory", "/remember", "/recall", "/forget", "/sessions"}:
+        return False
+    if memory is None:
+        print("Memory 已关闭；去掉 --no-memory 后可使用记忆命令。")
+        return True
+    try:
+        if command == "/remember":
+            note = memory.remember(argument.strip())
+            print(f"已保存笔记 #{note['id']}：{note['text']}")
+        elif command == "/forget":
+            deleted = memory.forget(int(argument.strip()))
+            if deleted and assistant is not None:
+                # A previous recall tool response can still contain this note.
+                # Rebuild the next turn from the store, not stale tool messages.
+                assistant.assistant.clear_history()
+                assistant.user_proxy.clear_history()
+                assistant.memory_reset_history = True
+            print("笔记已删除。" if deleted else "没有找到该笔记。")
+        elif command == "/recall":
+            print(json.dumps(memory.recall(argument.strip()), ensure_ascii=False, indent=2))
+        elif command == "/sessions":
+            print(json.dumps(memory.sessions(), ensure_ascii=False, indent=2))
+        else:
+            print(f"当前会话：{memory.session_id}")
+            print(json.dumps(memory.context("", include_recent=False), ensure_ascii=False, indent=2))
+            print("/remember 内容 保存笔记；/recall 股票或关键词 查询历史；/forget ID 删除笔记；/sessions 查看会话。")
+    except (ValueError, sqlite3.Error, OSError) as exc:
+        print(f"记忆操作未完成：{exc}")
+    return True
 
 
 def main():
@@ -243,6 +316,10 @@ def main():
     )
     parser.add_argument("--model", default="deepseek-flash")
     parser.add_argument("--verbose", action="store_true", help="显示工具调用和调试信息；默认仅显示最终分析")
+    parser.add_argument("--session", help="继续指定会话；省略则创建新会话")
+    parser.add_argument("--no-memory", action="store_true", help="关闭持久记忆，不读取或写入记忆数据库")
+    parser.add_argument("--memory-db", type=Path, default=BASE_DIR.parent / "data/memory/research.sqlite3",
+                        help="本地记忆数据库位置；相对路径按仓库根目录解析")
     parser.add_argument(
         "--provider",
         choices=["auto", "akshare", "tushare"],
@@ -253,6 +330,25 @@ def main():
     if args.mode == "auto" and args.role:
         parser.error("--mode auto 不能与 --role 一起使用；固定角色请使用 --mode single。")
     mode = args.mode or ("single" if args.role else "auto")
+    if args.no_memory and args.session:
+        parser.error("--no-memory 不能与 --session 一起使用。")
+    memory = None
+    if not args.no_memory:
+        try:
+            memory_path = args.memory_db.expanduser()
+            if not memory_path.is_absolute():
+                memory_path = BASE_DIR.parent / memory_path
+            memory = ResearchMemory(memory_path, session_id=args.session, mode=mode,
+                                    role=(args.role or DEFAULT_ROLE) if mode == "single" else None)
+        except (ValueError, sqlite3.Error, OSError) as exc:
+            parser.error(f"无法打开记忆：{exc}。可用 --no-memory 临时关闭。")
+        resume_args = f"--session {memory.session_id}"
+        if mode == "single":
+            resume_args += f" --role {args.role or DEFAULT_ROLE}"
+        print(f"会话：{memory.session_id}（{resume_args} 可继续；使用相同 --memory-db）")
+    # Local memory management must also work before API keys are configured.
+    if args.prompt is not None and handle_memory_command(args.prompt, memory):
+        return
 
     register_keys_from_json(str(BASE_DIR / "config_api_keys"))
     if args.provider:
@@ -271,7 +367,7 @@ def main():
         llm_config.update(cache_seed=None, max_tokens=3500)
 
     if mode == "auto":
-        run_auto(llm_config, args.prompt, verbose=args.verbose)
+        run_auto(llm_config, args.prompt, verbose=args.verbose, memory=memory)
         return
 
     with contextlib.nullcontext() if args.verbose else _capture_output(BASE_DIR.parent / ".cache/agent_startup.log"):
@@ -280,6 +376,9 @@ def main():
             **({"code_execution_config": False} if args.role == "Quant_Analyst" else {}),
             is_termination_msg=lambda x: "TERMINATE" in (x.get("content") or ""))
     assistant.show_debug = args.verbose
+    if memory is not None:
+        assistant.research_memory = memory
+        register_memory_tool(assistant, memory)
 
     if args.prompt:
         try:

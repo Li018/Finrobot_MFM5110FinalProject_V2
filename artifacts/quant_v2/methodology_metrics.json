@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-19T09:43:53.216579+00:00",
+  "generated_at": "2026-11-19T11:28:25.555150+00:00",
   "source": "saved artifacts only; no new model requests and no backtest recomputation",
   "generation": {
     "attempts": 5,
@@ -328,7 +328,7 @@
         "name": "低波动趋势过滤",
         "signal": "close > sma(close, 60) and std(ret(close, 1), 20) < sma(std(ret(close, 1), 20), 60)",
         "generated_times": 1,
-        "mean_out_of_sample_return": -0.032822,
+        "mean_out_of_sample_return": -0.01901,
         "beats_buy_hold_cases": 0,
         "beats_sma_cases": 1
       },

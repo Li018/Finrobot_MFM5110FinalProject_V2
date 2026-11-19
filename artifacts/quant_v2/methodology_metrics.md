@@ -1,6 +1,6 @@
 # V2 智能体评估指标汇总
 
-生成时间：2026-11-19T09:43:53.216579+00:00
+生成时间：2026-11-19T11:28:25.555150+00:00
 
 > 本表只汇总仓库中已保存的产物，不发起新的模型请求，也不重算回测。
 
@@ -80,7 +80,7 @@
 | 短期反转低吸 | `ret(close, 5) < 0 and close > sma(close, 60)` | 1 | 6.47% | 0 | 1 |
 | 低波动趋势过滤 | `close > sma(close, 60) and std(ret(close, 1), 20) < std(ret(close, 1), 60)` | 1 | 11.36% | 0 | 2 |
 | 中期动量确认 | `ret(close, 60) > 0 and close > sma(close, 20)` | 1 | 6.62% | 0 | 2 |
-| 低波动趋势过滤 | `close > sma(close, 60) and std(ret(close, 1), 20) < sma(std(ret(close, 1), 20), 60)` | 1 | -3.28% | 0 | 1 |
+| 低波动趋势过滤 | `close > sma(close, 60) and std(ret(close, 1), 20) < sma(std(ret(close, 1), 20), 60)` | 1 | -1.90% | 0 | 1 |
 | 量价齐升确认 | `close > sma(close, 20) and volume > sma(volume, 20) and ret(close, 5) > 0` | 1 | 16.15% | 0 | 2 |
 | 中期动量过滤 | `ret(close, 60) > 0` | 1 | 7.91% | 0 | 1 |
 | 低波动趋势持有 | `close > sma(close, 60) and zscore(close, 20) < 1` | 1 | 0.53% | 0 | 1 |

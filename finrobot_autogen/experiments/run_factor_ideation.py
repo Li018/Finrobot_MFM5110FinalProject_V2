@@ -21,7 +21,7 @@ os.environ["NLTK_DATA"] = str(ROOT / ".cache/nltk_data")
 import pandas as pd
 
 from finrobot.agents.prompts import quant_factor_ideation_prompt
-from finrobot.functional.factor_dsl import signal_from_expression, validate_ideas
+from finrobot.functional.factor_dsl import history_requirements, signal_from_expression, validate_ideas
 from finrobot.functional.quantitative import (
     audit_backtest,
     reference_signals,
@@ -58,13 +58,15 @@ def load_snapshot(spec, symbol):
     return data, meta
 
 
-def slice_window(data, window, warmup):
+def slice_window(data, window, warmup, *, use_all_history=False):
     evaluated = data.loc[window["start"]:window["end"]]
     if len(evaluated) < 2:
         raise ValueError("Too few evaluation observations")
-    history = data.loc[data.index < evaluated.index[0]].tail(warmup)
+    history = data.loc[data.index < evaluated.index[0]]
     if len(history) < warmup:
-        raise ValueError("Insufficient historical warm-up")
+        raise ValueError(f"Insufficient historical warm-up: need {warmup}, got {len(history)}")
+    if not use_all_history:
+        history = history.tail(warmup)
     return pd.concat([history, evaluated]), evaluated
 
 
@@ -147,7 +149,11 @@ def generate(spec, resume, out_root=OUT_ROOT):
     from finrobot.agents.workflow import SingleAssistant
 
     data, _ = load_snapshot(spec, spec["ideation_symbol"])
-    frame, _ = slice_window(data, spec["ideation_window"], spec["warmup_observations"])
+    # Expressions are not known until the response arrives. Retain all past
+    # observations for their validation, including a stable EMA initialization.
+    frame, evaluated = slice_window(data, spec["ideation_window"], spec["warmup_observations"],
+                                    use_all_history=True)
+    warmup = len(frame) - len(evaluated)
     prompt = build_prompt(spec, data)
     out = output_root(spec, prompt, out_root)
     if resume and replay_root(spec, prompt, out_root) != out.resolve():
@@ -190,7 +196,7 @@ def generate(spec, resume, out_root=OUT_ROOT):
             ideas = answer.get("ideas")
             if not isinstance(ideas, list) or not ideas:
                 raise ValueError("Response does not contain a non-empty ideas array")
-            validated, errors = validate_ideas(ideas, frame, spec["warmup_observations"])
+            validated, errors = validate_ideas(ideas, frame, warmup)
             write_json(folder / "ideas.json", {"ok": len(validated) == spec["idea_count"] and not errors,
                        "returned_ideas": len(ideas),
                        "valid_ideas": len(validated), "ideas": validated, "errors": errors})
@@ -208,7 +214,7 @@ def generate(spec, resume, out_root=OUT_ROOT):
     return all(outcomes)
 
 
-def unique_ideas(out, spec, frame):
+def unique_ideas(out, spec, frame, warmup):
     """Revalidate expected attempts; missing attempts cannot disappear from the summary."""
     unique = {}
     duplicates = 0
@@ -224,7 +230,7 @@ def unique_ideas(out, spec, frame):
             continue
         try:
             payload = json.loads(path.read_text(encoding="utf-8"))
-            validated, errors = validate_ideas(payload.get("ideas", []), frame, spec["warmup_observations"])
+            validated, errors = validate_ideas(payload.get("ideas", []), frame, warmup)
             row["returned_ideas"] = payload.get("returned_ideas", len(payload.get("ideas", [])))
             row["valid_ideas"] = len(validated)
             row["errors"] = payload.get("errors", []) + errors
@@ -253,9 +259,14 @@ def case_config(spec, symbol, evaluated):
 
 
 def run_case(expression, data, window, symbol, spec, folder):
-    frame, evaluated = slice_window(data, window, spec["warmup_observations"])
+    requirements = history_requirements(expression)
+    warmup = max(spec["warmup_observations"], spec["base_config"]["slow"] - 1,
+                 requirements["minimum_observations"])
+    # EMA has an infinite recursive tail. Use the full frozen snapshot prefix
+    # rather than silently reseeding it at each evaluation-window boundary.
+    frame, evaluated = slice_window(data, window, warmup, use_all_history=requirements["uses_ema"])
     cfg = case_config(spec, symbol, evaluated)
-    signal = signal_from_expression(expression, frame)
+    signal = signal_from_expression(expression, frame, evaluation_start=evaluated.index[0])
     result = run_signal_backtest(frame, signal, cfg)
     audit = audit_backtest(result, cfg, frame)
     sma = run_signal_backtest(frame, reference_signals(frame, cfg["fast"], cfg["slow"]), cfg)
@@ -267,6 +278,13 @@ def run_case(expression, data, window, symbol, spec, folder):
         "symbol": symbol,
         "window": window,
         "observations": int(len(evaluated)),
+        "history": {
+            "required_observations": requirements["minimum_observations"],
+            "used_observations": len(frame) - len(evaluated),
+            "start": str(frame.index[0].date()),
+            "ema_initialization": "first valid observation of the full snapshot; adjust=False"
+                                  if requirements["uses_ema"] else None,
+        },
         "idea": result["metrics"],
         "sma": sma["metrics"],
         "buy_hold": hold["metrics"],
@@ -285,15 +303,18 @@ def evaluate(spec, out_root=OUT_ROOT):
     data_ideation, _ = load_snapshot(spec, spec["ideation_symbol"])
     prompt = build_prompt(spec, data_ideation)
     out = replay_root(spec, prompt, out_root)
-    frame_ideation, _ = slice_window(data_ideation, spec["ideation_window"], spec["warmup_observations"])
-    ideas, duplicates, attempts = unique_ideas(out, spec, frame_ideation)
+    frame_ideation, evaluated_ideation = slice_window(
+        data_ideation, spec["ideation_window"], spec["warmup_observations"], use_all_history=True)
+    ideas, duplicates, attempts = unique_ideas(
+        out, spec, frame_ideation, len(frame_ideation) - len(evaluated_ideation))
     write_json(out / "idea_revalidation.json", {"attempts": attempts, "api_calls_requested": 0})
 
     evaluation = out / "evaluation"
     baseline_cases = {}
     for symbol in spec["evaluation_symbols"]:
         data, _ = load_snapshot(spec, symbol)
-        frame, evaluated = slice_window(data, spec["evaluation_window"], spec["warmup_observations"])
+        frame, evaluated = slice_window(data, spec["evaluation_window"],
+                                        max(spec["warmup_observations"], spec["base_config"]["slow"] - 1))
         cfg = case_config(spec, symbol, evaluated)
         sma = run_signal_backtest(frame, reference_signals(frame, cfg["fast"], cfg["slow"]), cfg)
         hold = run_signal_backtest(frame, pd.Series(1, index=frame.index), cfg)

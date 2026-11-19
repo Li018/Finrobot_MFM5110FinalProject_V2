@@ -1,0 +1,319 @@
+{
+  "ok": false,
+  "status": "functional_checks_passed_environment_incomplete",
+  "validated_at": "2026-11-19T11:41:02.528086+00:00",
+  "functional_checks_ok": true,
+  "dependency_check_ok": false,
+  "source": {
+    "published_runtime_commit": "4bddc23f5821fcf2222f50352af391cffb57212d",
+    "runtime_tree_sha": "8785057d16275f0cab62b762e6a681e8764b118e",
+    "initial_full_validation_commit": "f9f77a4b3f59b3e5994f268d32428ede4e52f6b6",
+    "final_runtime_update": "417c5bfe512e56a0824c21cbcc275f3ff585561c",
+    "phase_note": "The relative memory-path fix was applied after the first full run. The final 146-test suite, affected isolated-worker replays, and all local CLI smoke checks ran with the final runtime tree. Already-passing quantitative pipelines were not rerun for this CLI-only update."
+  },
+  "environment": {
+    "os": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "python": "3.11.18 (main, Nov 11 2026, 00:16:37) [Clang 23.1.3 ]",
+    "kind": "Incomplete Linux review environment; not the full Windows locked environment",
+    "package_versions": {
+      "FinRobot": "0.1.5",
+      "pyautogen": "0.2.35",
+      "numpy": "1.26.4",
+      "pandas": "2.0.3",
+      "backtrader": "1.9.78.123",
+      "openai": "1.55.3",
+      "httpx": "0.27.2",
+      "matplotlib": "3.11.2",
+      "requests": "2.34.2",
+      "tqdm": "4.70.1",
+      "pip": "26.3",
+      "setuptools": "79.0.1"
+    },
+    "setup_completed_offline": [
+      "python -m ensurepip --upgrade",
+      "python -m pip install --no-index --no-deps --no-build-isolation -e ."
+    ],
+    "initial_environment_issue": "Three isolated-worker checks first failed because FinRobot was not installed and -I ignores PYTHONPATH. They passed after the documented editable installation.",
+    "missing_declared_dependencies": [
+      "aiohttp",
+      "akshare",
+      "huggingface-hub",
+      "langchain",
+      "langchain-chroma",
+      "marker-pdf",
+      "pdfkit",
+      "pypdf2",
+      "scikit-learn",
+      "starlette",
+      "tenacity",
+      "tushare",
+      "unstructured",
+      "wheel"
+    ],
+    "version_conflicts": [
+      {
+        "required": "Requests==2.31.0",
+        "installed": "requests 2.34.2"
+      },
+      {
+        "required": "tqdm==4.66.1",
+        "installed": "tqdm 4.70.1"
+      }
+    ],
+    "project_dependency_files_unchanged_from": "83e48a63a5a3f3639d273391d61569d5c434ae0e",
+    "dependency_file_integrity": [
+      {
+        "path": "setup.py",
+        "unchanged_from_original": true,
+        "sha256": "0bf351a2d06d03782bba110c75ffa6f9458216303419bc455e6e23c5cf70b30c"
+      },
+      {
+        "path": "finrobot_autogen/requirements.txt",
+        "unchanged_from_original": true,
+        "sha256": "21857956f513017c8dd8157fab9ce8d0fca52accb1af6c3fa0c7d1c30932cd7f"
+      },
+      {
+        "path": "requirements-windows-py311.lock.txt",
+        "unchanged_from_original": true,
+        "sha256": "22d168a4fd5ded284ea47af8219e0be1d4c41a4fb6c1f66f7185a562f6f5cde3"
+      },
+      {
+        "path": "constraints-windows-py311.txt",
+        "unchanged_from_original": true,
+        "sha256": "f9ae2c83335a319050f96960b081677b05251bc30e8c2078e45193cdd9d552d5"
+      }
+    ],
+    "interpretation": "These pre-existing dependency requirements were not changed by the fixes or Memory; Memory persistence uses the Python standard-library sqlite3 module. The review environment does not pass the full dependency gate."
+  },
+  "offline_preflight": {
+    "fixed_generations_complete": 5,
+    "saved_repair_complete": 1,
+    "resume_request_fingerprints_matched": true,
+    "stability_generations_complete": 15,
+    "factor_generations_complete": 3,
+    "market_snapshots_verified": 4,
+    "private_key_files_absent": true,
+    "new_model_requests": 0,
+    "new_market_data_requests": 0,
+    "network_guard": {
+      "ordinary_python_processes": "Temporary validation-only socket guard; no blocked connection attempts observed",
+      "connection_attempts": 0,
+      "isolated_workers": "-I workers imported the installed checkout and only replayed saved AST-constrained strategy code; generation and market-fetch inputs were verified complete before running."
+    }
+  },
+  "gates": [
+    {
+      "check": "unit_tests",
+      "ok": true,
+      "seconds": 5.805,
+      "tests": 146,
+      "phase": "final_runtime_rerun"
+    },
+    {
+      "check": "dependency_check",
+      "ok": false,
+      "seconds": 0.245,
+      "phase": "final_runtime_rerun"
+    },
+    {
+      "check": "dialogue_offline",
+      "ok": true,
+      "seconds": 3.527,
+      "phase": "final_runtime_rerun"
+    },
+    {
+      "check": "offline_replay",
+      "ok": true,
+      "seconds": 9.131,
+      "phase": "final_runtime_rerun"
+    },
+    {
+      "check": "resume_pipeline",
+      "ok": true,
+      "seconds": 3.545,
+      "phase": "initial_full_validation"
+    },
+    {
+      "check": "generalization",
+      "ok": true,
+      "seconds": 10.957,
+      "phase": "initial_full_validation"
+    },
+    {
+      "check": "stability_replay",
+      "ok": true,
+      "seconds": 22.354,
+      "phase": "final_runtime_rerun"
+    },
+    {
+      "check": "factor_ideation_replay",
+      "ok": true,
+      "seconds": 13.641,
+      "phase": "initial_full_validation"
+    },
+    {
+      "check": "methodology",
+      "ok": true,
+      "seconds": 0.073,
+      "phase": "initial_full_validation"
+    }
+  ],
+  "replay_counts": {
+    "fixed_code": 5,
+    "generalization_cases": 9,
+    "generalization_replays": 45,
+    "stability_code": 15,
+    "valid_factor_ideas": 12,
+    "unique_factor_signals": 9,
+    "factor_out_of_sample_comparisons": 27,
+    "wins_vs_buy_hold": 0,
+    "wins_vs_sma": 12
+  },
+  "corrected_nested_factor": {
+    "000651_2024_2025_total_return": 0.10636990016150194,
+    "000001_2021_2023_total_return": -0.22619493569649884,
+    "minimum_history": 79
+  },
+  "memory_cli": {
+    "ok": true,
+    "separate_process_invocations": 13,
+    "new_model_requests": 0,
+    "scope": "Actual local CLI subprocesses, including explicit session persistence and disabled memory; no live model answers. Windows wrapper working directory reproduced on Linux, not a Windows cmd execution.",
+    "checks": [
+      {
+        "check": "help_flags",
+        "ok": true,
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 2.123
+      },
+      {
+        "check": "persist_note",
+        "ok": true,
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 2.169
+      },
+      {
+        "check": "resume_new_process",
+        "ok": true,
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 2.068
+      },
+      {
+        "check": "list_sessions",
+        "ok": true,
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 2.141
+      },
+      {
+        "check": "delete_note",
+        "ok": true,
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 2.289
+      },
+      {
+        "check": "forget_survives_restart",
+        "ok": true,
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 2.101
+      },
+      {
+        "check": "no_memory_no_database",
+        "ok": true,
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 2.11
+      },
+      {
+        "check": "no_memory_never_opens_existing_file",
+        "ok": true,
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 2.15
+      },
+      {
+        "check": "conflicting_flags_rejected",
+        "ok": true,
+        "return_code": 2,
+        "expected_return_code": 2,
+        "seconds": 2.086
+      },
+      {
+        "check": "single_role_session",
+        "ok": true,
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 2.087
+      },
+      {
+        "check": "single_role_resume",
+        "ok": true,
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 2.075
+      },
+      {
+        "check": "wrapper_working_directory",
+        "ok": true,
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 2.056
+      },
+      {
+        "check": "root_working_directory_same_database",
+        "ok": true,
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 2.09
+      }
+    ]
+  },
+  "integrity": {
+    "hash_algorithm": "SHA-256; manifest digest is SHA-256 of sorted path-to-file-digest JSON with compact separators",
+    "source_phase": "Final runtime files snapshotted after applying the authorized relative-path fix and compared after tests and CLI smoke.",
+    "source_and_config_selection": "All tracked files outside artifacts/ and data/",
+    "frozen_model_evidence_selection": {
+      "directories": "Tracked artifacts under generation_*, ideation_*, or repair_*",
+      "filenames": [
+        "request.json",
+        "raw_response.txt",
+        "response.json",
+        "strategy.py",
+        "execution.json",
+        "execution_initial.json",
+        "timing.json",
+        "usage.json",
+        "ideas.json"
+      ]
+    },
+    "source_and_config": {
+      "files_checked": 219,
+      "changed": [],
+      "manifest_sha256_before": "0a01c0c74de4c8b86cc19e483748598d52dacae54449f2533edd0d75fc057b2b",
+      "manifest_sha256_after": "0a01c0c74de4c8b86cc19e483748598d52dacae54449f2533edd0d75fc057b2b"
+    },
+    "tracked_data_snapshots": {
+      "files_checked": 12,
+      "changed": [],
+      "manifest_sha256_before": "740b8de4249a9ffc2f66e5c6bf15c827063d6db8ea62ddc402155c597099d131",
+      "manifest_sha256_after": "740b8de4249a9ffc2f66e5c6bf15c827063d6db8ea62ddc402155c597099d131"
+    },
+    "frozen_model_evidence": {
+      "files_checked": 174,
+      "changed": [],
+      "manifest_sha256_before": "504c766b54d53e042b8c1e42d2becf18c59288b89d502c8dbfe283f35d0213d1",
+      "manifest_sha256_after": "504c766b54d53e042b8c1e42d2becf18c59288b89d502c8dbfe283f35d0213d1"
+    }
+  },
+  "limits": [
+    "No new live-model answers or online market-data calls were tested.",
+    "PDF/OCR/vector-model workflows and the full Windows dependency environment were not validated in this Linux review environment.",
+    "CLI smoke used actual separate Python processes. The Windows wrapper working directory was reproduced on Linux; Windows cmd itself was not executed."
+  ],
+  "artifact_policy": "Only this new validation report is committed; widespread regenerated replay outputs are validation intermediates."
+}

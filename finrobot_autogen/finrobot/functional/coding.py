@@ -1,8 +1,10 @@
 import os
+from pathlib import Path
 from typing_extensions import Annotated
 from IPython import get_ipython
 
 default_path = "coding/"
+_cli_shell = None
 
 
 class IPythonUtils:
@@ -11,9 +13,16 @@ class IPythonUtils:
         """
         run cell in ipython and return the execution result.
         """
+        global _cli_shell
         ipython = get_ipython()
+        if ipython is None:
+            # Keep cell variables between tool calls without requiring a notebook.
+            if _cli_shell is None:
+                from IPython.core.interactiveshell import InteractiveShell
+                _cli_shell = InteractiveShell()
+            ipython = _cli_shell
         result = ipython.run_cell(cell)
-        log = str(result.result)
+        log = "" if result.result is None else str(result.result)
         if result.error_before_exec is not None:
             log += f"\n{result.error_before_exec}"
         if result.error_in_exec is not None:
@@ -24,15 +33,18 @@ class IPythonUtils:
         image_path: Annotated[str, "Path to image file to display."]
     ) -> str:
         """
-        Display image in Jupyter Notebook.
+        Display an image in a notebook, or return its absolute path in the CLI.
         """
-        log = __class__.exec_python(
-            f"from IPython.display import Image, display\n\ndisplay(Image(filename='{image_path}'))"
-        )
-        if not log:
-            return "Image displayed successfully"
-        else:
-            return log
+        path = Path(image_path).expanduser().resolve(strict=True)
+        if not path.is_file():
+            raise ValueError(f"Not an image file: {path}")
+        from IPython.display import Image, display
+
+        image = Image(filename=str(path))
+        if get_ipython() is not None:
+            display(image)
+            return f"Image displayed successfully: {path}"
+        return f"Image available at: {path}"
 
 
 class CodingUtils:  # Borrowed from https://microsoft.github.io/autogen/docs/notebooks/agentchat_function_call_code_writing

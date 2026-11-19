@@ -127,14 +127,22 @@ def _standardize_price(df: pd.DataFrame) -> pd.DataFrame:
     return out
 
 
-def _annual_reports(df: pd.DataFrame) -> pd.DataFrame:
-    """只保留年报（12-31），按报告期升序。"""
+def _annual_reports(df: pd.DataFrame, as_of: Optional[str] = None) -> pd.DataFrame:
+    """只保留年报；有截止日时还要求报告期和披露日均不晚于该日。"""
     if df is None or df.empty:
         return pd.DataFrame()
     out = df.copy()
     out["_date"] = pd.to_datetime(out["REPORT_DATE"], errors="coerce")
     out = out.dropna(subset=["_date"])
     out = out[out["_date"].dt.month == 12]
+    if as_of is not None:
+        cutoff = pd.Timestamp(as_of).normalize()
+        # REPORT_DATE 是会计报告期，不能代替实际披露日期。
+        if "NOTICE_DATE" not in out.columns:
+            return out.iloc[:0]
+        out["_notice_date"] = pd.to_datetime(out["NOTICE_DATE"], errors="coerce").dt.normalize()
+        out = out[(out["_date"] <= cutoff) & (out["_notice_date"] <= cutoff)]
+        return out.sort_values(["_date", "_notice_date"]).drop_duplicates("_date", keep="last")
     return out.sort_values("_date").drop_duplicates("_date")
 
 
@@ -432,20 +440,24 @@ class AkShareUtils:
     def get_financial_metrics(
         ticker_symbol: Annotated[str, "6 位 A 股代码，如 600519"],
         years: Annotated[int, "回溯年数，默认 4"] = 4,
+        as_of: Annotated[Optional[str], "截止日期 YYYY-mm-dd（含当日）；为空返回最新数据"] = None,
     ) -> pd.DataFrame:
         """按年度汇总核心财务指标（营收、利润、ROE、ROA、负债率、现金流等）。
 
         返回 DataFrame：行=指标，列=年份，与 ``FMPUtils.get_financial_metrics`` 类似。
+        as_of 同时限制报告期和披露日，缺少披露日的记录不会用于历史查询。
+        返回值仍来自当前接口，不保证还原历史时点的修订前报表版本。
         """
         ak = _require_ak()
         ex_symbol = _exchange_symbol(ticker_symbol)
 
-        inc = _annual_reports(ak.stock_profit_sheet_by_report_em(symbol=ex_symbol))
-        bal = _annual_reports(ak.stock_balance_sheet_by_report_em(symbol=ex_symbol))
-        cf = _annual_reports(ak.stock_cash_flow_sheet_by_report_em(symbol=ex_symbol))
+        inc = _annual_reports(ak.stock_profit_sheet_by_report_em(symbol=ex_symbol), as_of)
+        bal = _annual_reports(ak.stock_balance_sheet_by_report_em(symbol=ex_symbol), as_of)
+        cf = _annual_reports(ak.stock_cash_flow_sheet_by_report_em(symbol=ex_symbol), as_of)
 
         if inc.empty:
-            raise ValueError(f"未获取到 {ticker_symbol} 的年报数据")
+            period = f"截至 {as_of} 已披露的" if as_of is not None else ""
+            raise ValueError(f"未获取到 {ticker_symbol} {period}年报数据")
 
         merged = inc[
             [
@@ -623,7 +635,7 @@ class AkShareUtils:
             Optional[str], "目标日期 YYYY-mm-dd；为空则返回最新一期"
         ] = None,
     ) -> Optional[float]:
-        """历史每股净资产（元/股）。"""
+        """按报告期筛选的历史每股净资产（元/股），不保证当时已披露。"""
         ak = _require_ak()
         code = _normalize_symbol(ticker_symbol)
         start_year = (
@@ -638,6 +650,8 @@ class AkShareUtils:
         df = df.copy()
         df["日期"] = pd.to_datetime(df["日期"], errors="coerce")
         df = df.dropna(subset=["日期"]).sort_values("日期")
+        if df.empty:
+            return None
 
         col = None
         for candidate in ("每股净资产_调整前(元)", "每股净资产_调整后(元)", "每股净资产"):
@@ -650,7 +664,9 @@ class AkShareUtils:
         if target_date is not None:
             target = pd.to_datetime(target_date)
             past = df[df["日期"] <= target]
-            row = past.iloc[-1] if not past.empty else df.iloc[0]
+            if past.empty:
+                return None
+            row = past.iloc[-1]
         else:
             row = df.iloc[-1]
 
