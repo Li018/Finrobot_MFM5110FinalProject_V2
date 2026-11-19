@@ -2,9 +2,11 @@
 
 import json
 import re
+import sqlite3
 from collections import deque
 
 from .workflow import SingleAssistant
+from .memory_tools import MEMORY_GUIDANCE, register_memory_tool, save_turn
 
 
 DEFAULT_ROLE = "A_Share_Analyst"
@@ -101,9 +103,22 @@ SYNTHESIZER = {
 
 
 class AutoResearch:
-    def __init__(self, llm_config):
+    def __init__(self, llm_config, memory=None):
         self.llm_config = {**llm_config, "cache_seed": None}
         self.history = deque(maxlen=3)
+        self.memory = memory
+        self._memory_read_error = None
+        if memory is not None:
+            known_roles = set(SCOPES) | {REPORT_ROLE, FACTOR_IDEA_ROLE}
+            try:
+                turns = memory.recent_turns(limit=20)
+            except (sqlite3.Error, OSError, ValueError) as exc:
+                self._memory_read_error = type(exc).__name__
+                turns = []
+            for turn in turns:
+                roles = tuple(turn["roles"])
+                if turn["status"] == "completed" and roles and set(roles) <= known_roles:
+                    self.history.append((turn["question"], turn["answer"], roles))
         self.last_run = None
         self._current_chats = []
 
@@ -120,6 +135,8 @@ class AutoResearch:
                 max_consecutive_auto_reply=8,
                 code_execution_config=False,
             )
+            if self.memory is not None and agent.assistant.name != "Research_Synthesizer":
+                register_memory_tool(agent, self.memory)
             chat = agent.user_proxy.initiate_chat(
                 agent.assistant,
                 message=f"{prompt}\n\n答复末尾单独一行输出 TERMINATE。",
@@ -147,13 +164,25 @@ class AutoResearch:
         self.last_run = None
         self._current_chats = []
         summary = {}
-        context = json.dumps({
+        context_data = {
             "question": question,
             "previous_turns": [
                 {"question": request[-2000:], "answer": reply[:2000]}
                 for request, reply, _ in self.history
             ],
-        }, ensure_ascii=False)
+        }
+        if self.memory is not None:
+            try:
+                context_data["memory_context"] = self.memory.context(question)
+                self._memory_read_error = None
+                # The persisted context includes turns and tool evidence.
+                if not getattr(self, "_memory_write_failed", False):
+                    context_data.pop("previous_turns")
+            except (sqlite3.Error, OSError, ValueError) as exc:
+                self._memory_read_error = type(exc).__name__
+        context = json.dumps(context_data, ensure_ascii=False)
+        if self.memory is not None:
+            context = MEMORY_GUIDANCE + "\n" + context
         if len(roles) == 1:
             prompt = (
                 "回答本轮 question。仅在本轮依赖前文时参考 previous_turns；不要用旧数据替代本轮取数。\n"
@@ -198,4 +227,13 @@ class AutoResearch:
                          "results": results, "summary": summary, "chats": self._current_chats,
                          "ok": all("answer" in item for item in results.values())
                                and (len(roles) == 1 or "answer" in summary)}
+        if self.memory is not None:
+            self.last_run["session_id"] = self.memory.session_id
+            if self._memory_read_error:
+                self.last_run["memory_read_error"] = self._memory_read_error
+            error = save_turn(self.memory, question, answer, list(roles), self._current_chats,
+                              "completed" if self.last_run["ok"] else "partial")
+            self._memory_write_failed = bool(error)
+            if error:
+                self.last_run["memory_error"] = error
         return answer
