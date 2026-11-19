@@ -22,7 +22,10 @@ def main():
                 ("dialogue_offline", ["-X", "utf8", "scripts/validate_quant_dialogue.py", "--offline"]),
                 ("offline_replay", ["-X", "utf8", "finrobot_autogen/experiments/run_quant_experiment.py", "verify"]),
                 ("resume_pipeline", ["-X", "utf8", "finrobot_autogen/experiments/run_quant_experiment.py", "all", "--resume"]),
-                ("generalization", ["-X", "utf8", "finrobot_autogen/experiments/run_generalization.py", "evaluate"])]
+                ("generalization", ["-X", "utf8", "finrobot_autogen/experiments/run_generalization.py", "evaluate"]),
+                ("stability_replay", ["-X", "utf8", "finrobot_autogen/experiments/run_stability.py", "verify"]),
+                ("factor_ideation_replay", ["-X", "utf8", "finrobot_autogen/experiments/run_factor_ideation.py", "evaluate"]),
+                ("methodology", ["-X", "utf8", "scripts/evaluate_agent_methodology.py"])]
     for name, command in commands:
         started = time.perf_counter()
         proc = subprocess.run([args.python, *command], cwd=ROOT, capture_output=True, text=True, encoding="utf-8", timeout=240)

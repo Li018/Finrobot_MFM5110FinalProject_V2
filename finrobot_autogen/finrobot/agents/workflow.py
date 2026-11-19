@@ -14,7 +14,6 @@ from collections import defaultdict
 from functools import partial
 from abc import ABC, abstractmethod
 from ..toolkits import register_toolkits
-from ..functional.rag import get_rag_function
 from .utils import *
 from .prompts import leader_system_message, role_system_message
 
@@ -194,6 +193,8 @@ class SingleAssistantRAG(SingleAssistant):
             **kwargs,
         )
         assert retrieve_config, "retrieve config cannot be empty for RAG Agent."
+        from ..functional.rag import get_rag_function
+
         rag_func, rag_assistant = get_rag_function(retrieve_config, rag_description)
         self.rag_assistant = rag_assistant
         register_function(

@@ -1,0 +1,7 @@
+{
+  "deepseek-flash": {
+    "prompt_tokens": 1637,
+    "completion_tokens": 561,
+    "total_tokens": 2198
+  }
+}

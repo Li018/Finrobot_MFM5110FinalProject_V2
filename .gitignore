@@ -14,6 +14,10 @@ __pycache__/
 !artifacts/quant_v2/*.png
 !artifacts/quant_generalization/**/*.csv
 !artifacts/quant_generalization/**/*.png
+!artifacts/factor_ideation/**/*.csv
+!artifacts/factor_ideation/**/*.png
+!artifacts/stability/**/*.csv
+!artifacts/stability/**/*.png
 !finrobot_equity/web_app/static/*.png
 !figs/*.png
 quant/

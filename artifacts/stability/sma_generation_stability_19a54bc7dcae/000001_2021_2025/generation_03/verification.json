@@ -1,0 +1,28 @@
+{
+  "ok": true,
+  "checks": {
+    "ast_passed": true,
+    "fixed_rule_equal": true,
+    "prefix_causality_passed": true,
+    "trusted_engine_equal": true
+  },
+  "audit": {
+    "ok": true,
+    "errors": [],
+    "ledger_rows": 1212
+  },
+  "saved_result_equal": true,
+  "metrics": {
+    "initial_cash": 100000.0,
+    "final_equity": 80002.91885200009,
+    "total_return": -0.19997081147999907,
+    "annual_return": -0.045365662005941276,
+    "sharpe": -0.17027074471325207,
+    "max_drawdown": 0.4309531039939033,
+    "observations": 1212,
+    "return_periods": 1211,
+    "executed_orders": 28,
+    "total_commission": 628.9071480000001,
+    "min_cash": 15295.17872255009
+  }
+}

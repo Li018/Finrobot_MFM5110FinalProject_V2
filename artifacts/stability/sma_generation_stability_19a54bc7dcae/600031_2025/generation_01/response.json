@@ -1,0 +1,14 @@
+{
+  "type": "json_object",
+  "reasoning": "策略为固定参数的双均线趋势跟随：以收盘价的20日与60日简单移动平均线比较，快线在上时持有、否则空仓，不做参数寻优。信号仅使用截至当日的 trailing rolling 均值，不 shift；执行器按前一日信号在下一交易日开盘成交，因此信号与成交之间有一日时滞，避免使用未来信息。开仓预算为初始资金的80%，持仓权重随价格漂移，并非持续硬性仓位上限。回测区间为2025-01-02至2025-12-31，标的600031，前复权数据，共243个交易日。",
+  "risk_notes": [
+    "单标的集中持仓，缺乏分散化，个股事件风险无法被组合平滑。",
+    "固定20/60参数为预设而非优化结果，不同市场阶段表现可能显著不同，存在参数适配风险。",
+    "使用前复权数据，复权方式会影响历史价格与均线位置，与实盘不复权价格存在差异。",
+    "成交模型为简化假设：佣金0.0003、最低5元、滑点0.0005、按100股整手，未完整刻画涨跌停、停牌、流动性与冲击成本。",
+    "信号在下一交易日开盘执行，存在一日时滞；均线策略在震荡市中易出现频繁反向交易与假突破。",
+    "max_position为开仓预算比例，持仓权重随价格漂移，不构成持续硬性仓位上限。",
+    "历史回测结果不代表未来收益，不构成投资建议。"
+  ],
+  "code": "def generate_signals(data, fast, slow):\n    close = data['Close']\n    fast_ma = close.rolling(fast).mean()\n    slow_ma = close.rolling(slow).mean()\n    signals = (fast_ma > slow_ma).astype(int)\n    return signals\n\n\ndef run_strategy(data, config):\n    signals = generate_signals(data, config['fast'], config['slow'])\n    return run_signal_backtest(data, signals, config)"
+}

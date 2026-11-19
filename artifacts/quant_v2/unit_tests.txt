@@ -1,6 +1,42 @@
 [AkShareUtils] 东方财富行情获取失败（test provider fallback），回退到腾讯行情。
-D:\Desktop\Finrobot_MFM5110FinalProject-main\.venv\Lib\site-packages\flaml\__init__.py:20: UserWarning: flaml.automl is not available. Please install flaml[automl] to enable AutoML functionalities.
-  warnings.warn("flaml.automl is not available. Please install flaml[automl] to enable AutoML functionalities.")
+{"ok": false, "design": "fixture", "limits": "fixture", "model": "deepseek-flash", "repeats_per_case": 3, "cases": 1, "attempts": 3, "passed": 1, "pass_rate": 0.3333, "json_valid_rate": 0.3333, "rule_consistency_rate": 0.3333, "prefix_causality_rate": 0.3333, "trusted_engine_equality_rate": 0.3333, "rate_denominator": "all planned attempts, including failed and missing attempts", "conditional_check_rates": {"rule_consistency_rate": 1.0, "prefix_causality_rate": 1.0, "trusted_engine_equality_rate": 1.0}, "failure_taxonomy": {"json_decode_or_schema": 1, "missing_attempt": 1}, "latency_seconds": {"count": 1, "mean": 2.0, "median": 2.0, "min": 2.0, "max": 2.0}, "scope": "Bounded generation-stability check across three fixed cases; not evidence of investment alpha.", "evaluation_time": "2026-11-19T08:49:13.729941+00:00"}
+Results: C:/Users/ohh/AppData/Local/Temp/tmpwv_82n5c/fixture_stability_af1b454892ef
+{"ok": false, "design": "fixture", "limits": "fixture", "model": "deepseek-flash", "repeats_per_case": 3, "cases": 1, "attempts": 3, "passed": 0, "pass_rate": 0.0, "json_valid_rate": 0.0, "rule_consistency_rate": 0.0, "prefix_causality_rate": 0.0, "trusted_engine_equality_rate": 0.0, "rate_denominator": "all planned attempts, including failed and missing attempts", "conditional_check_rates": {"rule_consistency_rate": null, "prefix_causality_rate": null, "trusted_engine_equality_rate": null}, "failure_taxonomy": {"missing_attempt": 3}, "latency_seconds": {"count": 0, "mean": null, "median": null, "min": null, "max": null}, "scope": "Bounded generation-stability check across three fixed cases; not evidence of investment alpha.", "evaluation_time": "2026-11-19T08:49:13.744062+00:00"}
+Results: C:/Users/ohh/AppData/Local/Temp/tmp8n66z3ri/fixture_stability_af1b454892ef
+test_default_console_only_shows_analysis (test_console_output.ConsoleTests.test_default_console_only_shows_analysis) ... ok
+test_do_not_repeat_user_question_or_old_answer (test_console_output.ConsoleTests.test_do_not_repeat_user_question_or_old_answer) ... ok
+test_explicit_json_answer_preserved (test_console_output.ConsoleTests.test_explicit_json_answer_preserved) ... ok
+test_failure_is_visible_without_traceback_noise (test_console_output.ConsoleTests.test_failure_is_visible_without_traceback_noise) ... ok
+test_proxy_relative_final_answer (test_console_output.ConsoleTests.test_proxy_relative_final_answer) ... ok
+test_standard_assistant_with_empty_tool_calls (test_console_output.ConsoleTests.test_standard_assistant_with_empty_tool_calls) ... ok
+test_tool_summary_is_limited_to_current_turn (test_console_output.ConsoleTests.test_tool_summary_is_limited_to_current_turn) ... ok
+test_unfinished_tool_run_has_no_fake_final (test_console_output.ConsoleTests.test_unfinished_tool_run_has_no_fake_final) ... ok
+test_boolean_and_composition (test_factor_dsl.FactorDslTests.test_boolean_and_composition) ... ok
+test_division_by_zero_is_not_inf (test_factor_dsl.FactorDslTests.test_division_by_zero_is_not_inf) ... ok
+test_momentum_signal_is_binary_and_causal (test_factor_dsl.FactorDslTests.test_momentum_signal_is_binary_and_causal) ... ok
+test_rejects_attributes_and_imports (test_factor_dsl.FactorDslTests.test_rejects_attributes_and_imports) ... ok
+test_rejects_excessive_expression_complexity (test_factor_dsl.FactorDslTests.test_rejects_excessive_expression_complexity) ... ok
+test_rejects_multiply_by_zero (test_factor_dsl.FactorDslTests.test_rejects_multiply_by_zero) ... ok
+test_rejects_non_comparison_arithmetic (test_factor_dsl.FactorDslTests.test_rejects_non_comparison_arithmetic) ... ok
+test_rejects_plain_series (test_factor_dsl.FactorDslTests.test_rejects_plain_series) ... ok
+test_rejects_power_before_evaluation (test_factor_dsl.FactorDslTests.test_rejects_power_before_evaluation) ... ok
+test_rejects_unbounded_numeric_literals (test_factor_dsl.FactorDslTests.test_rejects_unbounded_numeric_literals) ... ok
+test_rejects_unknown_name_and_window (test_factor_dsl.FactorDslTests.test_rejects_unknown_name_and_window) ... ok
+test_scalar_not_keeps_boolean_meaning (test_factor_dsl.FactorDslTests.test_scalar_not_keeps_boolean_meaning) ... ok
+test_series_not_inverts_each_comparison (test_factor_dsl.FactorDslTests.test_series_not_inverts_each_comparison) ... ok
+test_where_and_scalar_functions (test_factor_dsl.FactorDslTests.test_where_and_scalar_functions) ... ok
+test_zscore_and_rank_are_trailing (test_factor_dsl.FactorDslTests.test_zscore_and_rank_are_trailing) ... ok
+test_constant_after_warmup_is_rejected (test_factor_dsl.IdeationValidationTests.test_constant_after_warmup_is_rejected) ... ok
+test_constant_signal_is_rejected (test_factor_dsl.IdeationValidationTests.test_constant_signal_is_rejected) ... ok
+test_validate_ideas_keeps_valid_and_reports_invalid (test_factor_dsl.IdeationValidationTests.test_validate_ideas_keeps_valid_and_reports_invalid) ... ok
+test_complete_run_counts_duplicate_and_oos_cases (test_factor_ideation.FactorExperimentTests.test_complete_run_counts_duplicate_and_oos_cases) ... ok
+test_missing_attempt_is_in_generation_denominator (test_factor_ideation.FactorExperimentTests.test_missing_attempt_is_in_generation_denominator) ... ok
+test_no_attempts_write_failed_summary (test_factor_ideation.FactorExperimentTests.test_no_attempts_write_failed_summary) ... ok
+test_overlapping_windows_are_rejected (test_factor_ideation.FactorExperimentTests.test_overlapping_windows_are_rejected) ... ok
+test_saved_validation_is_rechecked (test_factor_ideation.FactorExperimentTests.test_saved_validation_is_rechecked) ... ok
+test_updated_prompt_replays_the_frozen_run (test_factor_ideation.FactorExperimentTests.test_updated_prompt_replays_the_frozen_run) ... ok
+test_build_metrics (test_methodology.MethodologyTests.test_build_metrics) ... ok
+test_markdown_keeps_honest_labels (test_methodology.MethodologyTests.test_markdown_keeps_honest_labels) ... ok
 test_compare_and_independent_risk (test_quant_dialogue.DialogueTests.test_compare_and_independent_risk) ... ok
 test_data_tampering_rejected (test_quant_dialogue.DialogueTests.test_data_tampering_rejected) ... ok
 test_invalid_parameters_rejected_before_market_request (test_quant_dialogue.DialogueTests.test_invalid_parameters_rejected_before_market_request) ... ok
@@ -30,8 +66,12 @@ test_unauthorized_signal_rejected (test_quant_v2.QuantTests.test_unauthorized_si
 test_warmup_excluded_from_performance_and_trades (test_quant_v2.QuantTests.test_warmup_excluded_from_performance_and_trades) ... ok
 test_window_has_only_past_context (test_quant_v2.QuantTests.test_window_has_only_past_context) ... ok
 test_window_rejects_insufficient_warmup (test_quant_v2.QuantTests.test_window_rejects_insufficient_warmup) ... ok
+test_evaluate_counts_success_and_failure (test_stability.StabilityTests.test_evaluate_counts_success_and_failure) ... ok
+test_missing_attempts_cannot_pass (test_stability.StabilityTests.test_missing_attempts_cannot_pass) ... ok
+test_prepare_case_rejects_changed_config (test_stability.StabilityTests.test_prepare_case_rejects_changed_config) ... ok
+test_rate_and_latency (test_stability.StabilityTests.test_rate_and_latency) ... ok
 
 ----------------------------------------------------------------------
-Ran 29 tests in 0.773s
+Ran 67 tests in 2.536s
 
 OK

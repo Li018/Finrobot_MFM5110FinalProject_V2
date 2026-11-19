@@ -1,0 +1,11 @@
+{
+  "reasoning": "策略为固定参数的双均线趋势跟随：以收盘价计算 20 日与 60 日简单移动平均，当快线严格高于慢线时输出 1（持有），否则输出 0（空仓）。信号不做 shift，执行器按前一日信号在下一交易日开盘成交，避免使用未来信息。rolling 默认 min_periods 等于窗口长度，因此前 59 个交易日预热期信号为 0，不会在均线未成形时开仓。该策略不针对收益做参数优化，仅用于检验趋势过滤在 600031（2025-01-02 至 2025-12-31，前复权）上的历史表现，并与买入持有对照。",
+  "risk_notes": [
+    "单标的回测，结果高度依赖 600031 个股行情，不能代表组合或市场整体表现。",
+    "固定 20/60 参数未做样本外优化，换参数或换区间结果可能显著不同，存在参数敏感性。",
+    "使用前复权数据与简化的佣金、滑点、整手成交模型，未完整刻画涨跌停、停牌、流动性冲击等真实市场规则。",
+    "均线策略在震荡市中易出现反复开平仓的假信号，产生交易成本拖累；max_position 为开仓预算比例，持仓权重随价格漂移，不构成持续硬性仓位上限。",
+    "历史回测结果不构成未来收益保证。"
+  ],
+  "code": "def generate_signals(data, fast, slow):\n    close = data['Close']\n    fast_ma = close.rolling(fast).mean()\n    slow_ma = close.rolling(slow).mean()\n    return (fast_ma > slow_ma).astype(int)\n\n\ndef run_strategy(data, config):\n    signals = generate_signals(data, config['fast'], config['slow'])\n    return run_signal_backtest(data, signals, config)\n"
+}

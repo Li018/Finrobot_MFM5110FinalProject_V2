@@ -1,0 +1,907 @@
+{
+  "ok": true,
+  "validated_at": "2026-11-19T08:51:57.779517+00:00",
+  "new_model_requests": 0,
+  "main_environment": {
+    "ok": true,
+    "python_environment": ".venv",
+    "api_calls_requested": 0,
+    "checks": [
+      {
+        "check": "unit_tests",
+        "ok": true,
+        "seconds": 9.154,
+        "tests": 67
+      },
+      {
+        "check": "dependency_check",
+        "ok": true,
+        "seconds": 1.151
+      },
+      {
+        "check": "dialogue_offline",
+        "ok": true,
+        "seconds": 6.782
+      },
+      {
+        "check": "offline_replay",
+        "ok": true,
+        "seconds": 17.344
+      },
+      {
+        "check": "resume_pipeline",
+        "ok": true,
+        "seconds": 7.346
+      },
+      {
+        "check": "generalization",
+        "ok": true,
+        "seconds": 9.506
+      },
+      {
+        "check": "stability_replay",
+        "ok": true,
+        "seconds": 43.659
+      },
+      {
+        "check": "factor_ideation_replay",
+        "ok": true,
+        "seconds": 11.308
+      },
+      {
+        "check": "methodology",
+        "ok": true,
+        "seconds": 0.259
+      }
+    ]
+  },
+  "clean_environment": {
+    "ok": true,
+    "python_environment": "v2_publish_verify_20261119",
+    "api_calls_requested": 0,
+    "checks": [
+      {
+        "check": "unit_tests",
+        "ok": true,
+        "seconds": 9.573,
+        "tests": 67
+      },
+      {
+        "check": "dependency_check",
+        "ok": true,
+        "seconds": 1.136
+      },
+      {
+        "check": "dialogue_offline",
+        "ok": true,
+        "seconds": 6.79
+      },
+      {
+        "check": "offline_replay",
+        "ok": true,
+        "seconds": 18.233
+      },
+      {
+        "check": "resume_pipeline",
+        "ok": true,
+        "seconds": 7.814
+      },
+      {
+        "check": "generalization",
+        "ok": true,
+        "seconds": 10.219
+      },
+      {
+        "check": "stability_replay",
+        "ok": true,
+        "seconds": 45.681
+      },
+      {
+        "check": "factor_ideation_replay",
+        "ok": true,
+        "seconds": 11.862
+      },
+      {
+        "check": "methodology",
+        "ok": true,
+        "seconds": 0.26
+      }
+    ]
+  },
+  "main_total_seconds": 106.509,
+  "clean_total_seconds": 111.568,
+  "clean_environment_setup": "New Python 3.11 environment; 214 locked dependencies installed offline; editable project imported from the extracted copy.",
+  "clean_copy_scope": "Extracted development ZIP synchronized to final source; all code, experiment configs and data hashes match. Final UUID-only test fixture changes rechecked: 67 tests passed.",
+  "private_key_files_in_clean_copy": false,
+  "original_evidence": {
+    "files_checked": 141,
+    "changed": []
+  },
+  "source_config_data_match": [
+    {
+      "path": "artifacts/quant_v2/generation_01/strategy.py",
+      "sha256": "8c773e4cbc3b9684d2bc76bfa309594d9cf60fcadd010db802a651893f8556f9"
+    },
+    {
+      "path": "artifacts/quant_v2/generation_02/strategy.py",
+      "sha256": "8c773e4cbc3b9684d2bc76bfa309594d9cf60fcadd010db802a651893f8556f9"
+    },
+    {
+      "path": "artifacts/quant_v2/generation_03/strategy.py",
+      "sha256": "a2c5f0866e7c209b1f8c762e8d003b421b180b9e77aab812f487bda31e0794fa"
+    },
+    {
+      "path": "artifacts/quant_v2/generation_04/strategy.py",
+      "sha256": "d0b68625e70435ace8187a4bd30a03168af9c8ab7fa979f67ce65757fc603287"
+    },
+    {
+      "path": "artifacts/quant_v2/generation_05/repair_01/strategy.py",
+      "sha256": "d0b68625e70435ace8187a4bd30a03168af9c8ab7fa979f67ce65757fc603287"
+    },
+    {
+      "path": "artifacts/stability/sma_generation_stability_19a54bc7dcae/000001_2021_2025/generation_01/strategy.py",
+      "sha256": "ef415ba534f0ec4467d8f536bdeadcadd4eda12c2df21995fdc683dfbac1837f"
+    },
+    {
+      "path": "artifacts/stability/sma_generation_stability_19a54bc7dcae/000001_2021_2025/generation_02/strategy.py",
+      "sha256": "f4a1b932a1b00d2d948d82eed9d565f37537e13a1fe8ceecd4395f46e47e8aa1"
+    },
+    {
+      "path": "artifacts/stability/sma_generation_stability_19a54bc7dcae/000001_2021_2025/generation_03/strategy.py",
+      "sha256": "f4a1b932a1b00d2d948d82eed9d565f37537e13a1fe8ceecd4395f46e47e8aa1"
+    },
+    {
+      "path": "artifacts/stability/sma_generation_stability_19a54bc7dcae/000001_2021_2025/generation_04/strategy.py",
+      "sha256": "f4a1b932a1b00d2d948d82eed9d565f37537e13a1fe8ceecd4395f46e47e8aa1"
+    },
+    {
+      "path": "artifacts/stability/sma_generation_stability_19a54bc7dcae/000001_2021_2025/generation_05/strategy.py",
+      "sha256": "c26cc2b59e2d7ad5593f9ade0add1c73df295277569f323a488028e0b2832558"
+    },
+    {
+      "path": "artifacts/stability/sma_generation_stability_19a54bc7dcae/000651_2023_2024/generation_01/strategy.py",
+      "sha256": "f4a1b932a1b00d2d948d82eed9d565f37537e13a1fe8ceecd4395f46e47e8aa1"
+    },
+    {
+      "path": "artifacts/stability/sma_generation_stability_19a54bc7dcae/000651_2023_2024/generation_02/strategy.py",
+      "sha256": "f4a1b932a1b00d2d948d82eed9d565f37537e13a1fe8ceecd4395f46e47e8aa1"
+    },
+    {
+      "path": "artifacts/stability/sma_generation_stability_19a54bc7dcae/000651_2023_2024/generation_03/strategy.py",
+      "sha256": "ef415ba534f0ec4467d8f536bdeadcadd4eda12c2df21995fdc683dfbac1837f"
+    },
+    {
+      "path": "artifacts/stability/sma_generation_stability_19a54bc7dcae/000651_2023_2024/generation_04/strategy.py",
+      "sha256": "5215edd3e84d1bb3af834b22592df85899e6a568268b04af044a8fb2b2e761f4"
+    },
+    {
+      "path": "artifacts/stability/sma_generation_stability_19a54bc7dcae/000651_2023_2024/generation_05/strategy.py",
+      "sha256": "ef415ba534f0ec4467d8f536bdeadcadd4eda12c2df21995fdc683dfbac1837f"
+    },
+    {
+      "path": "artifacts/stability/sma_generation_stability_19a54bc7dcae/600031_2025/generation_01/strategy.py",
+      "sha256": "f4a1b932a1b00d2d948d82eed9d565f37537e13a1fe8ceecd4395f46e47e8aa1"
+    },
+    {
+      "path": "artifacts/stability/sma_generation_stability_19a54bc7dcae/600031_2025/generation_02/strategy.py",
+      "sha256": "f4a1b932a1b00d2d948d82eed9d565f37537e13a1fe8ceecd4395f46e47e8aa1"
+    },
+    {
+      "path": "artifacts/stability/sma_generation_stability_19a54bc7dcae/600031_2025/generation_03/strategy.py",
+      "sha256": "5215edd3e84d1bb3af834b22592df85899e6a568268b04af044a8fb2b2e761f4"
+    },
+    {
+      "path": "artifacts/stability/sma_generation_stability_19a54bc7dcae/600031_2025/generation_04/strategy.py",
+      "sha256": "c26cc2b59e2d7ad5593f9ade0add1c73df295277569f323a488028e0b2832558"
+    },
+    {
+      "path": "artifacts/stability/sma_generation_stability_19a54bc7dcae/600031_2025/generation_05/strategy.py",
+      "sha256": "c26cc2b59e2d7ad5593f9ade0add1c73df295277569f323a488028e0b2832558"
+    },
+    {
+      "path": "constraints-windows-py311.txt",
+      "sha256": "f9ae2c83335a319050f96960b081677b05251bc30e8c2078e45193cdd9d552d5"
+    },
+    {
+      "path": "data/quant_generalization/000001_20200101_20251231_qfq/adapter_raw.csv",
+      "sha256": "d989ad107677d6755ddcad5e6330766b88c2e5b04f24c5f0c6ab22b2d30a1a4b"
+    },
+    {
+      "path": "data/quant_generalization/000001_20200101_20251231_qfq/metadata.json",
+      "sha256": "bc1c59143c9c432e49a0e9b5ba4e540fd6f3fc99cc2329b1e8ec75903c6f0c43"
+    },
+    {
+      "path": "data/quant_generalization/000001_20200101_20251231_qfq/prices.csv",
+      "sha256": "fbe2ccc6559462303f8a03f72dd5a9f7f1e4eb47059a8f31fb78d83dbb0b7ea1"
+    },
+    {
+      "path": "data/quant_generalization/000651_20200101_20251231_qfq/adapter_raw.csv",
+      "sha256": "7b730e1d1f4e8ae65f07de5ba84d74047b4a5c2348328946a3751a18d978de18"
+    },
+    {
+      "path": "data/quant_generalization/000651_20200101_20251231_qfq/metadata.json",
+      "sha256": "9d4429a939aa363b9b4ddf67cde3ae53718e4d1f9f6fc43cd6e32f109dabfc98"
+    },
+    {
+      "path": "data/quant_generalization/000651_20200101_20251231_qfq/prices.csv",
+      "sha256": "83a0beb1633249398486b6a981a6d466f73418c543cab893927c9d45db67078c"
+    },
+    {
+      "path": "data/quant_generalization/600031_20200101_20251231_qfq/adapter_raw.csv",
+      "sha256": "0d204cd7bb661e045c8828146b02f91e8308146141b78411f564720e82c1cf73"
+    },
+    {
+      "path": "data/quant_generalization/600031_20200101_20251231_qfq/metadata.json",
+      "sha256": "f32bb5d007cb524067932b51a5673659c6aada05f3fc3249206861955c1360ab"
+    },
+    {
+      "path": "data/quant_generalization/600031_20200101_20251231_qfq/prices.csv",
+      "sha256": "5ff2bdfc8535a073b5cba10aa385e50721a884d4841ac0fe998ad641250b766f"
+    },
+    {
+      "path": "data/quant_v2/adapter_raw.csv",
+      "sha256": "b026917d395c1431360757964221f8f3f588f37c814e73ad9a7ea4d30bcc3987"
+    },
+    {
+      "path": "data/quant_v2/metadata.json",
+      "sha256": "6185ef5a3d3d4e3558a1f544c129426bf6ac05cbbfafed6bdb0b3abe321717b2"
+    },
+    {
+      "path": "data/quant_v2/prices.csv",
+      "sha256": "44c486eefd66b37452d0ea05ed234e51a07be4150a7ee1d605457ea1d8435568"
+    },
+    {
+      "path": "finrobot_autogen/agent_builder_demo.py",
+      "sha256": "6f271e35ecef71e8f82cedf263c07c2aba1bee116ddf5e766415c193c090d16f"
+    },
+    {
+      "path": "finrobot_autogen/experiments/execute_dialogue_strategy.py",
+      "sha256": "9a0e2ef48ee34ef8ffe505439b07cb91824ee3cbf4ba53102af7e0c936fc522d"
+    },
+    {
+      "path": "finrobot_autogen/experiments/execute_generated_strategy.py",
+      "sha256": "f1cbc062389168f7a916a0a276d48c723da82d6a7aed3017be8c1598c9194cd2"
+    },
+    {
+      "path": "finrobot_autogen/experiments/execute_stability_strategy.py",
+      "sha256": "cbcf5e457cd9720bab6599372995473e30336ec8c0cd11a87aec332fe1efc78d"
+    },
+    {
+      "path": "finrobot_autogen/experiments/factor_ideation_config.json",
+      "sha256": "2d9b0b40d6735e1212ff9550c14f0581ccd15755bc1702ff0f42b5fb133defff"
+    },
+    {
+      "path": "finrobot_autogen/experiments/generalization_config.json",
+      "sha256": "80b9e711de5a66dd66a38f6a5f8a847bb026291bd9831a874226900e11012b21"
+    },
+    {
+      "path": "finrobot_autogen/experiments/investment_group.py",
+      "sha256": "cb4cc98ee5ef54a998ab8bf00af042e5b7c3aea87853db8bbc98f2f1d4d44cc5"
+    },
+    {
+      "path": "finrobot_autogen/experiments/multi_factor_agents.py",
+      "sha256": "79dcc1f07f2fbc9d4c7824799d4045d6a39479d899178ad5d1f1508c8dd46459"
+    },
+    {
+      "path": "finrobot_autogen/experiments/portfolio_optimization.py",
+      "sha256": "d6445b946f6c3d4f6853f04730b7af1188562301d745e098671e6cde584c4dc8"
+    },
+    {
+      "path": "finrobot_autogen/experiments/quant_v2_config.json",
+      "sha256": "d71157a87d716c5b14e4849c3633d1cf52ccbe0c3cdd017b2f301e1f9cef4d76"
+    },
+    {
+      "path": "finrobot_autogen/experiments/quantitative_investment_group_config.json",
+      "sha256": "d83e0953eedab91215cadd80c2cad051965af0ab15d474f24c96f59e71fd2fb8"
+    },
+    {
+      "path": "finrobot_autogen/experiments/run_factor_ideation.py",
+      "sha256": "d4fceeb0810a471d7a2502ffe1297b14d5f02ef21cc3e37c98eb23f7612b29cc"
+    },
+    {
+      "path": "finrobot_autogen/experiments/run_generalization.py",
+      "sha256": "88ed416594ff6c16668e0b4957943874efd629609afbe29d7e40c5f313e5ceda"
+    },
+    {
+      "path": "finrobot_autogen/experiments/run_quant_experiment.py",
+      "sha256": "b2a47c1069e6040c243493c6ded91e70e99e75c1eaab789d7ff904c11ea2391d"
+    },
+    {
+      "path": "finrobot_autogen/experiments/run_stability.py",
+      "sha256": "c5680cb061669f9951ab01938704cb0ead6934c11512100b02e1c90d82c452d6"
+    },
+    {
+      "path": "finrobot_autogen/experiments/stability_config.json",
+      "sha256": "e5987f730a122eeecf3cb2500f2fbd2670bbccee34b1a4a5f5d6d16f60ca36d7"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/benchmarks/fiqa.py",
+      "sha256": "0430ee5cea0c964fc160a3ab1894050b86111cba0c267430f42557d73baccdc1"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/benchmarks/fpb.py",
+      "sha256": "9ded85a89d454e463a7749bca3b94687fcf58903b99cc10a813874413d0eb4b4"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/benchmarks/nwgi.py",
+      "sha256": "628d846dc5f2c323b246390d6acd964aa7b20228742fd7a42bf1d3f2c5544876"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/benchmarks/tfns.py",
+      "sha256": "87e384f1d1c718740b68c5011928a5440afbffb0f304ae8436bc6dc2c8f1e993"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_engineering/data_cleaning.py",
+      "sha256": "a151f4c18f38c904f3ba9e899d30eb414180f527d328f04190cb8096dc348849"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/_base.py",
+      "sha256": "fe85f3c80005a837659010b276082a929ca1b21190f3005967a0892b9086e08f"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/company_announcement/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/company_announcement/_base.py",
+      "sha256": "8042c58d21b68db55bd0b52fbdae247b0b0299a4cc52436e431734f7f5573b40"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/company_announcement/juchao.py",
+      "sha256": "48048d8af12343a1e0b7dc828eb9db78f0f306bf21e07159f89bad4bda966f68"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/company_announcement/sec.py",
+      "sha256": "b24c7339db83ded37a53f09e94fc3b161c853bde7689c662275c97c0d463051c"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/company_announcement/sina.py",
+      "sha256": "6625c838a4f0289e5fc48931349166c8afdb0012cc2492d5e55dd8d4fca4c610"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/datasets/__init__.py",
+      "sha256": "81923a7c5101c31f1bef3a5926dffde585f81e07276743549d08efaea90983b6"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/datasets/load_dataset.py",
+      "sha256": "7450f9c87d37e10d208ca3e10ad58a6b087858bc93912d2543373a8d74696595"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/earning_calls/__init__.py",
+      "sha256": "ac26852ee3a6d8d7e570cc123b0e9df5ecdf8c315c04d6d7c2f0edcd26e81dbd"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/earning_calls/main.py",
+      "sha256": "c752b5a5013258ad14da647b91320d6fba4ad6ed49e09b9e0aa5dc4003ce0663"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/earning_calls/utils.py",
+      "sha256": "29b49b0e18f1a9714ab963872cb838157905f91e5b1475284be97ff6fad44df2"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/news/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/news/_base.py",
+      "sha256": "32263fc56adb454ea14c79fda145a3dcf8b9c03b1f4062e770148cd6c2b69567"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/news/akshare_cctv.py",
+      "sha256": "a1201dd0490c49844423cadda2dad420b483405d8d831d234b7197c4355eb7a2"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/news/alliancenews_streaming.py",
+      "sha256": "9fc7e91973ef731774cbe3810ae0732a027cdf23f09f13a0face6908b4ec37cc"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/news/cnbc_streaming.py",
+      "sha256": "51c531d8c9ec13f3a44c5164e4154c8bc35234deccdf33bf3e424e5600db86a4"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/news/eastmoney_streaming.py",
+      "sha256": "6127df63d9adf37315298753355870269bea365bbf6abe327103728226021d3a"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/news/finnhub_date_range.py",
+      "sha256": "5df4cbb20c0c99ca9bed54fb59fc803a8ce5b53c30d8e14929dfa38b178dc06e"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/news/fmp_streaming.py",
+      "sha256": "631c4d5c3f92772eba5ba289a98e3b157dc7a192549485e2d1445ce7f1348646"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/news/gurufocus_streaming.py",
+      "sha256": "974c6df06f55ff746742f3d5df8030be8de55c79de50cffd1df3473c76528901"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/news/investorplace_streaming.py",
+      "sha256": "6956d08e9125bf4a4705dd68d9a79391006dc71c5c29f35e2e6c1b69764c6e0e"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/news/marketwatch_date_range.py",
+      "sha256": "f4d93a4192700f14e4122f54581be06d61265b9c87cdb997f0673ad28a24a042"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/news/marketwatch_streaming.py",
+      "sha256": "27e6e2ef1468b7bc32e5a82e1b90a815d6e2cc5832a2a2523f3108d5d44242f2"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/news/pennystocks_streaming.py",
+      "sha256": "ccb28bf110c1683b56354353763f3d892dc9143477752761a14453edd9a6f789"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/news/reuters_streaming.py",
+      "sha256": "baf3be653ac83a97a98fe38cd97148f95df00b62dbfe37e79ea02d58723e1391"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/news/seekingalpha_date_range.py",
+      "sha256": "6e7a1f3528a459ce4042ef1f2541f653f54f7983cf7dfd62e2a9bd9ab9eb1c31"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/news/sina_finance_date_range.py",
+      "sha256": "09ad00622d1480690e88392853ed453ea3505c820316308f355a2a2b4c23be68"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/news/talkmarkets_streaming.py",
+      "sha256": "6f18656c402483b23d4b3bf6a05f46e06308eca7c0e1910c32a9c5a44a7b3f92"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/news/thefly_streaming.py",
+      "sha256": "085f4ee910b9a7dfcc1f7f2988a8d9861f8705aef6228de8b46fe880ecad9170"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/news/tipranks_streaming.py",
+      "sha256": "782b315e4c723039443c3106e38d1d837c06a2cf74025f89677c03eccca535a5"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/news/tushare_major_news.py",
+      "sha256": "dd20525e2d37eef8d251d99899ffbf9948758938d93a901f1322a4c5b0042be5"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/news/yahoo_streaming.py",
+      "sha256": "6f11ecac2e7142503d9e8e02532eceebeddea0b61666d8a7af3d0280fb7ae176"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/news/yicai_streaming.py",
+      "sha256": "fe6f60d0c0a1585521d8a774d38bf5013e3e9672e330a10ed1cdc3ce3e78c928"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/sec_filings/__init__.py",
+      "sha256": "f96a522ab019b49f394b05911046a67fe00f800f3bfd91e4d864b5864db44dd1"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/sec_filings/main.py",
+      "sha256": "a27adbb91dd6c42db4f0405a06bcf996a0f2c0ef9228b6cada74d7d6751d0fbf"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/sec_filings/prepline_sec_filings/api/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/sec_filings/prepline_sec_filings/api/app.py",
+      "sha256": "9f7aeb30864c8c3f29b87a6c8e8a9100f05b09a23561d78d1905af1f28258bd9"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/sec_filings/prepline_sec_filings/api/section.py",
+      "sha256": "19905fca50afa8113e69bed26e2b202ed0f4e1043a91b09e901c1a5317244311"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/sec_filings/prepline_sec_filings/fetch.py",
+      "sha256": "3ea531aedbd378b8b9fa40fc654e03028d9994582edf55bbb570867d55766b30"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/sec_filings/prepline_sec_filings/sec_document.py",
+      "sha256": "ad835bab38ad72a1fa0b4ab7dad03ca919a6dd36f2361069f57f811f83e03598"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/sec_filings/prepline_sec_filings/sections.py",
+      "sha256": "dd1185ee604755fa38eea7debdec512ff636f3a893c51e8471bdb1b069cf019e"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/sec_filings/sec_filings.py",
+      "sha256": "a5c6b94a6e915e68c98642f1f4ea9a0aaf7f7e6ab047d33d1fe03c80b285893a"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/sec_filings/utils.py",
+      "sha256": "8690ffee143d3c6b9b60691b4de8c6ee7dff7b3b57893f5dfdde34f7c7565c37"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/social_media/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/social_media/_base.py",
+      "sha256": "2197a3fb87afb7d73be9f1dba1853a01e9757f7095a9818fa46e17327ff1622f"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/social_media/eastmoney_streaming.py",
+      "sha256": "6934ecfc960bdfcda98cbdcf3c5a725958832dec53263cb5d253031d37e7c779"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/social_media/facebook_streaming.py",
+      "sha256": "b4077acd7a37251b0cec65086941275c2e1d423c0552720be47d9bd7639cf842"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/social_media/finnhub_sentiment.py",
+      "sha256": "051e46f99e60eb15681e65e5ac48755adc58a478ef2e788de2525021a6ac1792"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/social_media/reddit_streaming.py",
+      "sha256": "129e8d9288f6ea6ed4a2b676663b621adb0f65d51f6962f9ea983d0e6fa563fd"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/social_media/stocktwits_streaming.py",
+      "sha256": "5902c49f4184ce697c6fffffd28b92ddcf0a2e7730ac902e60d39c3b3c655b30"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/social_media/twitter_date_range.py",
+      "sha256": "bf23f1974cfcf5ba04617abd6cfa37147484b65c494ba37987bd41a978056eff"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/social_media/weibo_date_range.py",
+      "sha256": "dace20b924de727708784608506027d5074c32318714987d51f7d9943e78819f"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/social_media/weibo_streaming.py",
+      "sha256": "662a3fb7dead053f8ea8a10adc46456caccdc1f92ccfcc7f32917fbfbf62520f"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/social_media/xueqiu_streaming.py",
+      "sha256": "8a99ce26873de7f98051905a868cf526895fc5dce51125875c72f193366f316a"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/trends/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/trends/_base.py",
+      "sha256": "e5e143bdcba359aafbc27e4c6ecc67444bb44c76357930a7b04e8399a2127c66"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/trends/baidu.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/data_sources/trends/google.py",
+      "sha256": "242b9982325bc3b0c2e27815704317d937b806e5ad9654776df11db062ee96ba"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/large_language_models/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/large_language_models/embeddings/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/large_language_models/embeddings/bert.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/large_language_models/embeddings/finbert.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/large_language_models/openai/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/large_language_models/openai/app4gpt_chat_agent.py",
+      "sha256": "32016ba494ca8e1952c481ea271846ba76f233b0d2155e2d1d9b28aa1993c852"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/large_language_models/openai/openai_chat_agent.py",
+      "sha256": "061f6d9630153d7e8e2713c0f402fdb8288caff765605393d46fb705a8ed1344"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/large_language_models/sentiment/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/large_language_models/sentiment/gpt3.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/large_language_models/sentiment/paml.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/finnlp/utils/get_proxy.py",
+      "sha256": "7a5f6515f0c34e1c488af7e4df95e94eb191f0dc69fdf66b1ea87ddca40aa6a6"
+    },
+    {
+      "path": "finrobot_autogen/FinNLP/setup.py",
+      "sha256": "b2954d7480b7b5955e623310bcd6bf05b5ca00d9109d0134aa8d04a060574c06"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/agents/__init__.py",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/agents/agent_library.py",
+      "sha256": "fb47002caf34c1b63adbb8e1493d530c7ee32d38a688e7a84b03917329d56c6d"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/agents/prompts.py",
+      "sha256": "6ec9a3c545f743fc0229ffcbc2af073b6b3b3d393e9a4c88ed4ce376e5f237bc"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/agents/utils.py",
+      "sha256": "610d023da64653b94e4069044c161bf5a6f3823b3b517d2a09a26ff82e256332"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/agents/workflow.py",
+      "sha256": "114b67ba3193e223eebe065280da374e7302205345aec8677dd52211778125fb"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/data_source/__init__.py",
+      "sha256": "2007bbe70d5681e0cbf4468d7af6209c2a08cf3f5e417f563144e2b14226440b"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/data_source/akshare_utils.py",
+      "sha256": "efde53424a79b9aaca1edc03a736f6906c278ea7ee6d0bed2b314bef8899efb8"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/data_source/cn_provider.py",
+      "sha256": "0d2a875c7a0a1a76ef6378f6a70cc57fc326e86a6a12a431a421067e561e491b"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/data_source/earnings_calls_src/__init__.py",
+      "sha256": "021d77508de7e45ce124b52953684764a52b97c17ed5ab7671b65f7ccb14794e"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/data_source/earnings_calls_src/earningsData.py",
+      "sha256": "177191b785b4ff867fb8df3d5ad92060a3a1bad796161c9b4a1a56d999023125"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/data_source/earnings_calls_src/main_earningsData.py",
+      "sha256": "2b6746e65d49460c4ec9a8a27131957dc94165c851aac8a459198f6e3791463f"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/data_source/filings_src/__init__.py",
+      "sha256": "bf1d5ad357dd26d7e0a41b0552ec7b9d21ff55616aa77d26be5f56eaeee664bf"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/data_source/filings_src/prepline_sec_filings/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/data_source/filings_src/prepline_sec_filings/api/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/data_source/filings_src/prepline_sec_filings/api/app.py",
+      "sha256": "f9e2430030ca46482a8804b6f01efbd0ffbeb81851ea8c798670b0eb2f6feafe"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/data_source/filings_src/prepline_sec_filings/api/section.py",
+      "sha256": "72548a0b39ef1f521ab110c52f92ce7751e5e1553841090227147b4652bf983c"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/data_source/filings_src/prepline_sec_filings/fetch.py",
+      "sha256": "f0291fb768bcc8aa1507ef139f3a6c06b610f6d672be79977dd2b255bd45f07b"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/data_source/filings_src/prepline_sec_filings/sec_document.py",
+      "sha256": "f5ebbee47573105040f49bfce634caa66b7733303154853a5c3842cd29c37dd1"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/data_source/filings_src/prepline_sec_filings/sections.py",
+      "sha256": "531a5da95b865ba3bbb8510003cca0fe4a34221b39f9f7bce3ddb9ed6345e3b6"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/data_source/filings_src/sec_filings.py",
+      "sha256": "cd4393c3540e81793a5cd8985260a0eb64902914bb46586cb58d48d92c53c091"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/data_source/filings_src/secData.py",
+      "sha256": "8f4a5de7c081a166b3b595a1df27977f0e1238eb7fc1388c7aaf9a7b303ac506"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/data_source/filings_src/section_names.py",
+      "sha256": "6de181a92d84de24a5f26a108d711d5ef603d545904a18fcda6f9bff1cc4c3fb"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/data_source/finance_data.py",
+      "sha256": "3e8c2e1c541dfbc20411137ebab4916ef66692e0ea346ce84d6ecb9e920a4e51"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/data_source/finnhub_utils.py",
+      "sha256": "a25e2c93c5840263253d1f1940199f886f798595c86ee9a684628bec3e12901b"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/data_source/finnlp_utils.py",
+      "sha256": "4a9b64242c0df64f62eaec085c0ec810af1f72eb2ac13233ef026044893c4c5a"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/data_source/fmp_utils.py",
+      "sha256": "766da4e06a4096a12f5552af346dd5ebfd299fb3d20ba55fd861b4329d304b16"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/data_source/marker_sec_src/__init__.py",
+      "sha256": "34c61de0a3a7391b47aa282cb757b2ac3d36138a210ee66ecc0bed441297461b"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/data_source/marker_sec_src/pdf_to_md.py",
+      "sha256": "b78ae32f83615d50f6bc432cdab4ceee1ed5a281684194864c04d55d633001e8"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/data_source/marker_sec_src/pdf_to_md_parallel.py",
+      "sha256": "d35793785fc990ded126164bb0fceea751b527d142bccbb3e2d5636f581c2133"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/data_source/marker_sec_src/sec_filings_to_pdf.py",
+      "sha256": "060901ccf69b63bd6e8ca54e7aea8b61a9b268df432bc627c1a40c616b638a8a"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/data_source/reddit_utils.py",
+      "sha256": "f86d349f2e2ce527a261e1609b5d633a3a2b743a13b4bbccdad930d82b4368df"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/data_source/sec_utils.py",
+      "sha256": "8be8664f05eb9d4d92be038d369db83ff28f8ab611d20f1796ddf2f4cb7be173"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/data_source/tushare_utils.py",
+      "sha256": "85348a0fd6487faf234916484e8801520815519e58ca7beaf31f1534342469fc"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/data_source/yfinance_utils.py",
+      "sha256": "5a10ae0998376f54108bab618e781ee44ce57ae06503109a29e2de2600daa11b"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/functional/__init__.py",
+      "sha256": "58011aa0dcfc1eaebdd3e14e30502bf53f7eb472fb1f5af9cc21e84b608f02cd"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/functional/analyzer.py",
+      "sha256": "12805f1fd680a64b547b984e44a9388f9b6fed307a8f25349fa0983d74b4d41d"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/functional/charting.py",
+      "sha256": "f63577ba04d3c6b59e60bb820373b5d2a01c923868346b32ab85ea8d85db38e6"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/functional/coding.py",
+      "sha256": "301415c90bd7d3224153114ce3d3c0b6879f57878a6d2dde3ddea83484c121ab"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/functional/factor_dsl.py",
+      "sha256": "5c1c5d6bcc6b43156caeb07a6268a013a68df686dd8696f892983103cc401710"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/functional/methodology.py",
+      "sha256": "423ba2cb6ebe1f07e860e14e757e276df1e38635066001c3fb39c07bbe09f878"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/functional/quant_dialogue.py",
+      "sha256": "e538eed1717f54056ad8433edb9e75dfb54f4c4dc13cf9a0dd81a48c3326c841"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/functional/quant_tools.py",
+      "sha256": "0a930ccf362b23ceda8c87cae572118ac5f89b32036d7f39814fb4bc114d44c1"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/functional/quantitative.py",
+      "sha256": "45a864402f2b26d3da9abf27fc62c45cd4317390aff25cd1df656d42a21fef2a"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/functional/rag.py",
+      "sha256": "ea2aaff52945172aceae5aa5f67eba7a6e943f30c661c5b74683ab8819c35e45"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/functional/ragquery.py",
+      "sha256": "a050927cdca2f991a4a8779f7413730b29dccb69269ecd4ab8a4f83b72881a10"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/functional/reportlab.py",
+      "sha256": "3d6d4ec7265c0e47d1aa6ac0c34448bd92ce32a5f3092d393fc22b8033450d33"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/functional/strategy_codegen.py",
+      "sha256": "63a2517ad607884a10720b67ef5c83193cb99f2ea783245f6b43c266e46f3853"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/functional/text.py",
+      "sha256": "b608058a674df7d2e9d98a301ad6309448c14f0b0376b2c4d54f5dbf9f513514"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/toolkits.py",
+      "sha256": "6cbd5959a2cbd73bc2cf3bb4a5d62614b95baaa1e609258001752ea195d999a1"
+    },
+    {
+      "path": "finrobot_autogen/finrobot/utils.py",
+      "sha256": "7d8b84b7d40c8a32f5854899d35f52bf25027efdf1957245799f4140aebec477"
+    },
+    {
+      "path": "finrobot_autogen/run_agent.py",
+      "sha256": "6843d8554e0ad9436b1d33a53d9dfe640e23c35f51f2f2a7ce73426ae6b727a7"
+    },
+    {
+      "path": "finrobot_autogen/test_module.py",
+      "sha256": "4579b4278e392de796b238aa98ddb4f44aa3a92a5265f06ee97a0fafa381d98f"
+    },
+    {
+      "path": "requirements-windows-py311.lock.txt",
+      "sha256": "22d168a4fd5ded284ea47af8219e0be1d4c41a4fb6c1f66f7185a562f6f5cde3"
+    },
+    {
+      "path": "run_factor_ideation.cmd",
+      "sha256": "b7f72ff1428f2d0d1ab535e3394fb9ba7303336c62ba078f76c2b78de3fb4bb6"
+    },
+    {
+      "path": "run_finrobot.cmd",
+      "sha256": "35fcfe98b68bd9cef462650e8b2f973dc6920319af2c5d088c0554107b877bfd"
+    },
+    {
+      "path": "run_generalization.cmd",
+      "sha256": "6677b60b5c452e30b1416e404316d1e29cf7473a2e257b769344010df0030c6c"
+    },
+    {
+      "path": "run_quant_v2.cmd",
+      "sha256": "a0c918ef4a04f72d0da464eb25cedba4e1011a0ab350682b9db15b1b9a43c78d"
+    },
+    {
+      "path": "run_stability.cmd",
+      "sha256": "97b4d1e2d17bdec58653a39fe0484a0105a1b94b94f7dbdad2059041d7b15721"
+    },
+    {
+      "path": "scripts/evaluate_agent_methodology.py",
+      "sha256": "82249239a459cafcb060edfed2d0869d33e62a07217bd1e1e29c3cae81e1e824"
+    },
+    {
+      "path": "scripts/package_v2.py",
+      "sha256": "64fd247056dcf2e031a37e088b9556c522ba75f63a344da956bd65a9223fd2e6"
+    },
+    {
+      "path": "scripts/validate_quant_dialogue.py",
+      "sha256": "2e588578641ff57f3bf8f112f838093ae1df80ddf4b131c8afc903b8de8b9fb8"
+    },
+    {
+      "path": "scripts/validate_v2.py",
+      "sha256": "2d2270540ec5d7cec682bcbca72121656b6c18f54348f6e26c8faa23ae1ea235"
+    },
+    {
+      "path": "setup.py",
+      "sha256": "0bf351a2d06d03782bba110c75ffa6f9458216303419bc455e6e23c5cf70b30c"
+    },
+    {
+      "path": "tests/test_console_output.py",
+      "sha256": "04f6170abe0c99f9c1033578f441e6f36b2821cd6a133d950728c1115014f06d"
+    },
+    {
+      "path": "tests/test_factor_dsl.py",
+      "sha256": "3985c51e5f59d0246a992f9982c57243694caa2190f85cefa0ec77cd8da9c16f"
+    },
+    {
+      "path": "tests/test_factor_ideation.py",
+      "sha256": "0e23ab58edfdca92246f2f66e87338941ad915770fefc13be1817f2a3415104f"
+    },
+    {
+      "path": "tests/test_methodology.py",
+      "sha256": "37e84a0a4b7b4221602fad2e0842dfad6895170b5b39f693e8e6522a9695f19b"
+    },
+    {
+      "path": "tests/test_quant_dialogue.py",
+      "sha256": "3c6dddd9ea622979cb4311510192cff378ac95ad0ca09c31d83995d81c4b38f0"
+    },
+    {
+      "path": "tests/test_quant_v2.py",
+      "sha256": "b53cb86e68bbf56098fa9dd0f69e1bee4827a9ba04ca2621888e47bf378a2800"
+    },
+    {
+      "path": "tests/test_stability.py",
+      "sha256": "e472250bb9b19a33061078a4712e1dfe3900c53a713c9b31fe60b2617e99d446"
+    }
+  ],
+  "scope": "Offline verification and replay of saved model outputs; not new generations or new model conversations."
+}

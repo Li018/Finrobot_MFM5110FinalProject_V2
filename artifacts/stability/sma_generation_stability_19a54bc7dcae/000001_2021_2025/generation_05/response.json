@@ -1,0 +1,13 @@
+{
+  "type": "json_object",
+  "reasoning": "策略为固定参数的双均线趋势跟随：以收盘价的 trailing SMA(20) 与 SMA(60) 比较，快线在上返回 1（持有），否则返回 0（空仓）。rolling 默认 min_periods 等于窗口长度，因此前 59 个交易日预热期信号为 0，不做任何提前 shift；执行器按前一日信号在下一交易日开盘成交，避免使用未来信息。参数固定为 20/60，不做收益优化或参数搜索，仅用于检验该经典趋势规则在 000001（2021-01-04 至 2025-12-31，前复权）上的历史表现，并与买入持有对照。",
+  "risk_notes": [
+    "单标的回测，结果高度依赖 000001 自身走势，不能外推到组合或其他股票。",
+    "固定 20/60 参数未做样本外或参数敏感性检验，存在过拟合与参数选择偏差风险。",
+    "使用前复权数据，复权方式与分红处理会影响历史价格与信号，实际交易成本与税项未完全建模。",
+    "成交模型为简化假设（次日开盘、固定滑点与佣金、整手 100 股），未考虑涨跌停、停牌、流动性与冲击成本。",
+    "max_position 为开仓预算比例，持仓权重随价格漂移，不构成持续硬性仓位上限。",
+    "历史回测不代表未来收益保证，趋势策略在震荡市中可能频繁止损或长期空仓。"
+  ],
+  "code": "def generate_signals(data, fast, slow):\n    close = data['Close']\n    fast_ma = close.rolling(fast).mean()\n    slow_ma = close.rolling(slow).mean()\n    signals = (fast_ma > slow_ma).astype(int)\n    return signals\n\n\ndef run_strategy(data, config):\n    signals = generate_signals(data, config['fast'], config['slow'])\n    return run_signal_backtest(data, signals, config)\n"
+}

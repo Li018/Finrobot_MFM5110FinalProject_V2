@@ -2,7 +2,7 @@
 import json
 import os
 import unittest
-from datetime import datetime
+from uuid import uuid4
 from pathlib import Path
 from unittest.mock import patch
 
@@ -18,7 +18,7 @@ from finrobot.functional.quant_dialogue import QuantDialogueTools as Tools
 
 class DialogueTests(unittest.TestCase):
     def setUp(self):
-        self.folder = ROOT / "tmp/dialogue_tests" / datetime.now().strftime("%Y%m%d_%H%M%S%f")
+        self.folder = ROOT / "tmp/dialogue_tests" / uuid4().hex
         self.folder.mkdir(parents=True)
         dates = pd.bdate_range("2023-01-02", periods=160)
         prices = 10 + np.sin(np.arange(160) / 7)

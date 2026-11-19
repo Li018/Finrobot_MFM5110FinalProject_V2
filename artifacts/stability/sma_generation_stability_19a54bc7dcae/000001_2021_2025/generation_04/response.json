@@ -1,0 +1,12 @@
+{
+  "type": "json_object",
+  "reasoning": "策略为固定参数的双均线趋势跟随：以收盘价的 trailing SMA(20) 与 SMA(60) 比较，快线在上时信号为 1（持有多头），否则为 0（空仓）。rolling 使用默认 min_periods 等于窗口长度，因此前 59 个交易日预热期信号为 0，不产生交易。信号不做 shift，执行器按前一日信号在下一交易日开盘执行，避免使用未来信息。该策略不针对历史收益做参数优化，仅用于检验趋势跟随在 000001（平安银行，前复权）2021-01-04 至 2025-12-31 区间内的表现，并与买入持有对照。",
+  "risk_notes": [
+    "单标的回测，结果高度依赖 000001 个股走势，不能代表组合或全市场表现。",
+    "固定 20/60 参数未做样本外优化，换参数或换区间结果可能显著不同，存在参数敏感性。",
+    "使用前复权数据，分红送转处理与真实持仓现金流不完全一致；成交按开盘价加滑点、佣金含最低 5 元，属简化模型，未考虑涨跌停、停牌、流动性与冲击成本。",
+    "max_position 为开仓预算比例，持仓权重随价格漂移，不构成持续硬性仓位上限。",
+    "历史回测结果不代表未来收益，不构成投资建议。"
+  ],
+  "code": "def generate_signals(data, fast, slow):\n    close = data['Close']\n    fast_ma = close.rolling(fast).mean()\n    slow_ma = close.rolling(slow).mean()\n    signals = (fast_ma > slow_ma).astype(int)\n    return signals\n\n\ndef run_strategy(data, config):\n    signals = generate_signals(data, config['fast'], config['slow'])\n    return run_signal_backtest(data, signals, config)"
+}

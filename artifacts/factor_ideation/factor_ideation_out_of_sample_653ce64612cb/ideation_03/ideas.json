@@ -1,0 +1,79 @@
+{
+  "ok": true,
+  "returned_ideas": 4,
+  "valid_ideas": 4,
+  "ideas": [
+    {
+      "name": "双均线趋势跟随",
+      "hypothesis": "价格中期趋势具有持续性，短期均线上穿长期均线时持有，反映资金逐步流入的趋势确认。",
+      "signal": "sma(close, 20) > sma(close, 60)",
+      "parameters": {
+        "fast": 20,
+        "slow": 60
+      },
+      "risk_notes": [
+        "震荡市中均线频繁交叉导致反复止损和交易成本累积",
+        "样本内参数选择可能过拟合，20/60并非普适最优",
+        "单标的趋势策略在横盘或结构性下跌中可能长期空仓或亏损"
+      ],
+      "valid": true,
+      "observations": 787,
+      "long_days": 197
+    },
+    {
+      "name": "量价齐升确认",
+      "hypothesis": "价格上涨需成交量配合，放量上涨代表真实需求而非短期噪声，量价同步时趋势更可靠。",
+      "signal": "close > sma(close, 20) and volume > sma(volume, 20)",
+      "parameters": {
+        "price_window": 20,
+        "volume_window": 20
+      },
+      "risk_notes": [
+        "放量也可能是恐慌抛售或事件驱动，量价关系并非稳定",
+        "成交量均值受极端日影响，窗口选择敏感",
+        "单标的成交量特征受流通盘和消息面影响大，泛化性有限"
+      ],
+      "valid": true,
+      "observations": 787,
+      "long_days": 117
+    },
+    {
+      "name": "短期反转低吸",
+      "hypothesis": "短期超跌后存在均值回复，价格显著低于近期均值且未处于极端下跌趋势时买入，捕捉过度反应修复。",
+      "signal": "close < sma(close, 20) and ret(close, 5) > -0.08 and close > sma(close, 120)",
+      "parameters": {
+        "mean_window": 20,
+        "return_window": 5,
+        "return_floor": -0.08,
+        "trend_window": 120
+      },
+      "risk_notes": [
+        "反转在单边下跌中会持续接飞刀，趋势过滤不能完全避免",
+        "阈值-0.08为经验设定，存在样本内过拟合风险",
+        "单标的反转效应强弱随市场风格切换而变化"
+      ],
+      "valid": true,
+      "observations": 787,
+      "long_days": 53
+    },
+    {
+      "name": "低波动趋势持有",
+      "hypothesis": "在趋势向上且波动可控时持有，规避高波动阶段的回撤，风险调整后收益更稳健。",
+      "signal": "close > sma(close, 60) and std(ret(close, 1), 20) < 0.03",
+      "parameters": {
+        "trend_window": 60,
+        "vol_window": 20,
+        "vol_cap": 0.03
+      },
+      "risk_notes": [
+        "波动率阈值0.03依赖标的波动水平，跨标的需重新校准",
+        "低波动过滤可能错过快速上涨行情，降低收益弹性",
+        "波动率聚集特性使阈值在极端市场阶段失效"
+      ],
+      "valid": true,
+      "observations": 787,
+      "long_days": 134
+    }
+  ],
+  "errors": []
+}

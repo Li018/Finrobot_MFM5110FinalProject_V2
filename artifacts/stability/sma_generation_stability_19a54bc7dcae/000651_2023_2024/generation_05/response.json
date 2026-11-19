@@ -1,0 +1,13 @@
+{
+  "type": "json_object",
+  "reasoning": "策略为固定参数的双均线趋势跟随：以收盘价计算 10 日与 30 日简单移动平均，当 SMA(10) > SMA(30) 时输出信号 1（持有多头），否则输出 0（空仓）。信号不做 shift，执行器按前一日信号在下一交易日开盘成交，避免使用未来信息。rolling 默认 min_periods 等于窗口长度，因此前 29 个交易日处于预热期，信号为 0，不会在均线未形成时开仓。该策略不针对历史收益做参数优化，仅检验趋势跟随在 000651（2023-01-03 至 2024-12-31，前复权）上的表现，并与买入持有对照。",
+  "risk_notes": [
+    "单标的回测，结果高度依赖 000651 个股走势，不能代表组合或市场整体表现。",
+    "固定 10/30 均线参数未做样本外优化，存在参数敏感性与过拟合风险，历史表现不代表未来收益。",
+    "使用前复权数据，复权方式与真实分红、送转处理可能存在差异。",
+    "成交模型为简化假设：佣金 0.0003、最低 5 元、滑点 0.0005、按 100 股整手，未完整刻画涨跌停、停牌、流动性与冲击成本。",
+    "max_position 为开仓预算比例，持仓权重随价格漂移，不构成持续硬性仓位上限。",
+    "均线策略在震荡市易频繁反向交易，产生较多交易成本与假信号。"
+  ],
+  "code": "def generate_signals(data, fast, slow):\n    close = data['Close']\n    fast_ma = close.rolling(fast).mean()\n    slow_ma = close.rolling(slow).mean()\n    signals = (fast_ma > slow_ma).astype(int)\n    return signals\n\ndef run_strategy(data, config):\n    signals = generate_signals(data, config['fast'], config['slow'])\n    return run_signal_backtest(data, signals, config)"
+}

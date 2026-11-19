@@ -1,0 +1,77 @@
+{
+  "ok": true,
+  "returned_ideas": 4,
+  "valid_ideas": 4,
+  "ideas": [
+    {
+      "name": "双均线趋势跟随",
+      "hypothesis": "价格中期趋势具有持续性，短期均线上穿长期均线代表多头动能占优，持有可捕捉趋势段收益。",
+      "signal": "sma(close, 20) > sma(close, 60)",
+      "parameters": {
+        "fast": 20,
+        "slow": 60
+      },
+      "risk_notes": [
+        "震荡市中均线频繁交叉，产生反复开平仓的交易成本损耗",
+        "趋势反转初期信号滞后，可能承受较大回撤",
+        "单标的回测，结论不能外推到其他股票或组合"
+      ],
+      "valid": true,
+      "observations": 787,
+      "long_days": 197
+    },
+    {
+      "name": "量价确认突破",
+      "hypothesis": "价格上涨若伴随成交量放大，说明资金参与度提升，趋势更可能延续；缩量上涨易衰竭。",
+      "signal": "close > sma(close, 20) and volume > sma(volume, 20)",
+      "parameters": {
+        "price_window": 20,
+        "volume_window": 20
+      },
+      "risk_notes": [
+        "成交量受公告、指数调整等事件扰动，单日放量可能是噪声",
+        "放量下跌或高位放量出货时该信号仍可能误判为多头",
+        "仅用日频量能，无法区分主动买卖盘，存在样本内过拟合风险"
+      ],
+      "valid": true,
+      "observations": 787,
+      "long_days": 117
+    },
+    {
+      "name": "短期反转低吸",
+      "hypothesis": "短期超跌后存在均值回复，价格显著低于近期均值且未处于极端下跌趋势时，反弹概率较高。",
+      "signal": "ret(close, 5) < 0 and close > sma(close, 60)",
+      "parameters": {
+        "ret_window": 5,
+        "trend_window": 60
+      },
+      "risk_notes": [
+        "强下跌趋势中短期反弹信号可能连续失败，形成接飞刀",
+        "反转逻辑在动量主导的市场阶段会系统性失效",
+        "参数窗口固定，未做多标的稳健性检验"
+      ],
+      "valid": true,
+      "observations": 787,
+      "long_days": 70
+    },
+    {
+      "name": "低波动趋势过滤",
+      "hypothesis": "在趋势向上且波动率处于可控区间时持有，可过滤掉高波动趋势末端的剧烈回撤，提升风险调整后收益。",
+      "signal": "close > sma(close, 60) and std(ret(close, 1), 20) < std(ret(close, 1), 60)",
+      "parameters": {
+        "trend_window": 60,
+        "vol_short": 20,
+        "vol_long": 60
+      },
+      "risk_notes": [
+        "波动率压缩后可能伴随方向选择，趋势判断错误时损失集中",
+        "低波动阶段也可能对应横盘，信号持有期收益有限",
+        "波动率阈值用相对比较，极端行情下可能长时间空仓或满仓"
+      ],
+      "valid": true,
+      "observations": 787,
+      "long_days": 114
+    }
+  ],
+  "errors": []
+}

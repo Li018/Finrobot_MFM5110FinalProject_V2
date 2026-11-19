@@ -1,0 +1,11 @@
+{
+  "reasoning": "策略为固定参数的双均线趋势跟随：以收盘价计算 20 日与 60 日简单移动平均，当 SMA20 高于 SMA60 时产生做多信号（1），否则空仓（0）。信号不做 shift，执行器按前一日信号在下一交易日开盘成交，避免使用未来信息。参数固定为 20/60，不做收益优化，仅用于检验该标的在 2025 年区间内趋势跟随相对买入持有的表现。初始资金 100000 元，开仓预算比例 0.8，按 100 股整手交易，含 0.03% 佣金（最低 5 元）与 0.05% 滑点。",
+  "risk_notes": [
+    "单标的回测，结果高度依赖 600031 在 2025 年的特定行情，不能外推到其他标的或未来区间。",
+    "均线参数固定为 20/60，未做参数敏感性分析，换参数可能显著改变收益与回撤。",
+    "使用前复权数据，复权方式与真实交易价格存在差异；成交模型为简化的开盘价加滑点，未考虑涨跌停、停牌、流动性与冲击成本。",
+    "max_position 为开仓预算比例，持仓权重会随价格漂移，不构成持续硬性仓位上限。",
+    "单次历史回测不构成未来收益保证。"
+  ],
+  "code": "def generate_signals(data, fast, slow):\n    close = data['Close']\n    fast_ma = close.rolling(fast).mean()\n    slow_ma = close.rolling(slow).mean()\n    signals = (fast_ma > slow_ma).astype(int)\n    return signals\n\n\ndef run_strategy(data, config):\n    signals = generate_signals(data, config['fast'], config['slow'])\n    return run_signal_backtest(data, signals, config)"
+}

@@ -1,0 +1,2239 @@
+{
+  "ok": true,
+  "design": "The model proposes factor expressions using only data from the ideation window (2021-2023) for 000001. Every valid expression is then replayed unchanged on 2024-2025 for three symbols. No evaluation-window data is shown to the model.",
+  "limits": "A finite-case out-of-sample feasibility check, not evidence of investment alpha. Costs, execution and adjustment follow the V2 backtest assumptions.",
+  "model": "deepseek-flash",
+  "repeats": 3,
+  "completed_generations": 3,
+  "successful_generations": 3,
+  "generation_success_rate": 1.0,
+  "generation_complete": true,
+  "missing_attempts": [],
+  "failed_attempts": [],
+  "idea_count_requested": 4,
+  "total_ideas_requested": 12,
+  "returned_ideas": 12,
+  "valid_ideas": 12,
+  "idea_validation_rate": 1.0,
+  "idea_delivery_rate": 1.0,
+  "unique_valid_signals": 9,
+  "duplicate_ideas": 3,
+  "duplicate_rate": 0.25,
+  "ideation": {
+    "symbol": "000001",
+    "window": {
+      "start": "2021-01-01",
+      "end": "2023-12-31"
+    }
+  },
+  "evaluation": {
+    "symbols": [
+      "000001",
+      "000651",
+      "600031"
+    ],
+    "window": {
+      "start": "2024-01-01",
+      "end": "2025-12-31"
+    },
+    "cases_per_idea": 3,
+    "baselines": {
+      "000001": {
+        "sma": {
+          "initial_cash": 100000.0,
+          "final_equity": 85421.7539577501,
+          "total_return": -0.14578246042249898,
+          "annual_return": -0.0787651305792002,
+          "sharpe": -0.3921462637865002,
+          "max_drawdown": 0.3170271614603374,
+          "observations": 485,
+          "return_periods": 484,
+          "executed_orders": 16,
+          "total_commission": 361.2185422499999,
+          "min_cash": 16328.65956890006
+        },
+        "buy_hold": {
+          "initial_cash": 100000.0,
+          "final_equity": 142650.52730110005,
+          "total_return": 0.4265052730110006,
+          "annual_return": 0.20316213929744276,
+          "sharpe": 0.9793068735179621,
+          "max_drawdown": 0.14637156432982212,
+          "observations": 485,
+          "return_periods": 484,
+          "executed_orders": 1,
+          "total_commission": 23.809698899999994,
+          "min_cash": 20610.527301100014
+        },
+        "observations": 485
+      },
+      "000651": {
+        "sma": {
+          "initial_cash": 100000.0,
+          "final_equity": 114122.46244210006,
+          "total_return": 0.1412246244210007,
+          "annual_return": 0.07120088048595608,
+          "sharpe": 0.45693231572992765,
+          "max_drawdown": 0.2728036584086402,
+          "observations": 485,
+          "return_periods": 484,
+          "executed_orders": 11,
+          "total_commission": 307.33355789999996,
+          "min_cash": 20448.39767680001
+        },
+        "buy_hold": {
+          "initial_cash": 100000.0,
+          "final_equity": 144619.4730784,
+          "total_return": 0.4461947307840002,
+          "annual_return": 0.21178021662013058,
+          "sharpe": 0.9526207389108472,
+          "max_drawdown": 0.21107538345347787,
+          "observations": 485,
+          "return_periods": 484,
+          "executed_orders": 1,
+          "total_commission": 23.4549216,
+          "min_cash": 21793.4730784
+        },
+        "observations": 485
+      },
+      "600031": {
+        "sma": {
+          "initial_cash": 100000.0,
+          "final_equity": 134658.20449275,
+          "total_return": 0.3465820449274999,
+          "annual_return": 0.1675796292709235,
+          "sharpe": 0.8830572201082861,
+          "max_drawdown": 0.1167647013405323,
+          "observations": 485,
+          "return_periods": 484,
+          "executed_orders": 8,
+          "total_commission": 235.04500725,
+          "min_cash": 20941.792150750003
+        },
+        "buy_hold": {
+          "initial_cash": 100000.0,
+          "final_equity": 152163.1816363,
+          "total_return": 0.521631816363,
+          "annual_return": 0.2442897315062842,
+          "sharpe": 0.9915939222747762,
+          "max_drawdown": 0.18876689130255597,
+          "observations": 485,
+          "return_periods": 484,
+          "executed_orders": 1,
+          "total_commission": 23.939363699999998,
+          "min_cash": 20178.1816363
+        },
+        "observations": 485
+      }
+    }
+  },
+  "out_of_sample_comparisons": 27,
+  "wins_vs_buy_hold": 0,
+  "wins_vs_sma": 12,
+  "out_of_sample_win_rate_vs_buy_hold": 0.0,
+  "out_of_sample_win_rate_vs_sma": 0.4444,
+  "per_idea": [
+    {
+      "name": "双均线趋势跟随",
+      "signal": "sma(close, 20) > sma(close, 60)",
+      "hypothesis": "价格中期趋势具有持续性，短期均线上穿长期均线代表多头动能占优，持有可捕捉趋势段收益。",
+      "parameters": {
+        "fast": 20,
+        "slow": 60
+      },
+      "risk_notes": [
+        "震荡市中均线频繁交叉，产生反复开平仓的交易成本损耗",
+        "趋势反转初期信号滞后，可能承受较大回撤",
+        "单标的回测，结论不能外推到其他股票或组合"
+      ],
+      "generated_times": 3,
+      "in_sample": {
+        "symbol": "000001",
+        "window": {
+          "start": "2021-01-01",
+          "end": "2023-12-31"
+        },
+        "observations": 727,
+        "idea": {
+          "initial_cash": 100000.0,
+          "final_equity": 93787.47838415002,
+          "total_return": -0.06212521615849986,
+          "annual_return": -0.02201707237092232,
+          "sharpe": -0.02968736473873592,
+          "max_drawdown": 0.30819712805200394,
+          "observations": 727,
+          "return_periods": 726,
+          "executed_orders": 12,
+          "total_commission": 290.0711158499999,
+          "min_cash": 19870.110468550007
+        },
+        "sma": {
+          "initial_cash": 100000.0,
+          "final_equity": 93787.47838415002,
+          "total_return": -0.06212521615849986,
+          "annual_return": -0.02201707237092232,
+          "sharpe": -0.02968736473873592,
+          "max_drawdown": 0.30819712805200394,
+          "observations": 727,
+          "return_periods": 726,
+          "executed_orders": 12,
+          "total_commission": 290.0711158499999,
+          "min_cash": 19870.110468550007
+        },
+        "buy_hold": {
+          "initial_cash": 100000.0,
+          "final_equity": 57504.584911900005,
+          "total_return": -0.42495415088099997,
+          "annual_return": -0.17473972359590284,
+          "sharpe": -0.5032813623025892,
+          "max_drawdown": 0.5863088994979943,
+          "observations": 727,
+          "return_periods": 726,
+          "executed_orders": 1,
+          "total_commission": 23.788088099999996,
+          "min_cash": 20682.58491190001
+        },
+        "audit": {
+          "ok": true,
+          "errors": [],
+          "ledger_rows": 727
+        },
+        "long_fraction": 0.2696
+      },
+      "out_of_sample": {
+        "000001": {
+          "symbol": "000001",
+          "window": {
+            "start": "2024-01-01",
+            "end": "2025-12-31"
+          },
+          "observations": 485,
+          "idea": {
+            "initial_cash": 100000.0,
+            "final_equity": 85421.7539577501,
+            "total_return": -0.14578246042249898,
+            "annual_return": -0.0787651305792002,
+            "sharpe": -0.3921462637865002,
+            "max_drawdown": 0.3170271614603374,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 16,
+            "total_commission": 361.2185422499999,
+            "min_cash": 16328.65956890006
+          },
+          "sma": {
+            "initial_cash": 100000.0,
+            "final_equity": 85421.7539577501,
+            "total_return": -0.14578246042249898,
+            "annual_return": -0.0787651305792002,
+            "sharpe": -0.3921462637865002,
+            "max_drawdown": 0.3170271614603374,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 16,
+            "total_commission": 361.2185422499999,
+            "min_cash": 16328.65956890006
+          },
+          "buy_hold": {
+            "initial_cash": 100000.0,
+            "final_equity": 142650.52730110005,
+            "total_return": 0.4265052730110006,
+            "annual_return": 0.20316213929744276,
+            "sharpe": 0.9793068735179621,
+            "max_drawdown": 0.14637156432982212,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 1,
+            "total_commission": 23.809698899999994,
+            "min_cash": 20610.527301100014
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "long_fraction": 0.5938
+        },
+        "000651": {
+          "symbol": "000651",
+          "window": {
+            "start": "2024-01-01",
+            "end": "2025-12-31"
+          },
+          "observations": 485,
+          "idea": {
+            "initial_cash": 100000.0,
+            "final_equity": 114122.46244210006,
+            "total_return": 0.1412246244210007,
+            "annual_return": 0.07120088048595608,
+            "sharpe": 0.45693231572992765,
+            "max_drawdown": 0.2728036584086402,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 11,
+            "total_commission": 307.33355789999996,
+            "min_cash": 20448.39767680001
+          },
+          "sma": {
+            "initial_cash": 100000.0,
+            "final_equity": 114122.46244210006,
+            "total_return": 0.1412246244210007,
+            "annual_return": 0.07120088048595608,
+            "sharpe": 0.45693231572992765,
+            "max_drawdown": 0.2728036584086402,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 11,
+            "total_commission": 307.33355789999996,
+            "min_cash": 20448.39767680001
+          },
+          "buy_hold": {
+            "initial_cash": 100000.0,
+            "final_equity": 144619.4730784,
+            "total_return": 0.4461947307840002,
+            "annual_return": 0.21178021662013058,
+            "sharpe": 0.9526207389108472,
+            "max_drawdown": 0.21107538345347787,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 1,
+            "total_commission": 23.4549216,
+            "min_cash": 21793.4730784
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "long_fraction": 0.6433
+        },
+        "600031": {
+          "symbol": "600031",
+          "window": {
+            "start": "2024-01-01",
+            "end": "2025-12-31"
+          },
+          "observations": 485,
+          "idea": {
+            "initial_cash": 100000.0,
+            "final_equity": 134658.20449275,
+            "total_return": 0.3465820449274999,
+            "annual_return": 0.1675796292709235,
+            "sharpe": 0.8830572201082861,
+            "max_drawdown": 0.1167647013405323,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 8,
+            "total_commission": 235.04500725,
+            "min_cash": 20941.792150750003
+          },
+          "sma": {
+            "initial_cash": 100000.0,
+            "final_equity": 134658.20449275,
+            "total_return": 0.3465820449274999,
+            "annual_return": 0.1675796292709235,
+            "sharpe": 0.8830572201082861,
+            "max_drawdown": 0.1167647013405323,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 8,
+            "total_commission": 235.04500725,
+            "min_cash": 20941.792150750003
+          },
+          "buy_hold": {
+            "initial_cash": 100000.0,
+            "final_equity": 152163.1816363,
+            "total_return": 0.521631816363,
+            "annual_return": 0.2442897315062842,
+            "sharpe": 0.9915939222747762,
+            "max_drawdown": 0.18876689130255597,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 1,
+            "total_commission": 23.939363699999998,
+            "min_cash": 20178.1816363
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "long_fraction": 0.5876
+        }
+      },
+      "mean_out_of_sample_return": 0.114008,
+      "beats_buy_hold_cases": 0,
+      "beats_sma_cases": 0,
+      "evaluated_cases": 3
+    },
+    {
+      "name": "量价确认突破",
+      "signal": "close > sma(close, 20) and volume > sma(volume, 20)",
+      "hypothesis": "价格上涨若伴随成交量放大，说明资金参与度提升，趋势更可能延续；缩量上涨易衰竭。",
+      "parameters": {
+        "price_window": 20,
+        "volume_window": 20
+      },
+      "risk_notes": [
+        "成交量受公告、指数调整等事件扰动，单日放量可能是噪声",
+        "放量下跌或高位放量出货时该信号仍可能误判为多头",
+        "仅用日频量能，无法区分主动买卖盘，存在样本内过拟合风险"
+      ],
+      "generated_times": 2,
+      "in_sample": {
+        "symbol": "000001",
+        "window": {
+          "start": "2021-01-01",
+          "end": "2023-12-31"
+        },
+        "observations": 727,
+        "idea": {
+          "initial_cash": 100000.0,
+          "final_equity": 91556.13436050055,
+          "total_return": -0.08443865639499448,
+          "annual_return": -0.030157016492789124,
+          "sharpe": -0.22503735877768397,
+          "max_drawdown": 0.2661039104573317,
+          "observations": 727,
+          "return_periods": 726,
+          "executed_orders": 103,
+          "total_commission": 2413.4566395,
+          "min_cash": 17988.644279000287
+        },
+        "sma": {
+          "initial_cash": 100000.0,
+          "final_equity": 93787.47838415002,
+          "total_return": -0.06212521615849986,
+          "annual_return": -0.02201707237092232,
+          "sharpe": -0.02968736473873592,
+          "max_drawdown": 0.30819712805200394,
+          "observations": 727,
+          "return_periods": 726,
+          "executed_orders": 12,
+          "total_commission": 290.0711158499999,
+          "min_cash": 19870.110468550007
+        },
+        "buy_hold": {
+          "initial_cash": 100000.0,
+          "final_equity": 57504.584911900005,
+          "total_return": -0.42495415088099997,
+          "annual_return": -0.17473972359590284,
+          "sharpe": -0.5032813623025892,
+          "max_drawdown": 0.5863088994979943,
+          "observations": 727,
+          "return_periods": 726,
+          "executed_orders": 1,
+          "total_commission": 23.788088099999996,
+          "min_cash": 20682.58491190001
+        },
+        "audit": {
+          "ok": true,
+          "errors": [],
+          "ledger_rows": 727
+        },
+        "long_fraction": 0.1472
+      },
+      "out_of_sample": {
+        "000001": {
+          "symbol": "000001",
+          "window": {
+            "start": "2024-01-01",
+            "end": "2025-12-31"
+          },
+          "observations": 485,
+          "idea": {
+            "initial_cash": 100000.0,
+            "final_equity": 116620.59632905036,
+            "total_return": 0.16620596329050352,
+            "annual_return": 0.08334624660930579,
+            "sharpe": 0.6332716355606943,
+            "max_drawdown": 0.1355106006047877,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 96,
+            "total_commission": 2589.8991709500006,
+            "min_cash": 19697.59360165002
+          },
+          "sma": {
+            "initial_cash": 100000.0,
+            "final_equity": 85421.7539577501,
+            "total_return": -0.14578246042249898,
+            "annual_return": -0.0787651305792002,
+            "sharpe": -0.3921462637865002,
+            "max_drawdown": 0.3170271614603374,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 16,
+            "total_commission": 361.2185422499999,
+            "min_cash": 16328.65956890006
+          },
+          "buy_hold": {
+            "initial_cash": 100000.0,
+            "final_equity": 142650.52730110005,
+            "total_return": 0.4265052730110006,
+            "annual_return": 0.20316213929744276,
+            "sharpe": 0.9793068735179621,
+            "max_drawdown": 0.14637156432982212,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 1,
+            "total_commission": 23.809698899999994,
+            "min_cash": 20610.527301100014
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "long_fraction": 0.2742
+        },
+        "000651": {
+          "symbol": "000651",
+          "window": {
+            "start": "2024-01-01",
+            "end": "2025-12-31"
+          },
+          "observations": 485,
+          "idea": {
+            "initial_cash": 100000.0,
+            "final_equity": 121034.06741515032,
+            "total_return": 0.21034067415150326,
+            "annual_return": 0.10450269945024737,
+            "sharpe": 0.8373395345636874,
+            "max_drawdown": 0.1391441584318005,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 92,
+            "total_commission": 2650.09708485,
+            "min_cash": 20576.500095999992
+          },
+          "sma": {
+            "initial_cash": 100000.0,
+            "final_equity": 114122.46244210006,
+            "total_return": 0.1412246244210007,
+            "annual_return": 0.07120088048595608,
+            "sharpe": 0.45693231572992765,
+            "max_drawdown": 0.2728036584086402,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 11,
+            "total_commission": 307.33355789999996,
+            "min_cash": 20448.39767680001
+          },
+          "buy_hold": {
+            "initial_cash": 100000.0,
+            "final_equity": 144619.4730784,
+            "total_return": 0.4461947307840002,
+            "annual_return": 0.21178021662013058,
+            "sharpe": 0.9526207389108472,
+            "max_drawdown": 0.21107538345347787,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 1,
+            "total_commission": 23.4549216,
+            "min_cash": 21793.4730784
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "long_fraction": 0.2206
+        },
+        "600031": {
+          "symbol": "600031",
+          "window": {
+            "start": "2024-01-01",
+            "end": "2025-12-31"
+          },
+          "observations": 485,
+          "idea": {
+            "initial_cash": 100000.0,
+            "final_equity": 108319.70633120055,
+            "total_return": 0.08319706331200538,
+            "annual_return": 0.0424874454594899,
+            "sharpe": 0.3664100649842756,
+            "max_drawdown": 0.13828857101101377,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 117,
+            "total_commission": 2918.7416688000003,
+            "min_cash": 18552.861814200136
+          },
+          "sma": {
+            "initial_cash": 100000.0,
+            "final_equity": 134658.20449275,
+            "total_return": 0.3465820449274999,
+            "annual_return": 0.1675796292709235,
+            "sharpe": 0.8830572201082861,
+            "max_drawdown": 0.1167647013405323,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 8,
+            "total_commission": 235.04500725,
+            "min_cash": 20941.792150750003
+          },
+          "buy_hold": {
+            "initial_cash": 100000.0,
+            "final_equity": 152163.1816363,
+            "total_return": 0.521631816363,
+            "annual_return": 0.2442897315062842,
+            "sharpe": 0.9915939222747762,
+            "max_drawdown": 0.18876689130255597,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 1,
+            "total_commission": 23.939363699999998,
+            "min_cash": 20178.1816363
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "long_fraction": 0.266
+        }
+      },
+      "mean_out_of_sample_return": 0.153248,
+      "beats_buy_hold_cases": 0,
+      "beats_sma_cases": 2,
+      "evaluated_cases": 3
+    },
+    {
+      "name": "短期反转低吸",
+      "signal": "ret(close, 5) < 0 and close > sma(close, 60)",
+      "hypothesis": "短期超跌后存在均值回复，价格显著低于近期均值且未处于极端下跌趋势时，反弹概率较高。",
+      "parameters": {
+        "ret_window": 5,
+        "trend_window": 60
+      },
+      "risk_notes": [
+        "强下跌趋势中短期反弹信号可能连续失败，形成接飞刀",
+        "反转逻辑在动量主导的市场阶段会系统性失效",
+        "参数窗口固定，未做多标的稳健性检验"
+      ],
+      "generated_times": 1,
+      "in_sample": {
+        "symbol": "000001",
+        "window": {
+          "start": "2021-01-01",
+          "end": "2023-12-31"
+        },
+        "observations": 727,
+        "idea": {
+          "initial_cash": 100000.0,
+          "final_equity": 82780.66664240012,
+          "total_return": -0.17219333357599886,
+          "annual_return": -0.06348978779802072,
+          "sharpe": -0.5958102604037715,
+          "max_drawdown": 0.2348243213045922,
+          "observations": 727,
+          "return_periods": 726,
+          "executed_orders": 46,
+          "total_commission": 1063.2513576000001,
+          "min_cash": 17903.600103050114
+        },
+        "sma": {
+          "initial_cash": 100000.0,
+          "final_equity": 93787.47838415002,
+          "total_return": -0.06212521615849986,
+          "annual_return": -0.02201707237092232,
+          "sharpe": -0.02968736473873592,
+          "max_drawdown": 0.30819712805200394,
+          "observations": 727,
+          "return_periods": 726,
+          "executed_orders": 12,
+          "total_commission": 290.0711158499999,
+          "min_cash": 19870.110468550007
+        },
+        "buy_hold": {
+          "initial_cash": 100000.0,
+          "final_equity": 57504.584911900005,
+          "total_return": -0.42495415088099997,
+          "annual_return": -0.17473972359590284,
+          "sharpe": -0.5032813623025892,
+          "max_drawdown": 0.5863088994979943,
+          "observations": 727,
+          "return_periods": 726,
+          "executed_orders": 1,
+          "total_commission": 23.788088099999996,
+          "min_cash": 20682.58491190001
+        },
+        "audit": {
+          "ok": true,
+          "errors": [],
+          "ledger_rows": 727
+        },
+        "long_fraction": 0.0963
+      },
+      "out_of_sample": {
+        "000001": {
+          "symbol": "000001",
+          "window": {
+            "start": "2024-01-01",
+            "end": "2025-12-31"
+          },
+          "observations": 485,
+          "idea": {
+            "initial_cash": 100000.0,
+            "final_equity": 100294.22547215033,
+            "total_return": 0.0029422547215032235,
+            "annual_return": 0.0015308390518973258,
+            "sharpe": 0.05792552406212931,
+            "max_drawdown": 0.08647614781702229,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 64,
+            "total_commission": 1570.04002785,
+            "min_cash": 20288.461364450264
+          },
+          "sma": {
+            "initial_cash": 100000.0,
+            "final_equity": 85421.7539577501,
+            "total_return": -0.14578246042249898,
+            "annual_return": -0.0787651305792002,
+            "sharpe": -0.3921462637865002,
+            "max_drawdown": 0.3170271614603374,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 16,
+            "total_commission": 361.2185422499999,
+            "min_cash": 16328.65956890006
+          },
+          "buy_hold": {
+            "initial_cash": 100000.0,
+            "final_equity": 142650.52730110005,
+            "total_return": 0.4265052730110006,
+            "annual_return": 0.20316213929744276,
+            "sharpe": 0.9793068735179621,
+            "max_drawdown": 0.14637156432982212,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 1,
+            "total_commission": 23.809698899999994,
+            "min_cash": 20610.527301100014
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "long_fraction": 0.2165
+        },
+        "000651": {
+          "symbol": "000651",
+          "window": {
+            "start": "2024-01-01",
+            "end": "2025-12-31"
+          },
+          "observations": 485,
+          "idea": {
+            "initial_cash": 100000.0,
+            "final_equity": 101851.2865790503,
+            "total_return": 0.01851286579050293,
+            "annual_return": 0.009596548499078539,
+            "sharpe": 0.14716806771014512,
+            "max_drawdown": 0.12306451331069201,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 72,
+            "total_commission": 1753.3919209499993,
+            "min_cash": 20494.02865160022
+          },
+          "sma": {
+            "initial_cash": 100000.0,
+            "final_equity": 114122.46244210006,
+            "total_return": 0.1412246244210007,
+            "annual_return": 0.07120088048595608,
+            "sharpe": 0.45693231572992765,
+            "max_drawdown": 0.2728036584086402,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 11,
+            "total_commission": 307.33355789999996,
+            "min_cash": 20448.39767680001
+          },
+          "buy_hold": {
+            "initial_cash": 100000.0,
+            "final_equity": 144619.4730784,
+            "total_return": 0.4461947307840002,
+            "annual_return": 0.21178021662013058,
+            "sharpe": 0.9526207389108472,
+            "max_drawdown": 0.21107538345347787,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 1,
+            "total_commission": 23.4549216,
+            "min_cash": 21793.4730784
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "long_fraction": 0.2557
+        },
+        "600031": {
+          "symbol": "600031",
+          "window": {
+            "start": "2024-01-01",
+            "end": "2025-12-31"
+          },
+          "observations": 485,
+          "idea": {
+            "initial_cash": 100000.0,
+            "final_equity": 117267.84725995031,
+            "total_return": 0.1726784725995032,
+            "annual_return": 0.08647263832920071,
+            "sharpe": 0.8383993637827157,
+            "max_drawdown": 0.13226845701670087,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 66,
+            "total_commission": 1674.4302400499992,
+            "min_cash": 20464.41297505004
+          },
+          "sma": {
+            "initial_cash": 100000.0,
+            "final_equity": 134658.20449275,
+            "total_return": 0.3465820449274999,
+            "annual_return": 0.1675796292709235,
+            "sharpe": 0.8830572201082861,
+            "max_drawdown": 0.1167647013405323,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 8,
+            "total_commission": 235.04500725,
+            "min_cash": 20941.792150750003
+          },
+          "buy_hold": {
+            "initial_cash": 100000.0,
+            "final_equity": 152163.1816363,
+            "total_return": 0.521631816363,
+            "annual_return": 0.2442897315062842,
+            "sharpe": 0.9915939222747762,
+            "max_drawdown": 0.18876689130255597,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 1,
+            "total_commission": 23.939363699999998,
+            "min_cash": 20178.1816363
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "long_fraction": 0.2351
+        }
+      },
+      "mean_out_of_sample_return": 0.064711,
+      "beats_buy_hold_cases": 0,
+      "beats_sma_cases": 1,
+      "evaluated_cases": 3
+    },
+    {
+      "name": "低波动趋势过滤",
+      "signal": "close > sma(close, 60) and std(ret(close, 1), 20) < std(ret(close, 1), 60)",
+      "hypothesis": "在趋势向上且波动率处于可控区间时持有，可过滤掉高波动趋势末端的剧烈回撤，提升风险调整后收益。",
+      "parameters": {
+        "trend_window": 60,
+        "vol_short": 20,
+        "vol_long": 60
+      },
+      "risk_notes": [
+        "波动率压缩后可能伴随方向选择，趋势判断错误时损失集中",
+        "低波动阶段也可能对应横盘，信号持有期收益有限",
+        "波动率阈值用相对比较，极端行情下可能长时间空仓或满仓"
+      ],
+      "generated_times": 1,
+      "in_sample": {
+        "symbol": "000001",
+        "window": {
+          "start": "2021-01-01",
+          "end": "2023-12-31"
+        },
+        "observations": 727,
+        "idea": {
+          "initial_cash": 100000.0,
+          "final_equity": 76113.28867285006,
+          "total_return": -0.23886711327149945,
+          "annual_return": -0.09039245641645022,
+          "sharpe": -0.7790313459236334,
+          "max_drawdown": 0.27542720703599943,
+          "observations": 727,
+          "return_periods": 726,
+          "executed_orders": 32,
+          "total_commission": 639.6438271500001,
+          "min_cash": 14583.008222200051
+        },
+        "sma": {
+          "initial_cash": 100000.0,
+          "final_equity": 93787.47838415002,
+          "total_return": -0.06212521615849986,
+          "annual_return": -0.02201707237092232,
+          "sharpe": -0.02968736473873592,
+          "max_drawdown": 0.30819712805200394,
+          "observations": 727,
+          "return_periods": 726,
+          "executed_orders": 12,
+          "total_commission": 290.0711158499999,
+          "min_cash": 19870.110468550007
+        },
+        "buy_hold": {
+          "initial_cash": 100000.0,
+          "final_equity": 57504.584911900005,
+          "total_return": -0.42495415088099997,
+          "annual_return": -0.17473972359590284,
+          "sharpe": -0.5032813623025892,
+          "max_drawdown": 0.5863088994979943,
+          "observations": 727,
+          "return_periods": 726,
+          "executed_orders": 1,
+          "total_commission": 23.788088099999996,
+          "min_cash": 20682.58491190001
+        },
+        "audit": {
+          "ok": true,
+          "errors": [],
+          "ledger_rows": 727
+        },
+        "long_fraction": 0.1568
+      },
+      "out_of_sample": {
+        "000001": {
+          "symbol": "000001",
+          "window": {
+            "start": "2024-01-01",
+            "end": "2025-12-31"
+          },
+          "observations": 485,
+          "idea": {
+            "initial_cash": 100000.0,
+            "final_equity": 93786.51225745019,
+            "total_return": -0.06213487742549817,
+            "annual_return": -0.03284834144578419,
+            "sharpe": -0.25843179289108176,
+            "max_drawdown": 0.15659085556826502,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 42,
+            "total_commission": 973.68324255,
+            "min_cash": 18790.365688200123
+          },
+          "sma": {
+            "initial_cash": 100000.0,
+            "final_equity": 85421.7539577501,
+            "total_return": -0.14578246042249898,
+            "annual_return": -0.0787651305792002,
+            "sharpe": -0.3921462637865002,
+            "max_drawdown": 0.3170271614603374,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 16,
+            "total_commission": 361.2185422499999,
+            "min_cash": 16328.65956890006
+          },
+          "buy_hold": {
+            "initial_cash": 100000.0,
+            "final_equity": 142650.52730110005,
+            "total_return": 0.4265052730110006,
+            "annual_return": 0.20316213929744276,
+            "sharpe": 0.9793068735179621,
+            "max_drawdown": 0.14637156432982212,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 1,
+            "total_commission": 23.809698899999994,
+            "min_cash": 20610.527301100014
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "long_fraction": 0.3979
+        },
+        "000651": {
+          "symbol": "000651",
+          "window": {
+            "start": "2024-01-01",
+            "end": "2025-12-31"
+          },
+          "observations": 485,
+          "idea": {
+            "initial_cash": 100000.0,
+            "final_equity": 140708.41297960022,
+            "total_return": 0.40708412979600217,
+            "annual_return": 0.1946054631479468,
+            "sharpe": 1.2969580887347736,
+            "max_drawdown": 0.10184561668927994,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 38,
+            "total_commission": 1183.3410203999995,
+            "min_cash": 21879.541891300007
+          },
+          "sma": {
+            "initial_cash": 100000.0,
+            "final_equity": 114122.46244210006,
+            "total_return": 0.1412246244210007,
+            "annual_return": 0.07120088048595608,
+            "sharpe": 0.45693231572992765,
+            "max_drawdown": 0.2728036584086402,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 11,
+            "total_commission": 307.33355789999996,
+            "min_cash": 20448.39767680001
+          },
+          "buy_hold": {
+            "initial_cash": 100000.0,
+            "final_equity": 144619.4730784,
+            "total_return": 0.4461947307840002,
+            "annual_return": 0.21178021662013058,
+            "sharpe": 0.9526207389108472,
+            "max_drawdown": 0.21107538345347787,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 1,
+            "total_commission": 23.4549216,
+            "min_cash": 21793.4730784
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "long_fraction": 0.4062
+        },
+        "600031": {
+          "symbol": "600031",
+          "window": {
+            "start": "2024-01-01",
+            "end": "2025-12-31"
+          },
+          "observations": 485,
+          "idea": {
+            "initial_cash": 100000.0,
+            "final_equity": 99583.57224525015,
+            "total_return": -0.004164277547498485,
+            "annual_return": -0.0021703459707377304,
+            "sharpe": 0.04750514020776778,
+            "max_drawdown": 0.24467394589084146,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 34,
+            "total_commission": 769.2852547499999,
+            "min_cash": 16914.050179800124
+          },
+          "sma": {
+            "initial_cash": 100000.0,
+            "final_equity": 134658.20449275,
+            "total_return": 0.3465820449274999,
+            "annual_return": 0.1675796292709235,
+            "sharpe": 0.8830572201082861,
+            "max_drawdown": 0.1167647013405323,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 8,
+            "total_commission": 235.04500725,
+            "min_cash": 20941.792150750003
+          },
+          "buy_hold": {
+            "initial_cash": 100000.0,
+            "final_equity": 152163.1816363,
+            "total_return": 0.521631816363,
+            "annual_return": 0.2442897315062842,
+            "sharpe": 0.9915939222747762,
+            "max_drawdown": 0.18876689130255597,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 1,
+            "total_commission": 23.939363699999998,
+            "min_cash": 20178.1816363
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "long_fraction": 0.2515
+        }
+      },
+      "mean_out_of_sample_return": 0.113595,
+      "beats_buy_hold_cases": 0,
+      "beats_sma_cases": 2,
+      "evaluated_cases": 3
+    },
+    {
+      "name": "中期动量确认",
+      "signal": "ret(close, 60) > 0 and close > sma(close, 20)",
+      "hypothesis": "过去一段时间累计涨幅为正说明资金持续流入、趋势延续，动量效应在中期尺度上较稳健。",
+      "parameters": {
+        "momentum_window": 60,
+        "trend_window": 20
+      },
+      "risk_notes": [
+        "动量在急涨后反转时回撤较大，容易高位接盘",
+        "单一动量窗口对牛熊切换反应滞后",
+        "单标的样本有限，动量溢价可能不显著"
+      ],
+      "generated_times": 1,
+      "in_sample": {
+        "symbol": "000001",
+        "window": {
+          "start": "2021-01-01",
+          "end": "2023-12-31"
+        },
+        "observations": 727,
+        "idea": {
+          "initial_cash": 100000.0,
+          "final_equity": 102469.81503570011,
+          "total_return": 0.02469815035700118,
+          "annual_return": 0.008504717009018892,
+          "sharpe": 0.12959730247437778,
+          "max_drawdown": 0.22255612910234324,
+          "observations": 727,
+          "return_periods": 726,
+          "executed_orders": 26,
+          "total_commission": 663.0689643000001,
+          "min_cash": 19684.760988100083
+        },
+        "sma": {
+          "initial_cash": 100000.0,
+          "final_equity": 93787.47838415002,
+          "total_return": -0.06212521615849986,
+          "annual_return": -0.02201707237092232,
+          "sharpe": -0.02968736473873592,
+          "max_drawdown": 0.30819712805200394,
+          "observations": 727,
+          "return_periods": 726,
+          "executed_orders": 12,
+          "total_commission": 290.0711158499999,
+          "min_cash": 19870.110468550007
+        },
+        "buy_hold": {
+          "initial_cash": 100000.0,
+          "final_equity": 57504.584911900005,
+          "total_return": -0.42495415088099997,
+          "annual_return": -0.17473972359590284,
+          "sharpe": -0.5032813623025892,
+          "max_drawdown": 0.5863088994979943,
+          "observations": 727,
+          "return_periods": 726,
+          "executed_orders": 1,
+          "total_commission": 23.788088099999996,
+          "min_cash": 20682.58491190001
+        },
+        "audit": {
+          "ok": true,
+          "errors": [],
+          "ledger_rows": 727
+        },
+        "long_fraction": 0.1472
+      },
+      "out_of_sample": {
+        "000001": {
+          "symbol": "000001",
+          "window": {
+            "start": "2024-01-01",
+            "end": "2025-12-31"
+          },
+          "observations": 485,
+          "idea": {
+            "initial_cash": 100000.0,
+            "final_equity": 92374.3113076002,
+            "total_return": -0.0762568869239979,
+            "annual_return": -0.040458295952793266,
+            "sharpe": -0.2113762377737951,
+            "max_drawdown": 0.1675574369174485,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 50,
+            "total_commission": 1128.6336923999997,
+            "min_cash": 18643.696131550147
+          },
+          "sma": {
+            "initial_cash": 100000.0,
+            "final_equity": 85421.7539577501,
+            "total_return": -0.14578246042249898,
+            "annual_return": -0.0787651305792002,
+            "sharpe": -0.3921462637865002,
+            "max_drawdown": 0.3170271614603374,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 16,
+            "total_commission": 361.2185422499999,
+            "min_cash": 16328.65956890006
+          },
+          "buy_hold": {
+            "initial_cash": 100000.0,
+            "final_equity": 142650.52730110005,
+            "total_return": 0.4265052730110006,
+            "annual_return": 0.20316213929744276,
+            "sharpe": 0.9793068735179621,
+            "max_drawdown": 0.14637156432982212,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 1,
+            "total_commission": 23.809698899999994,
+            "min_cash": 20610.527301100014
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "long_fraction": 0.3505
+        },
+        "000651": {
+          "symbol": "000651",
+          "window": {
+            "start": "2024-01-01",
+            "end": "2025-12-31"
+          },
+          "observations": 485,
+          "idea": {
+            "initial_cash": 100000.0,
+            "final_equity": 118669.31368620029,
+            "total_return": 0.18669313686200284,
+            "annual_return": 0.09321387054341734,
+            "sharpe": 0.641659979136677,
+            "max_drawdown": 0.1298711622419576,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 44,
+            "total_commission": 1214.5053137999998,
+            "min_cash": 20759.281741750005
+          },
+          "sma": {
+            "initial_cash": 100000.0,
+            "final_equity": 114122.46244210006,
+            "total_return": 0.1412246244210007,
+            "annual_return": 0.07120088048595608,
+            "sharpe": 0.45693231572992765,
+            "max_drawdown": 0.2728036584086402,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 11,
+            "total_commission": 307.33355789999996,
+            "min_cash": 20448.39767680001
+          },
+          "buy_hold": {
+            "initial_cash": 100000.0,
+            "final_equity": 144619.4730784,
+            "total_return": 0.4461947307840002,
+            "annual_return": 0.21178021662013058,
+            "sharpe": 0.9526207389108472,
+            "max_drawdown": 0.21107538345347787,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 1,
+            "total_commission": 23.4549216,
+            "min_cash": 21793.4730784
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "long_fraction": 0.3856
+        },
+        "600031": {
+          "symbol": "600031",
+          "window": {
+            "start": "2024-01-01",
+            "end": "2025-12-31"
+          },
+          "observations": 485,
+          "idea": {
+            "initial_cash": 100000.0,
+            "final_equity": 108810.06896250017,
+            "total_return": 0.08810068962500162,
+            "annual_return": 0.04494195937234324,
+            "sharpe": 0.33615800982606886,
+            "max_drawdown": 0.14653631981698967,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 44,
+            "total_commission": 1102.4730375,
+            "min_cash": 20204.202440200006
+          },
+          "sma": {
+            "initial_cash": 100000.0,
+            "final_equity": 134658.20449275,
+            "total_return": 0.3465820449274999,
+            "annual_return": 0.1675796292709235,
+            "sharpe": 0.8830572201082861,
+            "max_drawdown": 0.1167647013405323,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 8,
+            "total_commission": 235.04500725,
+            "min_cash": 20941.792150750003
+          },
+          "buy_hold": {
+            "initial_cash": 100000.0,
+            "final_equity": 152163.1816363,
+            "total_return": 0.521631816363,
+            "annual_return": 0.2442897315062842,
+            "sharpe": 0.9915939222747762,
+            "max_drawdown": 0.18876689130255597,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 1,
+            "total_commission": 23.939363699999998,
+            "min_cash": 20178.1816363
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "long_fraction": 0.4474
+        }
+      },
+      "mean_out_of_sample_return": 0.066179,
+      "beats_buy_hold_cases": 0,
+      "beats_sma_cases": 2,
+      "evaluated_cases": 3
+    },
+    {
+      "name": "低波动趋势过滤",
+      "signal": "close > sma(close, 60) and std(ret(close, 1), 20) < sma(std(ret(close, 1), 20), 60)",
+      "hypothesis": "在趋势向上且波动率处于低位时持有，可过滤掉高波动下跌阶段，低波动组合通常有更好的风险调整收益。",
+      "parameters": {
+        "trend_window": 60,
+        "vol_window": 20,
+        "vol_baseline": 60
+      },
+      "risk_notes": [
+        "波动率骤升时可能过早离场，错过反弹",
+        "低波动阶段也可能出现缓慢阴跌，趋势过滤滞后",
+        "波动阈值依赖历史分布，市场结构变化后失效"
+      ],
+      "generated_times": 1,
+      "in_sample": {
+        "symbol": "000001",
+        "window": {
+          "start": "2021-01-01",
+          "end": "2023-12-31"
+        },
+        "observations": 727,
+        "idea": {
+          "initial_cash": 100000.0,
+          "final_equity": 78880.66824065006,
+          "total_return": -0.21119331759349935,
+          "annual_return": -0.07904645835388324,
+          "sharpe": -0.6896780623883559,
+          "max_drawdown": 0.2910758452230513,
+          "observations": 727,
+          "return_periods": 726,
+          "executed_orders": 26,
+          "total_commission": 521.3762593499999,
+          "min_cash": 15112.71386780007
+        },
+        "sma": {
+          "initial_cash": 100000.0,
+          "final_equity": 93787.47838415002,
+          "total_return": -0.06212521615849986,
+          "annual_return": -0.02201707237092232,
+          "sharpe": -0.02968736473873592,
+          "max_drawdown": 0.30819712805200394,
+          "observations": 727,
+          "return_periods": 726,
+          "executed_orders": 12,
+          "total_commission": 290.0711158499999,
+          "min_cash": 19870.110468550007
+        },
+        "buy_hold": {
+          "initial_cash": 100000.0,
+          "final_equity": 57504.584911900005,
+          "total_return": -0.42495415088099997,
+          "annual_return": -0.17473972359590284,
+          "sharpe": -0.5032813623025892,
+          "max_drawdown": 0.5863088994979943,
+          "observations": 727,
+          "return_periods": 726,
+          "executed_orders": 1,
+          "total_commission": 23.788088099999996,
+          "min_cash": 20682.58491190001
+        },
+        "audit": {
+          "ok": true,
+          "errors": [],
+          "ledger_rows": 727
+        },
+        "long_fraction": 0.1486
+      },
+      "out_of_sample": {
+        "000001": {
+          "symbol": "000001",
+          "window": {
+            "start": "2024-01-01",
+            "end": "2025-12-31"
+          },
+          "observations": 485,
+          "idea": {
+            "initial_cash": 100000.0,
+            "final_equity": 95541.33006745014,
+            "total_return": -0.044586699325498635,
+            "annual_return": -0.023468244622927847,
+            "sharpe": -0.17045597397563433,
+            "max_drawdown": 0.16063099727040764,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 36,
+            "total_commission": 840.6264325499997,
+            "min_cash": 19146.083250250114
+          },
+          "sma": {
+            "initial_cash": 100000.0,
+            "final_equity": 85421.7539577501,
+            "total_return": -0.14578246042249898,
+            "annual_return": -0.0787651305792002,
+            "sharpe": -0.3921462637865002,
+            "max_drawdown": 0.3170271614603374,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 16,
+            "total_commission": 361.2185422499999,
+            "min_cash": 16328.65956890006
+          },
+          "buy_hold": {
+            "initial_cash": 100000.0,
+            "final_equity": 142650.52730110005,
+            "total_return": 0.4265052730110006,
+            "annual_return": 0.20316213929744276,
+            "sharpe": 0.9793068735179621,
+            "max_drawdown": 0.14637156432982212,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 1,
+            "total_commission": 23.809698899999994,
+            "min_cash": 20610.527301100014
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "long_fraction": 0.4186
+        },
+        "000651": {
+          "symbol": "000651",
+          "window": {
+            "start": "2024-01-01",
+            "end": "2025-12-31"
+          },
+          "observations": 485,
+          "idea": {
+            "initial_cash": 100000.0,
+            "final_equity": 106493.38135885009,
+            "total_return": 0.06493381358850092,
+            "annual_return": 0.0332985627761051,
+            "sharpe": 0.33630949638503155,
+            "max_drawdown": 0.11343151695030806,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 38,
+            "total_commission": 962.10614115,
+            "min_cash": 20122.140886250014
+          },
+          "sma": {
+            "initial_cash": 100000.0,
+            "final_equity": 114122.46244210006,
+            "total_return": 0.1412246244210007,
+            "annual_return": 0.07120088048595608,
+            "sharpe": 0.45693231572992765,
+            "max_drawdown": 0.2728036584086402,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 11,
+            "total_commission": 307.33355789999996,
+            "min_cash": 20448.39767680001
+          },
+          "buy_hold": {
+            "initial_cash": 100000.0,
+            "final_equity": 144619.4730784,
+            "total_return": 0.4461947307840002,
+            "annual_return": 0.21178021662013058,
+            "sharpe": 0.9526207389108472,
+            "max_drawdown": 0.21107538345347787,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 1,
+            "total_commission": 23.4549216,
+            "min_cash": 21793.4730784
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "long_fraction": 0.3732
+        },
+        "600031": {
+          "symbol": "600031",
+          "window": {
+            "start": "2024-01-01",
+            "end": "2025-12-31"
+          },
+          "observations": 485,
+          "idea": {
+            "initial_cash": 100000.0,
+            "final_equity": 88118.74494965016,
+            "total_return": -0.11881255050349837,
+            "annual_return": -0.06373411516877936,
+            "sharpe": -0.4554409102039662,
+            "max_drawdown": 0.2802390442145424,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 38,
+            "total_commission": 829.5965503499997,
+            "min_cash": 17018.32542480016
+          },
+          "sma": {
+            "initial_cash": 100000.0,
+            "final_equity": 134658.20449275,
+            "total_return": 0.3465820449274999,
+            "annual_return": 0.1675796292709235,
+            "sharpe": 0.8830572201082861,
+            "max_drawdown": 0.1167647013405323,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 8,
+            "total_commission": 235.04500725,
+            "min_cash": 20941.792150750003
+          },
+          "buy_hold": {
+            "initial_cash": 100000.0,
+            "final_equity": 152163.1816363,
+            "total_return": 0.521631816363,
+            "annual_return": 0.2442897315062842,
+            "sharpe": 0.9915939222747762,
+            "max_drawdown": 0.18876689130255597,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 1,
+            "total_commission": 23.939363699999998,
+            "min_cash": 20178.1816363
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "long_fraction": 0.2515
+        }
+      },
+      "mean_out_of_sample_return": -0.032822,
+      "beats_buy_hold_cases": 0,
+      "beats_sma_cases": 1,
+      "evaluated_cases": 3
+    },
+    {
+      "name": "量价齐升确认",
+      "signal": "close > sma(close, 20) and volume > sma(volume, 20) and ret(close, 5) > 0",
+      "hypothesis": "价格上涨伴随成交量放大，说明上涨得到资金参与确认，量价配合的信号比单纯价格趋势更可靠。",
+      "parameters": {
+        "trend_window": 20,
+        "volume_window": 20,
+        "short_momentum": 5
+      },
+      "risk_notes": [
+        "放量也可能是出货，量价信号存在假阳性",
+        "成交量数据受除权与市场情绪影响，稳定性有限",
+        "短周期动量与量能叠加会提高换手，成本敏感"
+      ],
+      "generated_times": 1,
+      "in_sample": {
+        "symbol": "000001",
+        "window": {
+          "start": "2021-01-01",
+          "end": "2023-12-31"
+        },
+        "observations": 727,
+        "idea": {
+          "initial_cash": 100000.0,
+          "final_equity": 96277.02161015043,
+          "total_return": -0.03722978389849563,
+          "annual_return": -0.013083095048786686,
+          "sharpe": -0.07036545550374934,
+          "max_drawdown": 0.2651663301263496,
+          "observations": 727,
+          "return_periods": 726,
+          "executed_orders": 89,
+          "total_commission": 2120.99888985,
+          "min_cash": 18115.67149400027
+        },
+        "sma": {
+          "initial_cash": 100000.0,
+          "final_equity": 93787.47838415002,
+          "total_return": -0.06212521615849986,
+          "annual_return": -0.02201707237092232,
+          "sharpe": -0.02968736473873592,
+          "max_drawdown": 0.30819712805200394,
+          "observations": 727,
+          "return_periods": 726,
+          "executed_orders": 12,
+          "total_commission": 290.0711158499999,
+          "min_cash": 19870.110468550007
+        },
+        "buy_hold": {
+          "initial_cash": 100000.0,
+          "final_equity": 57504.584911900005,
+          "total_return": -0.42495415088099997,
+          "annual_return": -0.17473972359590284,
+          "sharpe": -0.5032813623025892,
+          "max_drawdown": 0.5863088994979943,
+          "observations": 727,
+          "return_periods": 726,
+          "executed_orders": 1,
+          "total_commission": 23.788088099999996,
+          "min_cash": 20682.58491190001
+        },
+        "audit": {
+          "ok": true,
+          "errors": [],
+          "ledger_rows": 727
+        },
+        "long_fraction": 0.132
+      },
+      "out_of_sample": {
+        "000001": {
+          "symbol": "000001",
+          "window": {
+            "start": "2024-01-01",
+            "end": "2025-12-31"
+          },
+          "observations": 485,
+          "idea": {
+            "initial_cash": 100000.0,
+            "final_equity": 112648.61400140036,
+            "total_return": 0.1264861400140036,
+            "annual_return": 0.06397553588175597,
+            "sharpe": 0.5249560751545292,
+            "max_drawdown": 0.1208288056050123,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 86,
+            "total_commission": 2260.2679985999994,
+            "min_cash": 19537.43207184999
+          },
+          "sma": {
+            "initial_cash": 100000.0,
+            "final_equity": 85421.7539577501,
+            "total_return": -0.14578246042249898,
+            "annual_return": -0.0787651305792002,
+            "sharpe": -0.3921462637865002,
+            "max_drawdown": 0.3170271614603374,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 16,
+            "total_commission": 361.2185422499999,
+            "min_cash": 16328.65956890006
+          },
+          "buy_hold": {
+            "initial_cash": 100000.0,
+            "final_equity": 142650.52730110005,
+            "total_return": 0.4265052730110006,
+            "annual_return": 0.20316213929744276,
+            "sharpe": 0.9793068735179621,
+            "max_drawdown": 0.14637156432982212,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 1,
+            "total_commission": 23.809698899999994,
+            "min_cash": 20610.527301100014
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "long_fraction": 0.2474
+        },
+        "000651": {
+          "symbol": "000651",
+          "window": {
+            "start": "2024-01-01",
+            "end": "2025-12-31"
+          },
+          "observations": 485,
+          "idea": {
+            "initial_cash": 100000.0,
+            "final_equity": 121852.31138860025,
+            "total_return": 0.21852311388600243,
+            "annual_return": 0.10838416058563372,
+            "sharpe": 0.8698916836766954,
+            "max_drawdown": 0.14318750094222665,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 78,
+            "total_commission": 2276.8806114,
+            "min_cash": 20576.500095999992
+          },
+          "sma": {
+            "initial_cash": 100000.0,
+            "final_equity": 114122.46244210006,
+            "total_return": 0.1412246244210007,
+            "annual_return": 0.07120088048595608,
+            "sharpe": 0.45693231572992765,
+            "max_drawdown": 0.2728036584086402,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 11,
+            "total_commission": 307.33355789999996,
+            "min_cash": 20448.39767680001
+          },
+          "buy_hold": {
+            "initial_cash": 100000.0,
+            "final_equity": 144619.4730784,
+            "total_return": 0.4461947307840002,
+            "annual_return": 0.21178021662013058,
+            "sharpe": 0.9526207389108472,
+            "max_drawdown": 0.21107538345347787,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 1,
+            "total_commission": 23.4549216,
+            "min_cash": 21793.4730784
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "long_fraction": 0.1856
+        },
+        "600031": {
+          "symbol": "600031",
+          "window": {
+            "start": "2024-01-01",
+            "end": "2025-12-31"
+          },
+          "observations": 485,
+          "idea": {
+            "initial_cash": 100000.0,
+            "final_equity": 113958.87432490048,
+            "total_return": 0.13958874324900483,
+            "annual_return": 0.07040112725544745,
+            "sharpe": 0.5806206548345589,
+            "max_drawdown": 0.10682760098031518,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 93,
+            "total_commission": 2359.553675100001,
+            "min_cash": 19326.622659650147
+          },
+          "sma": {
+            "initial_cash": 100000.0,
+            "final_equity": 134658.20449275,
+            "total_return": 0.3465820449274999,
+            "annual_return": 0.1675796292709235,
+            "sharpe": 0.8830572201082861,
+            "max_drawdown": 0.1167647013405323,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 8,
+            "total_commission": 235.04500725,
+            "min_cash": 20941.792150750003
+          },
+          "buy_hold": {
+            "initial_cash": 100000.0,
+            "final_equity": 152163.1816363,
+            "total_return": 0.521631816363,
+            "annual_return": 0.2442897315062842,
+            "sharpe": 0.9915939222747762,
+            "max_drawdown": 0.18876689130255597,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 1,
+            "total_commission": 23.939363699999998,
+            "min_cash": 20178.1816363
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "long_fraction": 0.2289
+        }
+      },
+      "mean_out_of_sample_return": 0.161533,
+      "beats_buy_hold_cases": 0,
+      "beats_sma_cases": 2,
+      "evaluated_cases": 3
+    },
+    {
+      "name": "中期动量过滤",
+      "signal": "ret(close, 60) > 0",
+      "hypothesis": "过去一段时间收益为正说明买盘占优，动量效应在中期尺度上较稳健。",
+      "parameters": {
+        "lookback": 60
+      },
+      "risk_notes": [
+        "趋势反转初期信号滞后，可能承受较大回撤",
+        "单边下跌后反弹易出现假信号",
+        "单标的局限，动量强度因行业而异"
+      ],
+      "generated_times": 1,
+      "in_sample": {
+        "symbol": "000001",
+        "window": {
+          "start": "2021-01-01",
+          "end": "2023-12-31"
+        },
+        "observations": 727,
+        "idea": {
+          "initial_cash": 100000.0,
+          "final_equity": 97523.14953595014,
+          "total_return": -0.024768504640498623,
+          "annual_return": -0.008667811164072448,
+          "sharpe": 0.046366062452725204,
+          "max_drawdown": 0.2748159251418917,
+          "observations": 727,
+          "return_periods": 726,
+          "executed_orders": 30,
+          "total_commission": 768.69396405,
+          "min_cash": 19755.40186145014
+        },
+        "sma": {
+          "initial_cash": 100000.0,
+          "final_equity": 93787.47838415002,
+          "total_return": -0.06212521615849986,
+          "annual_return": -0.02201707237092232,
+          "sharpe": -0.02968736473873592,
+          "max_drawdown": 0.30819712805200394,
+          "observations": 727,
+          "return_periods": 726,
+          "executed_orders": 12,
+          "total_commission": 290.0711158499999,
+          "min_cash": 19870.110468550007
+        },
+        "buy_hold": {
+          "initial_cash": 100000.0,
+          "final_equity": 57504.584911900005,
+          "total_return": -0.42495415088099997,
+          "annual_return": -0.17473972359590284,
+          "sharpe": -0.5032813623025892,
+          "max_drawdown": 0.5863088994979943,
+          "observations": 727,
+          "return_periods": 726,
+          "executed_orders": 1,
+          "total_commission": 23.788088099999996,
+          "min_cash": 20682.58491190001
+        },
+        "audit": {
+          "ok": true,
+          "errors": [],
+          "ledger_rows": 727
+        },
+        "long_fraction": 0.2792
+      },
+      "out_of_sample": {
+        "000001": {
+          "symbol": "000001",
+          "window": {
+            "start": "2024-01-01",
+            "end": "2025-12-31"
+          },
+          "observations": 485,
+          "idea": {
+            "initial_cash": 100000.0,
+            "final_equity": 103256.1116854001,
+            "total_return": 0.03256111685400098,
+            "annual_return": 0.016823089137081082,
+            "sharpe": 0.18360789099440564,
+            "max_drawdown": 0.12530450934723925,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 31,
+            "total_commission": 772.4653146000002,
+            "min_cash": 19780.90485220001
+          },
+          "sma": {
+            "initial_cash": 100000.0,
+            "final_equity": 85421.7539577501,
+            "total_return": -0.14578246042249898,
+            "annual_return": -0.0787651305792002,
+            "sharpe": -0.3921462637865002,
+            "max_drawdown": 0.3170271614603374,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 16,
+            "total_commission": 361.2185422499999,
+            "min_cash": 16328.65956890006
+          },
+          "buy_hold": {
+            "initial_cash": 100000.0,
+            "final_equity": 142650.52730110005,
+            "total_return": 0.4265052730110006,
+            "annual_return": 0.20316213929744276,
+            "sharpe": 0.9793068735179621,
+            "max_drawdown": 0.14637156432982212,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 1,
+            "total_commission": 23.809698899999994,
+            "min_cash": 20610.527301100014
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "long_fraction": 0.5753
+        },
+        "000651": {
+          "symbol": "000651",
+          "window": {
+            "start": "2024-01-01",
+            "end": "2025-12-31"
+          },
+          "observations": 485,
+          "idea": {
+            "initial_cash": 100000.0,
+            "final_equity": 111064.18763990024,
+            "total_return": 0.11064187639900225,
+            "annual_return": 0.056157371777944665,
+            "sharpe": 0.38930122222164837,
+            "max_drawdown": 0.21798355018313298,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 39,
+            "total_commission": 1052.9363601,
+            "min_cash": 20759.281741750005
+          },
+          "sma": {
+            "initial_cash": 100000.0,
+            "final_equity": 114122.46244210006,
+            "total_return": 0.1412246244210007,
+            "annual_return": 0.07120088048595608,
+            "sharpe": 0.45693231572992765,
+            "max_drawdown": 0.2728036584086402,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 11,
+            "total_commission": 307.33355789999996,
+            "min_cash": 20448.39767680001
+          },
+          "buy_hold": {
+            "initial_cash": 100000.0,
+            "final_equity": 144619.4730784,
+            "total_return": 0.4461947307840002,
+            "annual_return": 0.21178021662013058,
+            "sharpe": 0.9526207389108472,
+            "max_drawdown": 0.21107538345347787,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 1,
+            "total_commission": 23.4549216,
+            "min_cash": 21793.4730784
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "long_fraction": 0.633
+        },
+        "600031": {
+          "symbol": "600031",
+          "window": {
+            "start": "2024-01-01",
+            "end": "2025-12-31"
+          },
+          "observations": 485,
+          "idea": {
+            "initial_cash": 100000.0,
+            "final_equity": 109412.10805345007,
+            "total_return": 0.09412108053450075,
+            "annual_return": 0.04794823109583257,
+            "sharpe": 0.32637676309976604,
+            "max_drawdown": 0.20576608998269263,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 24,
+            "total_commission": 604.0834465499998,
+            "min_cash": 20204.202440200006
+          },
+          "sma": {
+            "initial_cash": 100000.0,
+            "final_equity": 134658.20449275,
+            "total_return": 0.3465820449274999,
+            "annual_return": 0.1675796292709235,
+            "sharpe": 0.8830572201082861,
+            "max_drawdown": 0.1167647013405323,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 8,
+            "total_commission": 235.04500725,
+            "min_cash": 20941.792150750003
+          },
+          "buy_hold": {
+            "initial_cash": 100000.0,
+            "final_equity": 152163.1816363,
+            "total_return": 0.521631816363,
+            "annual_return": 0.2442897315062842,
+            "sharpe": 0.9915939222747762,
+            "max_drawdown": 0.18876689130255597,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 1,
+            "total_commission": 23.939363699999998,
+            "min_cash": 20178.1816363
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "long_fraction": 0.699
+        }
+      },
+      "mean_out_of_sample_return": 0.079108,
+      "beats_buy_hold_cases": 0,
+      "beats_sma_cases": 1,
+      "evaluated_cases": 3
+    },
+    {
+      "name": "低波动趋势持有",
+      "signal": "close > sma(close, 60) and zscore(close, 20) < 1",
+      "hypothesis": "在价格高于长期均线且短期波动不过热时持有，规避情绪化追高，兼顾趋势与风险控制。",
+      "parameters": {
+        "trend_window": 60,
+        "zscore_window": 20,
+        "zscore_cap": 1
+      },
+      "risk_notes": [
+        "zscore 阈值固定，不同波动环境下适应性有限",
+        "趋势中回调可能触发离场错过后续上涨",
+        "单标的回测，参数与阈值存在样本内过拟合风险"
+      ],
+      "generated_times": 1,
+      "in_sample": {
+        "symbol": "000001",
+        "window": {
+          "start": "2021-01-01",
+          "end": "2023-12-31"
+        },
+        "observations": 727,
+        "idea": {
+          "initial_cash": 100000.0,
+          "final_equity": 64668.32950700017,
+          "total_return": -0.35331670492999834,
+          "annual_return": -0.14041335182750103,
+          "sharpe": -1.0990720684147834,
+          "max_drawdown": 0.35331670492999834,
+          "observations": 727,
+          "return_periods": 726,
+          "executed_orders": 54,
+          "total_commission": 1016.879493,
+          "min_cash": 13413.358612600163
+        },
+        "sma": {
+          "initial_cash": 100000.0,
+          "final_equity": 93787.47838415002,
+          "total_return": -0.06212521615849986,
+          "annual_return": -0.02201707237092232,
+          "sharpe": -0.02968736473873592,
+          "max_drawdown": 0.30819712805200394,
+          "observations": 727,
+          "return_periods": 726,
+          "executed_orders": 12,
+          "total_commission": 290.0711158499999,
+          "min_cash": 19870.110468550007
+        },
+        "buy_hold": {
+          "initial_cash": 100000.0,
+          "final_equity": 57504.584911900005,
+          "total_return": -0.42495415088099997,
+          "annual_return": -0.17473972359590284,
+          "sharpe": -0.5032813623025892,
+          "max_drawdown": 0.5863088994979943,
+          "observations": 727,
+          "return_periods": 726,
+          "executed_orders": 1,
+          "total_commission": 23.788088099999996,
+          "min_cash": 20682.58491190001
+        },
+        "audit": {
+          "ok": true,
+          "errors": [],
+          "ledger_rows": 727
+        },
+        "long_fraction": 0.1527
+      },
+      "out_of_sample": {
+        "000001": {
+          "symbol": "000001",
+          "window": {
+            "start": "2024-01-01",
+            "end": "2025-12-31"
+          },
+          "observations": 485,
+          "idea": {
+            "initial_cash": 100000.0,
+            "final_equity": 90527.06309070018,
+            "total_return": -0.09472936909299823,
+            "annual_return": -0.05049729151354998,
+            "sharpe": -0.48621386779621467,
+            "max_drawdown": 0.19163991880268738,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 54,
+            "total_commission": 1279.1019092999998,
+            "min_cash": 18414.554630400155
+          },
+          "sma": {
+            "initial_cash": 100000.0,
+            "final_equity": 85421.7539577501,
+            "total_return": -0.14578246042249898,
+            "annual_return": -0.0787651305792002,
+            "sharpe": -0.3921462637865002,
+            "max_drawdown": 0.3170271614603374,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 16,
+            "total_commission": 361.2185422499999,
+            "min_cash": 16328.65956890006
+          },
+          "buy_hold": {
+            "initial_cash": 100000.0,
+            "final_equity": 142650.52730110005,
+            "total_return": 0.4265052730110006,
+            "annual_return": 0.20316213929744276,
+            "sharpe": 0.9793068735179621,
+            "max_drawdown": 0.14637156432982212,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 1,
+            "total_commission": 23.809698899999994,
+            "min_cash": 20610.527301100014
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "long_fraction": 0.332
+        },
+        "000651": {
+          "symbol": "000651",
+          "window": {
+            "start": "2024-01-01",
+            "end": "2025-12-31"
+          },
+          "observations": 485,
+          "idea": {
+            "initial_cash": 100000.0,
+            "final_equity": 97626.00742365026,
+            "total_return": -0.023739925763497483,
+            "annual_return": -0.012431620540010346,
+            "sharpe": -0.041649451910504405,
+            "max_drawdown": 0.13203319406823188,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 60,
+            "total_commission": 1449.3720763499996,
+            "min_cash": 19948.84662125014
+          },
+          "sma": {
+            "initial_cash": 100000.0,
+            "final_equity": 114122.46244210006,
+            "total_return": 0.1412246244210007,
+            "annual_return": 0.07120088048595608,
+            "sharpe": 0.45693231572992765,
+            "max_drawdown": 0.2728036584086402,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 11,
+            "total_commission": 307.33355789999996,
+            "min_cash": 20448.39767680001
+          },
+          "buy_hold": {
+            "initial_cash": 100000.0,
+            "final_equity": 144619.4730784,
+            "total_return": 0.4461947307840002,
+            "annual_return": 0.21178021662013058,
+            "sharpe": 0.9526207389108472,
+            "max_drawdown": 0.21107538345347787,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 1,
+            "total_commission": 23.4549216,
+            "min_cash": 21793.4730784
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "long_fraction": 0.3608
+        },
+        "600031": {
+          "symbol": "600031",
+          "window": {
+            "start": "2024-01-01",
+            "end": "2025-12-31"
+          },
+          "observations": 485,
+          "idea": {
+            "initial_cash": 100000.0,
+            "final_equity": 113448.86738315022,
+            "total_return": 0.13448867383150231,
+            "annual_return": 0.06790425524519539,
+            "sharpe": 0.5392108728902346,
+            "max_drawdown": 0.15022250217302924,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 56,
+            "total_commission": 1414.54811685,
+            "min_cash": 19691.635418250105
+          },
+          "sma": {
+            "initial_cash": 100000.0,
+            "final_equity": 134658.20449275,
+            "total_return": 0.3465820449274999,
+            "annual_return": 0.1675796292709235,
+            "sharpe": 0.8830572201082861,
+            "max_drawdown": 0.1167647013405323,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 8,
+            "total_commission": 235.04500725,
+            "min_cash": 20941.792150750003
+          },
+          "buy_hold": {
+            "initial_cash": 100000.0,
+            "final_equity": 152163.1816363,
+            "total_return": 0.521631816363,
+            "annual_return": 0.2442897315062842,
+            "sharpe": 0.9915939222747762,
+            "max_drawdown": 0.18876689130255597,
+            "observations": 485,
+            "return_periods": 484,
+            "executed_orders": 1,
+            "total_commission": 23.939363699999998,
+            "min_cash": 20178.1816363
+          },
+          "audit": {
+            "ok": true,
+            "errors": [],
+            "ledger_rows": 485
+          },
+          "long_fraction": 0.3299
+        }
+      },
+      "mean_out_of_sample_return": 0.00534,
+      "beats_buy_hold_cases": 0,
+      "beats_sma_cases": 1,
+      "evaluated_cases": 3
+    }
+  ],
+  "scope": "Finite-case out-of-sample feasibility check of LLM-proposed factors; not evidence of investment alpha.",
+  "evaluation_time": "2026-11-19T08:50:50.981767+00:00"
+}

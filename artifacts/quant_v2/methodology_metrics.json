@@ -1,0 +1,413 @@
+{
+  "generated_at": "2026-11-19T08:50:51.626245+00:00",
+  "source": "saved artifacts only; no new model requests and no backtest recomputation",
+  "generation": {
+    "attempts": 5,
+    "initial_json_valid_rate": 0.8,
+    "initial_execution_success_rate": 0.6,
+    "without_model_repair_success_rate": 0.8,
+    "final_validated_success_rate": 1.0,
+    "model_repair_requests": 1,
+    "rule_consistency_rate": 1.0,
+    "prefix_causality_rate": 1.0,
+    "trusted_engine_equality_rate": 1.0,
+    "all_audits_passed": true,
+    "failure_taxonomy": {
+      "json_decode_or_schema": 1,
+      "validator_rejection_investigated": 1
+    },
+    "latency_seconds": {
+      "count": 5,
+      "mean": 11.012,
+      "median": 12.701,
+      "min": 3.875,
+      "max": 13.328
+    },
+    "tokens": {
+      "prompt_tokens": 4816,
+      "completion_tokens": 2229,
+      "total_tokens": 7045
+    },
+    "evidence": "artifacts/quant_v2/evaluation.json"
+  },
+  "numeric_fidelity": {
+    "numeric_checks": {
+      "sma_total_return": true,
+      "sma_max_drawdown": true,
+      "buy_hold_total_return": true,
+      "buy_hold_max_drawdown": true
+    },
+    "passed": 4,
+    "total": 4,
+    "accuracy": 1.0,
+    "tool_calls": 5,
+    "answer": {
+      "sma_total_return": -0.2796955838714993,
+      "buy_hold_total_return": -0.242374150881,
+      "sma_max_drawdown": 0.35485942525899217,
+      "buy_hold_max_drawdown": 0.5863088994979943,
+      "termination": "TERMINATE"
+    }
+  },
+  "dialogue": {
+    "turns": 3,
+    "successful_turns": 3,
+    "turn_success_rate": 1.0,
+    "tool_calls": 8,
+    "tool_names": [
+      "check_quant_risk",
+      "compare_quant_strategies",
+      "execute_quant_code",
+      "prepare_quant_experiment"
+    ],
+    "cross_turn_experiment_reuse": true,
+    "parameter_switch_detected": true,
+    "scenario": "User parameters, multi-turn code generation, then a different stock and period through run_agent.ask"
+  },
+  "generalization": {
+    "available": true,
+    "run": "artifacts/quant_generalization/three_symbols_three_windows_7e2b4335aa5c",
+    "cases": 9,
+    "symbols": [
+      "000001",
+      "000651",
+      "600031"
+    ],
+    "windows": [
+      {
+        "name": "2021_2022",
+        "start": "2021-01-01",
+        "end": "2022-12-31"
+      },
+      {
+        "name": "2023_2024",
+        "start": "2023-01-01",
+        "end": "2024-12-31"
+      },
+      {
+        "name": "2025",
+        "start": "2025-01-01",
+        "end": "2025-12-31"
+      }
+    ],
+    "frozen_strategies": 5,
+    "replays": 45,
+    "passed_replays": 45,
+    "new_llm_requests": 0,
+    "investment_alpha_tested": false,
+    "scope": "Finite-case functional generalization of a fixed SMA implementation, not a test of investment alpha or an LLM predictive model. Symbols and windows are fixed before fetching results."
+  },
+  "stability": {
+    "available": true,
+    "run": "artifacts/stability/sma_generation_stability_19a54bc7dcae",
+    "cases": 3,
+    "repeats_per_case": 5,
+    "attempts": 15,
+    "passed": 15,
+    "pass_rate": 1.0,
+    "json_valid_rate": 1.0,
+    "rule_consistency_rate": 1.0,
+    "prefix_causality_rate": 1.0,
+    "trusted_engine_equality_rate": 1.0,
+    "rate_denominator": "all planned attempts, including failed and missing attempts",
+    "conditional_check_rates": {
+      "rule_consistency_rate": 1.0,
+      "prefix_causality_rate": 1.0,
+      "trusted_engine_equality_rate": 1.0
+    },
+    "offline_verification": {
+      "ok": true,
+      "attempts": 15,
+      "passed": 15,
+      "api_calls_requested": 0,
+      "checks": [
+        {
+          "case": "000001_2021_2025",
+          "attempt": 1,
+          "ok": true
+        },
+        {
+          "case": "000001_2021_2025",
+          "attempt": 2,
+          "ok": true
+        },
+        {
+          "case": "000001_2021_2025",
+          "attempt": 3,
+          "ok": true
+        },
+        {
+          "case": "000001_2021_2025",
+          "attempt": 4,
+          "ok": true
+        },
+        {
+          "case": "000001_2021_2025",
+          "attempt": 5,
+          "ok": true
+        },
+        {
+          "case": "000651_2023_2024",
+          "attempt": 1,
+          "ok": true
+        },
+        {
+          "case": "000651_2023_2024",
+          "attempt": 2,
+          "ok": true
+        },
+        {
+          "case": "000651_2023_2024",
+          "attempt": 3,
+          "ok": true
+        },
+        {
+          "case": "000651_2023_2024",
+          "attempt": 4,
+          "ok": true
+        },
+        {
+          "case": "000651_2023_2024",
+          "attempt": 5,
+          "ok": true
+        },
+        {
+          "case": "600031_2025",
+          "attempt": 1,
+          "ok": true
+        },
+        {
+          "case": "600031_2025",
+          "attempt": 2,
+          "ok": true
+        },
+        {
+          "case": "600031_2025",
+          "attempt": 3,
+          "ok": true
+        },
+        {
+          "case": "600031_2025",
+          "attempt": 4,
+          "ok": true
+        },
+        {
+          "case": "600031_2025",
+          "attempt": 5,
+          "ok": true
+        }
+      ]
+    },
+    "latency_seconds": {
+      "count": 15,
+      "mean": 7.902,
+      "median": 7.528,
+      "min": 6.722,
+      "max": 11.193
+    },
+    "tokens": {
+      "prompt_tokens": 20345,
+      "completion_tokens": 6656,
+      "total_tokens": 27001
+    },
+    "failure_taxonomy": {},
+    "per_case": {
+      "000001_2021_2025": {
+        "symbol": "000001",
+        "fast": 20,
+        "slow": 60,
+        "attempts": 5,
+        "passed": 5,
+        "pass_rate": 1.0,
+        "json_valid_rate": 1.0
+      },
+      "000651_2023_2024": {
+        "symbol": "000651",
+        "fast": 10,
+        "slow": 30,
+        "attempts": 5,
+        "passed": 5,
+        "pass_rate": 1.0,
+        "json_valid_rate": 1.0
+      },
+      "600031_2025": {
+        "symbol": "600031",
+        "fast": 20,
+        "slow": 60,
+        "attempts": 5,
+        "passed": 5,
+        "pass_rate": 1.0,
+        "json_valid_rate": 1.0
+      }
+    },
+    "scope": "Bounded generation-stability check across three fixed cases; not evidence of investment alpha."
+  },
+  "factor_ideation": {
+    "available": true,
+    "run": "artifacts/factor_ideation/factor_ideation_out_of_sample_7990b01f7181",
+    "ideation": {
+      "symbol": "000001",
+      "window": {
+        "start": "2021-01-01",
+        "end": "2023-12-31"
+      }
+    },
+    "evaluation": {
+      "symbols": [
+        "000001",
+        "000651",
+        "600031"
+      ],
+      "window": {
+        "start": "2024-01-01",
+        "end": "2025-12-31"
+      },
+      "cases_per_idea": 3
+    },
+    "repeats": 3,
+    "completed_generations": 3,
+    "successful_generations": 3,
+    "generation_success_rate": 1.0,
+    "generation_complete": true,
+    "missing_attempts": [],
+    "failed_attempts": [],
+    "total_ideas_requested": 12,
+    "idea_delivery_rate": 1.0,
+    "returned_ideas": 12,
+    "valid_ideas": 12,
+    "idea_validation_rate": 1.0,
+    "unique_valid_signals": 9,
+    "duplicate_rate": 0.25,
+    "out_of_sample_win_rate_vs_buy_hold": 0.0,
+    "out_of_sample_win_rate_vs_sma": 0.4444,
+    "out_of_sample_comparisons": 27,
+    "wins_vs_buy_hold": 0,
+    "wins_vs_sma": 12,
+    "per_idea": [
+      {
+        "name": "双均线趋势跟随",
+        "signal": "sma(close, 20) > sma(close, 60)",
+        "generated_times": 3,
+        "mean_out_of_sample_return": 0.114008,
+        "beats_buy_hold_cases": 0,
+        "beats_sma_cases": 0
+      },
+      {
+        "name": "量价确认突破",
+        "signal": "close > sma(close, 20) and volume > sma(volume, 20)",
+        "generated_times": 2,
+        "mean_out_of_sample_return": 0.153248,
+        "beats_buy_hold_cases": 0,
+        "beats_sma_cases": 2
+      },
+      {
+        "name": "短期反转低吸",
+        "signal": "ret(close, 5) < 0 and close > sma(close, 60)",
+        "generated_times": 1,
+        "mean_out_of_sample_return": 0.064711,
+        "beats_buy_hold_cases": 0,
+        "beats_sma_cases": 1
+      },
+      {
+        "name": "低波动趋势过滤",
+        "signal": "close > sma(close, 60) and std(ret(close, 1), 20) < std(ret(close, 1), 60)",
+        "generated_times": 1,
+        "mean_out_of_sample_return": 0.113595,
+        "beats_buy_hold_cases": 0,
+        "beats_sma_cases": 2
+      },
+      {
+        "name": "中期动量确认",
+        "signal": "ret(close, 60) > 0 and close > sma(close, 20)",
+        "generated_times": 1,
+        "mean_out_of_sample_return": 0.066179,
+        "beats_buy_hold_cases": 0,
+        "beats_sma_cases": 2
+      },
+      {
+        "name": "低波动趋势过滤",
+        "signal": "close > sma(close, 60) and std(ret(close, 1), 20) < sma(std(ret(close, 1), 20), 60)",
+        "generated_times": 1,
+        "mean_out_of_sample_return": -0.032822,
+        "beats_buy_hold_cases": 0,
+        "beats_sma_cases": 1
+      },
+      {
+        "name": "量价齐升确认",
+        "signal": "close > sma(close, 20) and volume > sma(volume, 20) and ret(close, 5) > 0",
+        "generated_times": 1,
+        "mean_out_of_sample_return": 0.161533,
+        "beats_buy_hold_cases": 0,
+        "beats_sma_cases": 2
+      },
+      {
+        "name": "中期动量过滤",
+        "signal": "ret(close, 60) > 0",
+        "generated_times": 1,
+        "mean_out_of_sample_return": 0.079108,
+        "beats_buy_hold_cases": 0,
+        "beats_sma_cases": 1
+      },
+      {
+        "name": "低波动趋势持有",
+        "signal": "close > sma(close, 60) and zscore(close, 20) < 1",
+        "generated_times": 1,
+        "mean_out_of_sample_return": 0.00534,
+        "beats_buy_hold_cases": 0,
+        "beats_sma_cases": 1
+      }
+    ],
+    "tokens": {
+      "prompt_tokens": 5073,
+      "completion_tokens": 1495,
+      "total_tokens": 6568
+    },
+    "scope": "Finite-case out-of-sample feasibility check of LLM-proposed factors; not evidence of investment alpha."
+  },
+  "data": {
+    "fixed_case": {
+      "symbol": "000001",
+      "rows": 1212,
+      "actual_start": "2021-01-04",
+      "actual_end": "2025-12-31",
+      "adjust": "qfq",
+      "provider": "akshare_tencent",
+      "duplicate_dates_removed": 0,
+      "missing_rows_removed": 0,
+      "missing_dates_policy": "No imputation; no synthetic bars added",
+      "volume_conversion": "adapter lots multiplied by 100 to shares"
+    },
+    "generalization_symbols": [
+      {
+        "symbol": "000001",
+        "rows": 1455,
+        "actual_start": null,
+        "actual_end": null,
+        "provider": "akshare_tencent",
+        "clean_sha256": "fbe2ccc6559462303f8a03f72dd5a9f7f1e4eb47059a8f31fb78d83dbb0b7ea1"
+      },
+      {
+        "symbol": "000651",
+        "rows": 1455,
+        "actual_start": null,
+        "actual_end": null,
+        "provider": "akshare_tencent",
+        "clean_sha256": "83a0beb1633249398486b6a981a6d466f73418c543cab893927c9d45db67078c"
+      },
+      {
+        "symbol": "600031",
+        "rows": 1455,
+        "actual_start": null,
+        "actual_end": null,
+        "provider": "akshare_tencent",
+        "clean_sha256": "5ff2bdfc8535a073b5cba10aa385e50721a884d4841ac0fe998ad641250b766f"
+      }
+    ]
+  },
+  "interpretation": {
+    "reliability": "Generation metrics measure implementation reliability, not investment alpha.",
+    "validity": "Rule-consistency and trusted-engine checks show the generated code matches the specified rule.",
+    "generalization": "Replays test frozen code on finite unseen cases; they are not new independent generations.",
+    "alpha": "The V2 design does not establish that LLM output improves returns."
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "spec": {
+    "name": "sma_generation_stability",
+    "model": "deepseek-flash",
+    "repeats": 5,
+    "data_start": "2020-01-01",
+    "data_end": "2025-12-31",
+    "adjust": "qfq",
+    "base_config": {
+      "initial_cash": 100000.0,
+      "max_position": 0.8,
+      "lot_size": 100,
+      "commission": 0.0003,
+      "min_commission": 5.0,
+      "slippage": 0.0005,
+      "annual_periods": 252,
+      "risk_free_rate": 0.0
+    },
+    "cases": [
+      {
+        "name": "000001_2021_2025",
+        "symbol": "000001",
+        "start": "2021-01-01",
+        "end": "2025-12-31",
+        "fast": 20,
+        "slow": 60
+      },
+      {
+        "name": "000651_2023_2024",
+        "symbol": "000651",
+        "start": "2023-01-01",
+        "end": "2024-12-31",
+        "fast": 10,
+        "slow": 30
+      },
+      {
+        "name": "600031_2025",
+        "symbol": "600031",
+        "start": "2025-01-01",
+        "end": "2025-12-31",
+        "fast": 20,
+        "slow": 60
+      }
+    ],
+    "design": "Repeat the fixed-SMA code-generation task across three symbol/window/parameter cases. Every attempt is an independent model request. Results measure generation stability, not investment alpha.",
+    "limits": "Three cases and five repeats are a bounded stability check. They do not establish general model reliability or out-of-sample performance."
+  },
+  "model": "deepseek-flash",
+  "design": "Repeat the fixed-SMA code-generation task across three symbol/window/parameter cases. Every attempt is an independent model request. Results measure generation stability, not investment alpha.",
+  "limits": "Three cases and five repeats are a bounded stability check. They do not establish general model reliability or out-of-sample performance."
+}

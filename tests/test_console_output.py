@@ -6,7 +6,7 @@ import os
 import runpy
 import sys
 import unittest
-from datetime import datetime
+from uuid import uuid4
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
@@ -71,7 +71,7 @@ class ConsoleTests(unittest.TestCase):
                 return result([{"role": "assistant", "name": "User_Proxy", "content": "用户提问"},
                     {"role": "user", "name": "Quant_Analyst", "content": "本轮结论：依据真实回测进行比较。\nTERMINATE"}])
 
-        folder = ROOT / "tmp/console_tests" / datetime.now().strftime("%Y%m%d_%H%M%S%f") / "finrobot_autogen"
+        folder = ROOT / "tmp/console_tests" / uuid4().hex / "finrobot_autogen"
         folder.mkdir(parents=True)
         globals_ = API["ask"].__globals__
         assistant = SimpleNamespace(assistant=actor, user_proxy=Proxy(), show_debug=False)
@@ -100,7 +100,7 @@ class ConsoleTests(unittest.TestCase):
             def initiate_chat(self, *args, **kwargs):
                 print("internal tool details")
                 raise RuntimeError("internal error details")
-        folder = ROOT / "tmp/console_tests" / datetime.now().strftime("%Y%m%d_%H%M%S%f") / "finrobot_autogen"
+        folder = ROOT / "tmp/console_tests" / uuid4().hex / "finrobot_autogen"
         folder.mkdir(parents=True)
         assistant = SimpleNamespace(assistant=Analyst(), user_proxy=Proxy(), show_debug=False)
         console = io.StringIO()

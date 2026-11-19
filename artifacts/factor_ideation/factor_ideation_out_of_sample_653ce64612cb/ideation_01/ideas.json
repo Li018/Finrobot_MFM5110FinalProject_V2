@@ -1,0 +1,80 @@
+{
+  "ok": true,
+  "returned_ideas": 4,
+  "valid_ideas": 4,
+  "ideas": [
+    {
+      "name": "双均线趋势跟随",
+      "hypothesis": "价格中期趋势具有持续性，短期均线上穿长期均线时市场处于上行趋势，持有可捕捉趋势收益并规避下行段。",
+      "signal": "sma(close, 20) > sma(close, 60)",
+      "parameters": {
+        "fast": 20,
+        "slow": 60
+      },
+      "risk_notes": [
+        "震荡市中均线频繁交叉，交易成本与假信号会侵蚀收益",
+        "趋势参数对样本区间敏感，存在样本内过拟合风险",
+        "单标的回测，结论难以外推到其他股票或市场状态"
+      ],
+      "valid": true,
+      "observations": 787,
+      "long_days": 197
+    },
+    {
+      "name": "短期反转",
+      "hypothesis": "个股短期超跌后存在均值回复，过度反应带来的下跌往往在随后数日部分修复。",
+      "signal": "ret(close, 5) < -0.05 and close > sma(close, 60)",
+      "parameters": {
+        "lookback": 5,
+        "drop_threshold": -0.05,
+        "trend_window": 60
+      },
+      "risk_notes": [
+        "下跌若由基本面恶化驱动，反转逻辑失效并可能持续下跌",
+        "阈值-5%为经验设定，未做参数搜索，样本外可能不适用",
+        "仅在长期均线上方启用，趋势判断本身可能滞后"
+      ],
+      "valid": true,
+      "observations": 787,
+      "long_days": 15
+    },
+    {
+      "name": "低波动趋势过滤",
+      "hypothesis": "在趋势向上且波动率处于低位时持有，可过滤掉高波动趋势中的剧烈回撤，提升风险调整后收益。",
+      "signal": "close > sma(close, 60) and std(ret(close, 1), 20) < sma(std(ret(close, 1), 20), 60)",
+      "parameters": {
+        "trend_window": 60,
+        "vol_window": 20,
+        "vol_baseline": 60
+      },
+      "risk_notes": [
+        "波动率骤升常伴随趋势转折，过滤可能滞后于实际风险",
+        "低波动状态也可能对应横盘，收益机会有限",
+        "波动率阈值依赖历史分布，市场结构变化后可能失效"
+      ],
+      "valid": true,
+      "observations": 787,
+      "long_days": 108
+    },
+    {
+      "name": "量价确认突破",
+      "hypothesis": "价格创阶段新高且成交量放大，说明上涨获得资金参与确认，趋势延续概率更高。",
+      "signal": "close > sma(close, 20) and close >= rank(close, 60) * 0 + close and volume > sma(volume, 20) * 1.2",
+      "parameters": {
+        "trend_window": 20,
+        "rank_window": 60,
+        "volume_window": 20,
+        "volume_multiplier": 1.2
+      },
+      "risk_notes": [
+        "放量突破也可能是出货，量价确认存在假突破风险",
+        "成交量数据受除权与市场情绪影响，稳定性弱于价格",
+        "单标的量能特征独特，参数外推性有限"
+      ],
+      "valid": true,
+      "observations": 787,
+      "long_days": 70
+    }
+  ],
+  "errors": []
+}

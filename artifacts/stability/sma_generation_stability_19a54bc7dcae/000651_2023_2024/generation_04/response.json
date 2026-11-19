@@ -1,0 +1,11 @@
+{
+  "type": "json_object",
+  "reasoning": "策略为参数化双均线趋势跟随：以收盘价的 trailing SMA(10) 与 SMA(30) 比较，快线在上返回 1（持有），否则 0（空仓）。信号不做 shift，执行器按前一日信号在下一交易日开盘成交，避免未来函数。参数固定为 10/30，不做收益优化；本金 100000，开仓预算 80%，按 100 股整手、佣金万三（最低 5 元）、滑点 0.05% 的简化模型回测。",
+  "risk_notes": [
+    "单标的集中持仓，缺乏分散化，个股事件风险无法对冲。",
+    "固定 10/30 参数为预设而非优化结果，均线策略在震荡市中易反复交易、产生假信号与交易成本拖累。",
+    "使用前复权数据与简化成交模型（次日开盘、固定滑点与佣金），未完整刻画涨跌停、停牌、流动性与冲击成本，历史回测不代表未来收益。",
+    "max_position 为开仓预算比例，持仓权重随价格漂移，不构成持续硬性仓位上限。"
+  ],
+  "code": "def generate_signals(data, fast, slow):\n    close = data['Close']\n    fast_ma = close.rolling(fast).mean()\n    slow_ma = close.rolling(slow).mean()\n    return (fast_ma > slow_ma).astype(int)\n\n\ndef run_strategy(data, config):\n    signals = generate_signals(data, config['fast'], config['slow'])\n    return run_signal_backtest(data, signals, config)\n"
+}

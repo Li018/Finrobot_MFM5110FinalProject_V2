@@ -1,0 +1,28 @@
+{
+  "name": "factor_ideation_out_of_sample",
+  "model": "deepseek-flash",
+  "idea_count": 4,
+  "repeats": 3,
+  "ideation_symbol": "000001",
+  "data_start": "2020-01-01",
+  "data_end": "2025-12-31",
+  "adjust": "qfq",
+  "ideation_window": {"start": "2021-01-01", "end": "2023-12-31"},
+  "evaluation_symbols": ["000001", "000651", "600031"],
+  "evaluation_window": {"start": "2024-01-01", "end": "2025-12-31"},
+  "warmup_observations": 60,
+  "base_config": {
+    "fast": 20,
+    "slow": 60,
+    "initial_cash": 100000.0,
+    "max_position": 0.8,
+    "lot_size": 100,
+    "commission": 0.0003,
+    "min_commission": 5.0,
+    "slippage": 0.0005,
+    "annual_periods": 252,
+    "risk_free_rate": 0.0
+  },
+  "design": "The model proposes factor expressions using only data from the ideation window (2021-2023) for 000001. Every valid expression is then replayed unchanged on 2024-2025 for three symbols. No evaluation-window data is shown to the model.",
+  "limits": "A finite-case out-of-sample feasibility check, not evidence of investment alpha. Costs, execution and adjustment follow the V2 backtest assumptions."
+}

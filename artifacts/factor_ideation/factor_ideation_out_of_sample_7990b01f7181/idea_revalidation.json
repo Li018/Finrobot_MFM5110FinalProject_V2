@@ -1,0 +1,29 @@
+{
+  "attempts": [
+    {
+      "attempt": "ideation_01",
+      "completed": true,
+      "ok": true,
+      "returned_ideas": 4,
+      "valid_ideas": 4,
+      "errors": []
+    },
+    {
+      "attempt": "ideation_02",
+      "completed": true,
+      "ok": true,
+      "returned_ideas": 4,
+      "valid_ideas": 4,
+      "errors": []
+    },
+    {
+      "attempt": "ideation_03",
+      "completed": true,
+      "ok": true,
+      "returned_ideas": 4,
+      "valid_ideas": 4,
+      "errors": []
+    }
+  ],
+  "api_calls_requested": 0
+}

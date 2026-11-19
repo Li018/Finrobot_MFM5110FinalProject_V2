@@ -1,5 +1,10 @@
 from finrobot.data_source import *
-from finrobot.functional import *
+from finrobot.functional.charting import MplFinanceUtils, ReportChartUtils
+from finrobot.functional.coding import IPythonUtils
+from finrobot.functional.quant_dialogue import QuantDialogueTools
+from finrobot.functional.quant_tools import QuantTools
+from finrobot.functional.reportlab import ReportLabUtils
+from finrobot.functional.text import TextUtils
 from finrobot.agents.prompts import a_share_market_context
 from finrobot.agents.prompts import quant_strategy_profile
 from textwrap import dedent

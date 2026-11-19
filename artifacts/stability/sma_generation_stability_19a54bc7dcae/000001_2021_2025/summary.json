@@ -1,0 +1,33 @@
+{
+  "metadata": {
+    "symbol": "000001",
+    "rows": 1212,
+    "actual_start": "2021-01-04",
+    "actual_end": "2025-12-31",
+    "adjust": "qfq"
+  },
+  "columns": [
+    "Open",
+    "High",
+    "Low",
+    "Close",
+    "Volume"
+  ],
+  "config": {
+    "initial_cash": 100000.0,
+    "max_position": 0.8,
+    "lot_size": 100,
+    "commission": 0.0003,
+    "min_commission": 5.0,
+    "slippage": 0.0005,
+    "annual_periods": 252,
+    "risk_free_rate": 0.0,
+    "symbol": "000001",
+    "start_date": "2021-01-01",
+    "end_date": "2025-12-31",
+    "fast": 20,
+    "slow": 60,
+    "evaluation_start": "2021-01-04"
+  },
+  "assumptions": []
+}
