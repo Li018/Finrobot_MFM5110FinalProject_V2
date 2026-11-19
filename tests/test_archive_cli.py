@@ -74,6 +74,15 @@ class ArchiveCliTests(unittest.TestCase):
             for command in ("/reports", "/report 1", "/compare 1 2", "/archive 1"):
                 self.assertTrue(handle_archive_command(command, None))
 
+    def test_explicit_keyword_search_does_not_treat_sma_as_a_ticker(self):
+        save_research_turn(self.memory, "SMA 回测方案", "关键词匹配记录", ["Quant_Analyst"], [], "completed")
+        with contextlib.redirect_stdout(io.StringIO()) as output:
+            API["handle_local_command"]("/reports --query SMA", self.memory)
+        self.assertEqual(len(json.loads(output.getvalue())["reports"]), 1)
+        with contextlib.redirect_stdout(io.StringIO()) as output:
+            API["handle_local_command"]("/reports AAPL", self.memory)
+        self.assertEqual(json.loads(output.getvalue())["reports"], [])
+
     def test_real_autogen_report_tools_read_and_compare_existing_snapshots(self):
         first = save_research_turn(self.memory, "600519", "旧结论", ["A_Share_Analyst"], [], "completed")
         second = save_research_turn(self.memory, "600519", "新结论", ["A_Share_Analyst"], [], "completed")

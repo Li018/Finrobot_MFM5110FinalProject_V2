@@ -65,11 +65,17 @@ def handle_archive_command(message, memory):
     try:
         archive = ResearchArchive(memory.path)
         if command == "/reports":
-            try:
-                symbol = normalize_symbol(argument) if argument else None
-            except ValueError:
-                symbol = None
-            result = archive.find(symbol=symbol, query=argument if not symbol else "", limit=20)
+            query_parts = argument.split(maxsplit=1)
+            if query_parts and query_parts[0] == "--query":
+                if len(query_parts) < 2:
+                    raise ValueError("用法：/reports --query 关键词")
+                result = archive.find(query=query_parts[1], limit=20)
+            else:
+                try:
+                    symbol = normalize_symbol(argument) if argument else None
+                except ValueError:
+                    symbol = None
+                result = archive.find(symbol=symbol, query=argument if not symbol else "", limit=20)
         elif command == "/report":
             result = archive.get(int(argument))
             if result is None:
