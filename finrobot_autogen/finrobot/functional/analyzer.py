@@ -384,8 +384,8 @@ class ReportAnalysisUtils:
             else 0
         )
 
-        fiftyTwoWeekLow = hist["High"].min()
-        fiftyTwoWeekHigh = hist["Low"].max()
+        fiftyTwoWeekLow = hist["Low"].min()
+        fiftyTwoWeekHigh = hist["High"].max()
 
         # convert back to str for function calling
         filing_date = filing_date.strftime("%Y-%m-%d")
