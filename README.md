@@ -36,16 +36,18 @@ V2 将已有投研框架扩展为可交互、可复现、可核对的量化实�
 
 ## 当前完整功能
 
-### 1. 四个主要角色与原有扩展模块
+### 1. 主要角色与原有扩展模块
 
-统一入口为 `run_finrobot.cmd`，通过 `--role` 选择角色；省略问题进入多轮对话，提供问题则执行单次分析。
+统一入口为 `run_finrobot.cmd`，默认按问题自动分派角色；用 `--mode single --role`（或只给 `--role`）固定单角色。省略问题进入多轮对话，提供问题则执行单次分析。
 
 | 角色 | 当前代码提供的能力 | 验证范围 |
 | --- | --- | --- |
-| `A_Share_Analyst`（默认） | 查询公司资料、行情、分红、三大财务报表、财务指标、同业比较、历史估值、机构预期、研报、公告与新闻，并调用价格图表工具 | 沿用 V1；已验证初始化和基础模型工作流，完整基本面分析未逐项验收 |
+| `A_Share_Analyst`（单角色默认） | 查询公司资料、行情、分红、三大财务报表、财务指标、同业比较、历史估值、机构预期、研报、公告与新闻，并调用价格图表工具 | 沿用 V1；已验证初始化和基础模型工作流，完整基本面分析未逐项验收 |
 | `Market_Analyst` | 结合区间行情、公司与市场新闻、热度排名、公告及公司背景解释市场表现 | 沿用 V1；已验证初始化，全部数据接口与完整分析流程未逐项验收 |
 | `Expert_Investor` | 查询年报链接、财务与机构数据，调用 K 线、股价表现、PE/EPS 图表及 PDF 研究报告工具 | 沿用 V1；已验证初始化，完整 PDF 报告流程尚未验收 |
 | `Quant_Analyst` | 按用户参数准备真实数据，比较 SMA 与买入持有，生成并执行同规则 Python 代码，独立检查风险，解释实际回测结果 | V2 新增；已完成真实三轮对话、工具调用与回测数字核对 |
+| `A_Share_Factor_Researcher` | 用确定性工具计算 20/60 日动量、20 日年化波动率与 20 日均量；按固定动量规则回测，并与买入持有、沪深 300 比较 | 新增；离线合成数据与单元测试验证 |
+| `A_Share_Factor_Ideator` | 提出可检验的因子或规则候选，用受限 JSON DSL 回测（动量、均量比、均线交叉），结果走 V2 成本模型与账本审计 | 新增；离线合成数据与单元测试验证 |
 
 仓库还保留 V1 的通用编程、数据分析等角色，单 Agent、RAG、Shadow 与多 Agent 工作流，FinNLP 数据源、文本/PDF/RAG 工具，以及投资小组、多因子、组合优化等脚本。这些模块可供后续开发，未全部纳入 V2 量化验收；新增量化主流程使用 `SingleAssistant` 与工具调用。
 
@@ -199,7 +201,10 @@ if (-not (Test-Path finrobot_autogen\config_api_keys)) { Copy-Item finrobot_auto
 完成首次运行后，可按需切换角色或打开调试输出：
 
 ```powershell
-# 默认 A 股基本面角色：单次提问
+# 自动分派（默认）：单次提问或交互
+.\run_finrobot.cmd "综合看看 600519 的基本面和近期股价走势"
+.\run_finrobot.cmd
+# 固定 A 股基本面角色：单次提问
 .\run_finrobot.cmd "分析一下 600519" --role A_Share_Analyst
 # 市场分析或研究报告角色
 .\run_finrobot.cmd --role Market_Analyst
@@ -406,3 +411,65 @@ flowchart LR
 - 当前交付为命令行代码与实验材料，网页界面、课程报告正文和文献综述尚未完成。
 
 项目版本标识为 [V2](VERSION)，沿用的 FinRobot Python 包版本为 `0.1.5`，两者分别记录。原有许可与归属信息见 [LICENSE](LICENSE)、[NOTICE](NOTICE) 和 [TRADEMARK_POLICY.md](TRADEMARK_POLICY.md)。组员可按上述命令复现，后续扩展应保留原始失败记录、数据来源与传统对照。
+
+## 新增功能：自动分派、确定性因子与规则回测（2026-11）
+
+### 自动分派
+
+`run_agent.py` 默认用正则规则判断问题意图（不额外调用 LLM），再分派给一个或多个角色：
+
+- 命中单角色直接作答；命中多角色时逐个作答，再由综合角色汇总并提示分歧。
+- 某个角色失败不会中断其他角色，最终回答会列出失败项。
+- 保留最近 3 轮的角色与结论，支持「那它最近成交量怎么样」这类追问。
+- `--mode auto` 与 `--role` 互斥；只给 `--role` 等同 `--mode single`。
+
+### 确定性因子工具
+
+`get_a_share_factors(symbol, as_of)` 按日线收盘后的可得信息计算：
+
+| 因子 | 公式 | 单位 |
+| --- | --- | --- |
+| `momentum_20d` / `momentum_60d` | `Close / Close.shift(N) - 1` | 小数 |
+| `volatility_20d` | 日收益标准差 × √252 | 年化小数 |
+| `avg_volume_20d` | 最近 20 根日线成交量均值 | 手 |
+
+窗口按实际日线条数计算；历史不足或字段缺失时返回 `null`，不补零、不插值。
+
+### 策略规则 DSL 回测
+
+`backtest_a_share_strategy(symbol, start, end, rule_json)` 使用受限 JSON 规则，先校验再转成 0/1 目标仓位，最终交给 V2 的 `run_signal_backtest` 执行，佣金、最低佣金、滑点、整手和仓位上限与 V2 主实验一致，并附带账本重建结果 `audit_ok`。
+
+- 指标：`momentum(window)`、`average_volume_ratio(short_window, long_window)`、`moving_average_cross(field=close|volume, short_window, long_window)`。
+- 比较符：`>`、`>=`、`<`、`<=`、`==`；条件可用 `all` 或 `any` 组合；窗口 1–252，条件最多 12 个，`execution` 仅支持 `next_open`。
+- 信号在收盘后形成，最早下一交易日开盘成交；期末按收盘估值；同时跑同预算买入持有，沪深 300 仅在取数成功时附上。
+- 评估区间前预热不足会直接报错，不会用缺失信号交易。
+
+```json
+{"name":"volume_confirmed_momentum","signal":{"all":[
+  {"indicator":"momentum","window":20,"operator":">","value":0},
+  {"indicator":"average_volume_ratio","short_window":5,"long_window":20,"operator":">","value":1}]}}
+```
+
+示例提问：
+
+```text
+用 get_a_share_factors 看一下 600519 截至 2025-06-30 的动量和波动率
+帮我用 20 日动量大于 0 且 5 日均量高于 20 日均量的规则回测 000001，2021-06-01 到 2022-12-31
+```
+
+### 边界与文件
+
+- 上述工具实时取数，不写入 `data/` 快照，也不进入 `artifacts/quant_v2` 的证据链；需要可复现证据仍走 `Quant_Analyst` 的固定快照流程。
+- 三个量化角色（`Quant_Analyst`、`A_Share_Factor_Researcher`、`A_Share_Factor_Ideator`）禁用通用 Python 代码执行，只能调用注册工具。
+- 日线建模未模拟涨跌停、停牌、印花税、红利税与盘中成交；不构成收益预测或投资建议。
+
+| 文件 | 状态 | 说明 |
+| --- | --- | --- |
+| `finrobot_autogen/finrobot/functional/factors.py` | 新增 | 确定性因子与 `get_a_share_factors` |
+| `finrobot_autogen/finrobot/functional/momentum_backtest.py` | 新增 | 规则 DSL 校验、信号构建与 V2 引擎回测 |
+| `finrobot_autogen/finrobot/agents/research_router.py` | 新增 | 正则路由、多角色编排与综合汇总 |
+| `finrobot_autogen/finrobot/agents/agent_library.py` | 修改 | 新增两个因子角色 |
+| `finrobot_autogen/finrobot/agents/workflow.py` | 修改 | 量化角色禁用通用代码执行 |
+| `finrobot_autogen/run_agent.py` | 修改 | 默认自动分派，新增 `--mode auto/single` |
+
+修改日志：`get_sec_report` 改为按报告年份匹配，优先正式年报并排除摘要/英文版/更正/取消；路由补充股价走势、进场时机等关键词。
