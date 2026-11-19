@@ -225,7 +225,12 @@ class ReportLabUtils:
 
             # content.append(Paragraph("Summarization", subtitle_style))
             if cn:
-                df = CNStockUtils.get_financial_metrics(ticker_symbol, years=5)
+                df = CNStockUtils.get_financial_metrics(ticker_symbol, years=5, as_of=filing_date)
+                content.append(Paragraph(
+                    f"财务表截止日：{filing_date}；报告期及披露日均不晚于该日。"
+                    "数据来自当前接口，未还原历史修订版本。",
+                    custom_style,
+                ))
                 df.reset_index(inplace=True)
                 df.rename(columns={"index": "FY (CNY 亿元)"}, inplace=True)
                 df = df.fillna("-")
