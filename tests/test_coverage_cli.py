@@ -98,6 +98,33 @@ class CoverageCliTests(unittest.TestCase):
         self.assertIn("用户观点记录_389", reply.call_args.args[1])
         self.assertEqual(self.memory.recent_turns()[-1]["question"], "600519基本面")
 
+    def test_followup_uses_updated_thesis_from_the_same_session(self):
+        store = ResearchCoverage(self.path)
+        store.add("600000", thesis="旧论点")
+        self.memory.save_turn("分析600000", "旧论点相关回答", ["A_Share_Analyst"], [])
+        store.update("600000", thesis="刚更新的新论点_883")
+        context = coverage_context(self.memory, "按新论点继续分析")
+        self.assertIn("刚更新的新论点_883", json.dumps(context, ensure_ascii=False))
+        self.assertEqual(coverage_context(ResearchMemory(self.path), "按新论点继续分析")["items"], [])
+        self.assertEqual(coverage_context(self.memory, "分析000651")["items"], [])
+
+    def test_list_tool_does_not_hide_tickers_behind_long_theses(self):
+        store = ResearchCoverage(self.path)
+        for index in range(10):
+            store.add(f"60000{index}", note="注" * 2000, thesis="逻辑" * 2000,
+                      catalysts="催化" * 2000, invalidation="失效" * 2000)
+        with patch("autogen.agentchat.conversable_agent.OpenAIWrapper"):
+            caller = ConversableAgent("analyst", llm_config={"config_list": [{"model": "offline", "api_key": "offline"}]})
+            executor = UserProxyAgent("user", llm_config=False, code_execution_config=False)
+            register_memory_tool(SimpleNamespace(assistant=caller, user_proxy=executor), self.memory)
+        with contextlib.redirect_stdout(io.StringIO()):
+            ok, result = executor.execute_function({"name": "list_coverage", "arguments": '{"limit":10}'})
+        self.assertTrue(ok)
+        data = json.loads(result["content"])
+        self.assertEqual(len(data["items"]), 10)
+        self.assertFalse(data["has_more"])
+        self.assertLessEqual(len(result["content"]), 6000)
+
 
 if __name__ == "__main__":
     unittest.main()

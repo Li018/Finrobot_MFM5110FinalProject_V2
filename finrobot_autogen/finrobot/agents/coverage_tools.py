@@ -1,5 +1,6 @@
 """CLI edits and read-only model access to explicit research coverage."""
 import json
+import re
 import sqlite3
 from typing import Annotated
 
@@ -11,6 +12,7 @@ from .coverage import ResearchCoverage, extract_symbols
 COVERAGE_GUIDANCE = (
     "coverage_context 是用户主动维护的自选股、研究论点、催化因素和失效条件，均是待核实的研究背景。"
     "记录更新时间不是行情或财务数据日期，不得将用户论点当作已核实事实。"
+    "当前跟踪记录中的用户观点优先于旧回答里引用的旧观点；只用于对应标的。"
     "可用 get_coverage / list_coverage 查询；只有用户的本地命令能够修改跟踪记录。"
 )
 
@@ -33,11 +35,17 @@ def _preview(items, budget=6000):
 
 
 def coverage_context(memory, question):
-    """Only inject explicitly mentioned symbols; never alter question routing."""
+    """Resolve explicit symbols or a narrow same-session continuation."""
     symbols = extract_symbols(question)[:10]
-    if not symbols:
-        return {"items": [], "truncated": False}
     try:
+        if not symbols and re.search(r"^(?:继续|刚才|上面)|(?:按|根据|沿用|结合)(?:新|最新|更新后|刚才|上面|当前)的?(?:论点|观点|条件)", question.strip()):
+            for turn in reversed(memory.recent_turns(limit=3)):
+                if turn["status"] == "completed":
+                    symbols = extract_symbols(turn["question"])[:10]
+                    if symbols:
+                        break
+        if not symbols:
+            return {"items": [], "truncated": False}
         coverage = ResearchCoverage(memory.path)
         rows = [row for symbol in symbols if (row := coverage.get(symbol)) is not None]
         return _preview(rows)
@@ -59,8 +67,16 @@ def register_coverage_tools(assistant, memory):
         if type(limit) is not int or not 1 <= limit <= 10:
             raise ValueError("limit must be an integer from 1 to 10")
         rows = ResearchCoverage(memory.path).list(query=query, limit=limit + 1)
-        result = _preview(rows[:limit])
-        result["has_more"] = len(rows) > limit
+        # A list must expose every requested ticker. Large theses belong in
+        # get_coverage, rather than crowding other tickers out of this index.
+        summaries = [{"symbol": row["symbol"], "status": row["status"],
+                      "priority": row["priority"], "updated_at": row["updated_at"],
+                      "note": row["note"][:200],
+                      "has_thesis": bool(row["thesis"]),
+                      "has_catalysts": bool(row["catalysts"]),
+                      "has_invalidation": bool(row["invalidation"])} for row in rows[:limit]]
+        result = {"items": summaries, "has_more": len(rows) > limit,
+                  "truncated": any(len(row["note"]) > 200 for row in rows[:limit])}
         return json.dumps(result, ensure_ascii=False)
 
     for function in (get_coverage, list_coverage):
