@@ -1,0 +1,79 @@
+{
+  "ok": true,
+  "validated_at": "2026-11-19T09:46:53.926201+00:00",
+  "base_commit": "90d4731012bc4fee5cb21aeee0db09ff9fde5809",
+  "pull_request": 1,
+  "reviewed_pr_head": "c4e3d26867c76e5d61c19adae557b50104b699a8",
+  "new_model_requests": 0,
+  "new_market_data_requests": 0,
+  "unit_tests": 96,
+  "new_regression_tests": 29,
+  "full_validation": {
+    "ok": true,
+    "python_environment": "v2_publish_verify_20261119",
+    "api_calls_requested": 0,
+    "checks": [
+      {
+        "check": "unit_tests",
+        "ok": true,
+        "seconds": 9.148,
+        "tests": 96
+      },
+      {
+        "check": "dependency_check",
+        "ok": true,
+        "seconds": 1.437
+      },
+      {
+        "check": "dialogue_offline",
+        "ok": true,
+        "seconds": 6.397
+      },
+      {
+        "check": "offline_replay",
+        "ok": true,
+        "seconds": 17.732
+      },
+      {
+        "check": "resume_pipeline",
+        "ok": true,
+        "seconds": 7.511
+      },
+      {
+        "check": "generalization",
+        "ok": true,
+        "seconds": 9.65
+      },
+      {
+        "check": "stability_replay",
+        "ok": true,
+        "seconds": 45.198
+      },
+      {
+        "check": "factor_ideation_replay",
+        "ok": true,
+        "seconds": 11.225
+      },
+      {
+        "check": "methodology",
+        "ok": true,
+        "seconds": 0.299
+      }
+    ]
+  },
+  "total_seconds": 108.597,
+  "environment": "Dedicated Python 3.11 verification environment with locked dependencies; imports the isolated PR worktree.",
+  "original_evidence_files_checked": 141,
+  "original_evidence_changed": [],
+  "new_feature_validation": "Synthetic price and announcement fixtures plus mocked model boundary; no new live model conversation.",
+  "history_policy": "Preserve all five teammate commits; append fixes before integration into main.",
+  "archive_verification": {
+    "manifest_files_verified": 1375,
+    "private_key_files_present": false,
+    "source_config_data_files_matched": 202,
+    "unpacked_unit_tests": 96,
+    "dependency_check_ok": true,
+    "cli_help_ok": true,
+    "scope": "Unpacked archive installed offline; source, configs and data match the full nine-check validation worktree."
+  }
+}

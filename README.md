@@ -2,7 +2,7 @@
 
 面向 MFM5110 小组项目的 A 股投研与量化实验工具。V2 在组员 1 的 V1 上，补齐了交互式 SMA 回测、代码生成与风险检查，并新增独立的 LLM 因子构思、样本外回放和多案例生成稳定性实验，供组员使用和继续开发。
 
-**版本：V2；说明更新：2026-11-19。** 当前主要入口为命令行。`run_finrobot.cmd` 用于对话；`run_factor_ideation.cmd` 与 `run_stability.cmd` 用于独立批量实验，新增因子能力尚未接入聊天工具。
+**版本：V2；说明更新：2026-11-19。** `run_finrobot.cmd` 默认自动分派，也可指定六个角色之一。聊天支持参数化 SMA、确定性因子与受限 JSON 规则回测；`run_factor_ideation.cmd` 的表达式因子样本外实验和 `run_stability.cmd` 的生成稳定性实验仍使用独立批量入口。
 
 使用时，你先用自然语言指定股票、日期、均线和资金；程序获取或读取真实行情，运行回测并比较买入持有。你可以继续要求生成同规则 Python 代码、执行代码和检查风险，最后查看分析、交易记录与图表。原有的基本面、市场分析和研究报告角色也保留，具体可用范围见下文。
 
@@ -22,7 +22,7 @@ V1 来源为[组员 1 分享的项目](https://github.com/yjt2003/Finrobot_MFM51
 
 | 方面 | V1 已有内容 | V2 的补充或改动 |
 | --- | --- | --- |
-| 投研角色 | `A_Share_Analyst`、`Market_Analyst`、`Expert_Investor`，以及 AutoGen 角色与工具注册框架 | 沿用原角色，新增 `Quant_Analyst`、量化提示词与 7 个量化工具，专门处理数据、回测、代码执行和风险核查 |
+| 投研角色 | `A_Share_Analyst`、`Market_Analyst`、`Expert_Investor`，以及 AutoGen 角色与工具注册框架 | 保留原角色，新增量化、因子计算、因子构思三个角色；支持自动分派，参数化 SMA、固定动量和自定义 JSON 规则分别使用对应工具 |
 | A 股数据 | `CNStockUtils`、AkShare / Tushare 路由及行情回退接口 | 修复腾讯行情字段与特定 AkShare 版本的成交量口径；新增 OHLCV 清洗、来源与单位记录、真实数据快照及 SHA-256 校验 |
 | 回测 | `BackTraderUtils.back_test`，默认使用 Yahoo 行情，支持策略、初始资金、Sizer 等参数 | 增加本地 CSV 入口；新增统一的 A 股信号回测流程，让人工 SMA、买入持有与 LLM SMA 使用同一份数据、费用和执行引擎 |
 | LLM 代码生成与因子构思 | 通用 Agent、编程与执行基础模块 | 新增固定 SMA 代码生成、AST 与因果性检查、限时子进程执行和修正记录；另提供受限 DSL 因子构思及冻结后的样本外回放 |
@@ -30,7 +30,7 @@ V1 来源为[组员 1 分享的项目](https://github.com/yjt2003/Finrobot_MFM51
 | 多轮交互 | 已支持单次提问与保留上下文的 CLI 对话 | 接入用户指定股票、日期、均线、资金和开仓预算；支持继续生成代码、查询风险及切换实验，实验按参数和数据哈希隔离 |
 | 实验与证据 | 保留的投资小组、多因子、组合优化等原有实验脚本 | 原固定案例 5 次生成与 45 次冻结回放；新增 15 次多案例独立生成、12 个因子想法与去重后 27 个样本外比较，保存失败、指标、交易和图表 |
 | 终端输出 | Agent 调用过程直接显示在控制台 | 默认显示等待提示、本轮最终分析和保存位置；详细过程进入日志，支持 `--verbose`；修复最终答复漏显及误取历史文本的问题 |
-| 环境与交接 | 原有依赖表、配置说明和示例 | 新增 Windows / Python 3.11 锁定依赖、根目录启动脚本、完整离线复验、67 项测试、打包脚本及不含真实 Key 的配置模板 |
+| 环境与交接 | 原有依赖表、配置说明和示例 | 新增 Windows / Python 3.11 锁定依赖、根目录启动脚本、完整离线复验、96 项测试、打包脚本及不含真实 Key 的配置模板 |
 
 V2 将已有投研框架扩展为可交互、可复现、可核对的量化实验：既检查固定规则代码的实现，也评价模型提出的受限因子。现有结果尚未证明 LLM 能提高投资收益。
 
@@ -77,6 +77,8 @@ Quant_Analyst 或批量实验可让模型生成两个函数：`generate_signals(
 执行使用有限时的独立 Python 进程。源码、原始响应、执行结果和错误会保存；交互工具把失败原因返回模型供其修正，批量实验也保留初次失败与后续修正记录。模型生成的是该固定规则的 Python 实现，回测仍由统一引擎完成。
 
 AST 限制和进程超时用于约束此任务，不等同于通用操作系统沙箱。聊天中的代码生成仍限于固定 SMA；独立因子实验支持受限表达式构思，使用方法见后文。任意 Python 策略生成、自动择优或参数寻优尚未实现。
+
+新增 `A_Share_Factor_Ideator` 可以在聊天中提出受限 JSON 规则并调用确定性回测；它生成的是规则数据，沿用相同费用与账本审计，不执行模型提供的任意 Python。该入口与独立表达式 DSL 实验分别记录。
 
 ### 5. 可核对的工具调用与结果文件
 
@@ -132,7 +134,7 @@ py -3.11 -m venv .venv
 .\.venv\Scripts\python.exe scripts/validate_v2.py
 ```
 
-**这一步完成后：** 控制台 9 项检查的 `ok` 应全部为 `true`，汇总写入 `artifacts/quant_v2/validation_summary.json`。检查覆盖 67 项测试、依赖、交互工具、原 5 份代码、多标的评价、新 15 份稳定性代码的独立进程重跑、因子回放与指标汇总。首次安装不计入复验耗时。
+**这一步完成后：** 控制台 9 项检查的 `ok` 应全部为 `true`，汇总写入 `artifacts/quant_v2/validation_summary.json`。检查覆盖 96 项测试、依赖、交互工具、原 5 份代码、多标的评价、15 份稳定性代码重跑、因子回放与指标汇总；其中新增测试检查自动路由、自动模式日志、确定性因子、JSON 规则和年报选择。首次安装不计入复验耗时。
 
 这一检查以仓库内保存的实验记录完整为前提，不需要先填写模型 Key，也不进行新的模型对话。只想复现已有实验的组员可以做到这一步，再查看[实验与复现](#实验与复现)；要使用自然语言交互，继续第 4 步。
 
@@ -314,7 +316,7 @@ if (-not (Test-Path finrobot_autogen\config_api_keys)) { Copy-Item finrobot_auto
 .\run_generalization.cmd evaluate --resume
 # 离线检查交互工具，使用保存的模型代码
 .\.venv\Scripts\python.exe scripts/validate_quant_dialogue.py --offline
-# 运行现有 67 项离线测试
+# 运行现有 96 项离线测试
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
 # 完整离线复验：共 9 项检查，含新增稳定性和因子实验
 .\.venv\Scripts\python.exe scripts/validate_v2.py
@@ -337,7 +339,7 @@ if (-not (Test-Path finrobot_autogen\config_api_keys)) { Copy-Item finrobot_auto
 
 固定案例入口支持 `fetch`、`baseline`、`generate`、`repair`、`verify`、`evaluate`、`all` 和 `--resume`；`--refresh-data` 会重新取数。多标的入口支持 `fetch`、`evaluate`、`all`、`--config` 和 `--resume`。
 
-最新检查数量、测试数和逐项耗时见 [validation_summary.json](artifacts/quant_v2/validation_summary.json)。当前 9 项复验在本机主环境约 107 秒，在新建环境与解压副本约 112 秒；两边均有 67 项测试通过。独立环境、源码/数据匹配及原始证据保留记录见 [optimization_validation.json](artifacts/quant_v2/optimization_validation.json)。上述时间不含首次依赖安装，也不代表其他机器的运行时间。
+最新检查数量、测试数和逐项耗时见 [validation_summary.json](artifacts/quant_v2/validation_summary.json)。PR #1 整合后的 96 项测试和完整 9 项复验已在专用验证环境通过，记录见 [pr1_integration_validation.json](artifacts/quant_v2/pr1_integration_validation.json)。此前 67 项版本在主环境约 107 秒、新建环境与解压副本约 112 秒，其历史记录保留于 [optimization_validation.json](artifacts/quant_v2/optimization_validation.json)。上述时间不含首次依赖安装，也不代表其他机器的运行时间。
 
 ## 环境补充
 
@@ -365,7 +367,10 @@ uv pip install --python .venv/Scripts/python.exe --cache-dir .cache/uv --no-deps
 
 ```mermaid
 flowchart LR
-    U[用户指定股票、日期和参数] --> Q[Quant_Analyst 与工具调用]
+    U[用户指定股票、日期和参数] --> AR[自动分派或指定角色]
+    AR --> Q[Quant_Analyst 与工具调用]
+    AR --> J[因子构思与受限 JSON 规则]
+    J --> E
     Q --> D[真实行情、清洗与快照]
     D --> M[人工 SMA 与买入持有]
     Q --> L[LLM 生成固定 SMA 代码]
@@ -404,7 +409,7 @@ flowchart LR
 ## 当前边界与未完成项
 
 - 因子思路与稳定性实验已实际运行并保存结果（稳定性 15/15 通过；因子样本外相对买入持有胜率 0%、相对 SMA 胜率 44.44%）。这些结果仍不证明 LLM 产生投资收益。
-- 聊天入口支持 A 股日线、参数化 SMA 与买入持有；独立因子入口支持上述 DSL 表达式构思及固定样本外窗口回放。任意 Python 策略生成、自动参数搜索、样本外策略选择、多资产组合策略与实盘下单尚未完成；原有组合优化脚本未纳入这一验收。
+- 聊天入口支持参数化 SMA、确定性因子、固定动量与受限 JSON 规则回测；独立因子入口支持表达式构思及固定样本外窗口回放。任意 Python 策略生成、自动参数搜索、样本外策略选择、多资产组合策略与实盘下单尚未完成；原有组合优化脚本未纳入这一验收。
 - 费用、成交及复权采用明确的简化假设；未完整模拟涨跌停、流动性、印花税、实际现金分红和公司行动。风险检查通过表示符合这些实验约束。
 - 9 个案例与 45 次回放只说明固定代码在这些输入上可复用，不能推出任意市场有效或投资收益提升。
 - 原有基本面、市场分析、PDF 研究报告、OCR/RAG 与多 Agent 示例未全部端到端验证。OCR/embedding 权重未预下载，环境初次检查未找到 `wkhtmltopdf`；仅安装相关 Python 包不代表 PDF/OCR 功能已经跑通。
@@ -422,6 +427,8 @@ flowchart LR
 - 某个角色失败不会中断其他角色，最终回答会列出失败项。
 - 保留最近 3 轮的角色与结论，支持「那它最近成交量怎么样」这类追问。
 - `--mode auto` 与 `--role` 互斥；只给 `--role` 等同 `--mode single`。
+- 用户自定义规则回测交给 `A_Share_Factor_Ideator`，参数化 SMA 回测交给 `Quant_Analyst`；普通综合个股分析不会额外调用固定实验。
+- 默认终端只显示等待提示、最终分析和保存路径。自动模式的 Markdown、JSON 与调试日志位于 `artifacts/agent_chats/`，JSON 记录本轮角色、分项结果和对话；`--verbose` 显示调试过程。该目录继续由 Git 忽略。
 
 ### 确定性因子工具
 
@@ -437,10 +444,10 @@ flowchart LR
 
 ### 策略规则 DSL 回测
 
-`backtest_a_share_strategy(symbol, start, end, rule_json)` 使用受限 JSON 规则，先校验再转成 0/1 目标仓位，最终交给 V2 的 `run_signal_backtest` 执行，佣金、最低佣金、滑点、整手和仓位上限与 V2 主实验一致，并附带账本重建结果 `audit_ok`。
+`backtest_a_share_strategy(symbol, start, end, rule_json)` 使用受限 JSON 规则，先校验再转成 0/1 目标仓位，最终交给 V2 的 `run_signal_backtest` 执行，佣金、最低佣金、滑点、整手和开仓预算与 V2 主实验一致，并附带账本重建结果 `audit_ok`。开仓预算不是持续仓位上限，持仓权重可漂移。
 
 - 指标：`momentum(window)`、`average_volume_ratio(short_window, long_window)`、`moving_average_cross(field=close|volume, short_window, long_window)`。
-- 比较符：`>`、`>=`、`<`、`<=`、`==`；条件可用 `all` 或 `any` 组合；窗口 1–252，条件最多 12 个，`execution` 仅支持 `next_open`。
+- 比较符：`>`、`>=`、`<`、`<=`、`==`；条件可用 `all` 或 `any` 组合；窗口 1–252，全部嵌套组累计最多 12 个条件，嵌套深度不超过 8，JSON 字符串不超过 16,000 字符，`execution` 仅支持 `next_open`。
 - 信号在收盘后形成，最早下一交易日开盘成交；期末按收盘估值；同时跑同预算买入持有，沪深 300 仅在取数成功时附上。
 - 评估区间前预热不足会直接报错，不会用缺失信号交易。
 
@@ -475,5 +482,8 @@ flowchart LR
 ### 修改日志
 
 - 修复 `get_sec_report` 年报选择：`fyear` 按**报告年份**匹配，检索窗口覆盖到报告年后两年；优先正式年报，排除摘要、英文版、更正和取消公告。
+- 没有符合条件的正式年报或有效披露日期时返回未找到，不回退到摘要或取消公告。
 - 优化路由命中规则，补充股价走势、行情、盘面、进场时机等关键词，行情类问题分派到 `Market_Analyst`。
 - 涉及文件：`finrobot_autogen/finrobot/data_source/akshare_utils.py`、`finrobot_autogen/finrobot/agents/research_router.py`。
+
+合并验收补充了 29 项回归用例，总计 96 项离线测试。新自动模式、因子工具与 JSON 规则的验证使用合成数据及模拟模型边界，本轮没有新增真实模型或行情请求；原有真实实验记录单独保留，不将其作为新自动模式的在线验收。

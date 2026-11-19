@@ -32,6 +32,8 @@ _INDICATORS = {"momentum", "average_volume_ratio", "moving_average_cross"}
 _FIELDS = {"close": "Close", "volume": "Volume"}
 _MAX_WINDOW = 252
 _MAX_CONDITIONS = 12
+_MAX_DEPTH = 8
+_MAX_RULE_LENGTH = 16000
 _COST_KEYS = (
     "initial_cash", "max_position", "lot_size", "commission",
     "min_commission", "slippage", "annual_periods", "risk_free_rate",
@@ -60,7 +62,11 @@ def _positive_window(value: Any, name: str) -> int:
     return value
 
 
-def _validate_condition(condition: Mapping[str, Any]) -> int:
+def _validate_condition(condition: Mapping[str, Any], depth=0, count=None) -> int:
+    if depth > _MAX_DEPTH:
+        raise ValueError(f"A signal may nest at most {_MAX_DEPTH} levels.")
+    if count is None:
+        count = [0]
     if not isinstance(condition, Mapping):
         raise ValueError("Each signal condition must be an object.")
     if "all" in condition or "any" in condition:
@@ -71,8 +77,11 @@ def _validate_condition(condition: Mapping[str, Any]) -> int:
             raise ValueError(f"A signal may contain at most {_MAX_CONDITIONS} conditions.")
         if set(condition) != {keys[0]}:
             raise ValueError("Logical signal objects may contain only all or any.")
-        windows = [_validate_condition(item) for item in condition[keys[0]]]
+        windows = [_validate_condition(item, depth + 1, count) for item in condition[keys[0]]]
         return max(windows)
+    count[0] += 1
+    if count[0] > _MAX_CONDITIONS:
+        raise ValueError(f"A signal may contain at most {_MAX_CONDITIONS} conditions in total.")
     indicator = condition.get("indicator")
     if indicator not in _INDICATORS:
         raise ValueError(f"Unsupported indicator: {indicator!r}.")
@@ -268,7 +277,7 @@ def _csi300_benchmark(bars: pd.DataFrame, start: str, end: str):
 
 def _run_v2_backtest(symbol: str, start: str, end: str, rule: Mapping[str, Any]) -> dict:
     first, last, bars = _load_bars(symbol, start, end, rule)
-    bars = _prepare_bars(bars)
+    bars = _prepare_bars(bars).loc[:end]
     signals = build_strategy_signals(bars, rule)
     evaluation_dates = bars.loc[start:end].index
     prior_dates = bars.index[bars.index < pd.Timestamp(start)]
@@ -283,11 +292,13 @@ def _run_v2_backtest(symbol: str, start: str, end: str, rule: Mapping[str, Any])
     strategy = run_signal_backtest(bars, targets, config)
     hold = run_signal_backtest(bars, pd.Series(1, index=bars.index), config)
     audit = audit_backtest(strategy, config, bars)
+    if not audit["ok"]:
+        raise ValueError("Backtest failed independent ledger audit.")
     return {
         "symbol": symbol,
         "rule": rule,
         "method": "收盘后形成目标仓位，最早在下一交易日开盘成交；使用 V2 固定实验的佣金、"
-                  "最低佣金、滑点、整手和仓位上限假设；期末按收盘估值，不强制平仓。",
+                  "最低佣金、滑点、整手和开仓预算假设，持仓权重可随价格漂移；期末按收盘估值，不强制平仓。",
         "start": first.isoformat(),
         "end": last.isoformat(),
         "evaluation_first_close": strategy["equity"][0]["Date"],
@@ -309,9 +320,11 @@ def backtest_a_share_strategy(
     rule_json: Annotated[str, "JSON rule using the supported indicators and next_open execution"],
 ) -> str:
     """Backtest a validated strategy rule against A-share daily bars with V2 costs."""
+    if isinstance(rule_json, str) and len(rule_json) > _MAX_RULE_LENGTH:
+        raise ValueError(f"rule_json must not exceed {_MAX_RULE_LENGTH} characters.")
     try:
         rule = json.loads(rule_json) if isinstance(rule_json, str) else rule_json
-    except json.JSONDecodeError as exc:
+    except (json.JSONDecodeError, RecursionError) as exc:
         raise ValueError("rule_json must be valid JSON.") from exc
     rule = validate_strategy_rule(rule)
     result = _run_v2_backtest(symbol, start, end, rule)

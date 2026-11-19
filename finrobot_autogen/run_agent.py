@@ -26,6 +26,7 @@ import traceback
 import warnings
 from datetime import datetime, timezone
 from pathlib import Path
+from uuid import uuid4
 
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -176,14 +177,48 @@ def repl(assistant: SingleAssistant):
         first_turn = False
 
 
-def run_auto(llm_config, prompt):
+def ask_auto(research, question, verbose=False):
+    import json
+
+    folder = BASE_DIR.parent / "artifacts/agent_chats"
+    folder.mkdir(parents=True, exist_ok=True)
+    path = folder / (datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%f") + "_" + uuid4().hex[:8])
+    roles = research.plan(question)
+    print("\n正在分析，请稍候…", flush=True)
+    try:
+        with contextlib.nullcontext() if verbose else _capture_output(path.with_suffix(".log")):
+            print("分派角色：" + "、".join(roles), flush=True)
+            answer = research.answer(question, roles)
+    except Exception as exc:
+        record = {"ok": False, "question": question, "roles": list(roles), "error_type": type(exc).__name__}
+        path.with_suffix(".json").write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        print(f"\n本轮分析未完成（{type(exc).__name__}）。记录：{path.with_suffix('.json')}")
+        raise
+    record = research.last_run
+    path.with_suffix(".json").write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    path.with_suffix(".md").write_text(answer + "\n", encoding="utf-8")
+    print("\n" + answer)
+    if not record["ok"]:
+        print("\n本轮包含未完成的分项，请查看记录中的错误类型。")
+    print(f"\n本轮记录已保存：{path.with_suffix('.md')}")
+    return record
+
+
+def run_auto(llm_config, prompt, verbose=False):
     research = AutoResearch(llm_config)
     if prompt is None:
         print("已进入交互模式（自动分派）。输入 exit / quit / :q 退出。")
     for question in interactive_questions() if prompt is None else (prompt,):
-        roles = research.plan(question)
-        print("分派角色：" + "、".join(roles), file=sys.stderr, flush=True)
-        print(research.answer(question, roles))
+        try:
+            record = ask_auto(research, question, verbose)
+        except Exception:
+            if verbose:
+                raise
+            if prompt is not None:
+                raise SystemExit(1)
+            continue
+        if prompt is not None and not record["ok"]:
+            raise SystemExit(1)
 
 
 def main():
@@ -236,7 +271,7 @@ def main():
         llm_config.update(cache_seed=None, max_tokens=3500)
 
     if mode == "auto":
-        run_auto(llm_config, args.prompt)
+        run_auto(llm_config, args.prompt, verbose=args.verbose)
         return
 
     with contextlib.nullcontext() if args.verbose else _capture_output(BASE_DIR.parent / ".cache/agent_startup.log"):

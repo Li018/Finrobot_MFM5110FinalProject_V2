@@ -1,53 +1,53 @@
 {
   "ok": true,
-  "python_environment": ".venv",
+  "python_environment": "v2_publish_verify_20261119",
   "api_calls_requested": 0,
   "checks": [
     {
       "check": "unit_tests",
       "ok": true,
-      "seconds": 9.154,
-      "tests": 67
+      "seconds": 9.148,
+      "tests": 96
     },
     {
       "check": "dependency_check",
       "ok": true,
-      "seconds": 1.151
+      "seconds": 1.437
     },
     {
       "check": "dialogue_offline",
       "ok": true,
-      "seconds": 6.782
+      "seconds": 6.397
     },
     {
       "check": "offline_replay",
       "ok": true,
-      "seconds": 17.344
+      "seconds": 17.732
     },
     {
       "check": "resume_pipeline",
       "ok": true,
-      "seconds": 7.346
+      "seconds": 7.511
     },
     {
       "check": "generalization",
       "ok": true,
-      "seconds": 9.506
+      "seconds": 9.65
     },
     {
       "check": "stability_replay",
       "ok": true,
-      "seconds": 43.659
+      "seconds": 45.198
     },
     {
       "check": "factor_ideation_replay",
       "ok": true,
-      "seconds": 11.308
+      "seconds": 11.225
     },
     {
       "check": "methodology",
       "ok": true,
-      "seconds": 0.259
+      "seconds": 0.299
     }
   ]
 }
