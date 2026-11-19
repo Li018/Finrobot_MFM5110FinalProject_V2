@@ -6,11 +6,12 @@ opens referenced files nor asks a model to calculate or explain numeric changes.
 """
 
 import contextlib
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 import difflib
 import json
 import math
 from pathlib import Path
+import re
 import sqlite3
 
 from .coverage import extract_symbols, normalize_symbol
@@ -26,6 +27,7 @@ _SCOPE_FIELDS = {"provider", "source_tool", "unit", "formula", "price_adjustment
                  "as_of", "data_date", "actual_start", "actual_end"}
 _QUANT_TOOLS = {"compare_quant_strategies", "check_quant_risk", "execute_quant_code",
                 "backtest_reference", "read_backtest_result"}
+_SHA256 = re.compile(r"[0-9a-fA-F]{64}\Z")
 # Units come from the existing Backtrader result contract, not name heuristics.
 _METRIC_UNITS = {
     "total_return": "fraction", "annual_return": "fraction", "max_drawdown": "fraction",
@@ -41,9 +43,30 @@ def _json(value):
 
 
 def _positive(value, name, maximum=None):
+    maximum = (2 ** 63 - 1) if maximum is None else maximum
     if type(value) is not int or value < 1 or (maximum is not None and value > maximum):
         raise ValueError(f"{name} must be a positive integer" + (f" <= {maximum}" if maximum else ""))
     return value
+
+
+def _complete_config(config):
+    """A present but unknown/invalid cost or date is not a known scope."""
+    if not _CONFIG_FIELDS <= config.keys():
+        return False
+    numbers = _CONFIG_FIELDS - {"symbol", "start_date", "end_date", "adjust"}
+    if any(type(config[key]) not in (int, float) or not math.isfinite(config[key]) for key in numbers):
+        return False
+    if any(type(config[key]) is not int or config[key] < 1 for key in ("fast", "slow", "lot_size", "annual_periods")):
+        return False
+    if not config["fast"] < config["slow"] or config["initial_cash"] <= 0 or not 0 < config["max_position"] <= 1:
+        return False
+    if any(config[key] < 0 for key in ("commission", "min_commission", "slippage")) or config["adjust"] not in {"", "qfq", "hfq"}:
+        return False
+    try:
+        normalize_symbol(config["symbol"])
+        return date.fromisoformat(config["start_date"]) < date.fromisoformat(config["end_date"])
+    except (TypeError, ValueError):
+        return False
 
 
 def _walk(value):
@@ -136,8 +159,8 @@ def _series(evidence):
             config["symbol"] = symbol
         scope = {"symbol": symbol, "config": config, "experiment_id": experiment,
                  "ambiguous_config": bool(config_conflicts), "config_conflicts": sorted(set(config_conflicts))}
-        scope["data_fingerprints"] = sorted({value for key, value in _walk(related)
-            if key in {"data_sha256", "clean_sha256"} and isinstance(value, str)})
+        scope["data_fingerprints"] = sorted({value.lower() for key, value in _walk(related)
+            if key in {"data_sha256", "clean_sha256"} and isinstance(value, str) and _SHA256.fullmatch(value)})
         for field in sorted(_SCOPE_FIELDS):
             values = sorted({_json(value) for key, value in _walk(related) if key == field})
             if values:
@@ -181,6 +204,9 @@ def _comparison(before, after):
     changes, metrics = [], []
     if before["symbols"] != after["symbols"]:
         changes.append({"field": "symbols", "old": before["symbols"], "new": after["symbols"]})
+    if old_series.keys() != new_series.keys():
+        changes.append({"field": "series", "old": [list(key) for key in sorted(old_series)],
+                        "new": [list(key) for key in sorted(new_series)]})
     for identity in sorted(old_series.keys() | new_series.keys()):
         old, new = old_series.get(identity), new_series.get(identity)
         reasons = []
@@ -197,7 +223,7 @@ def _comparison(before, after):
                 reasons.append("unknown_strategy")
             if old["scope"]["ambiguous_config"] or new["scope"]["ambiguous_config"]:
                 reasons.append("conflicting_experiment_config")
-            if not all(_CONFIG_FIELDS <= item["scope"]["config"].keys() for item in (old, new)):
+            if not all(_complete_config(item["scope"]["config"]) for item in (old, new)):
                 reasons.append("incomplete_backtest_scope")
             if any(item["field"] != "experiment_id" for item in differences):
                 reasons.append("scope_changed")

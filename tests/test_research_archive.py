@@ -100,6 +100,8 @@ class ResearchArchiveTests(unittest.TestCase):
                 self.archive.find(limit=value)
         with self.assertRaises(ValueError):
             self.archive.compare(1, 10000)
+        with self.assertRaises(ValueError):
+            self.archive.get(2 ** 63)
 
     def test_numeric_changes_have_explicit_units_and_prose_diff(self):
         first = self.save(answer="第一版：暂时观察")
@@ -150,6 +152,37 @@ class ResearchArchiveTests(unittest.TestCase):
         incomplete["config"].pop("commission")
         third = self.save(incomplete)
         self.assertTrue(all("incomplete_backtest_scope" in item["reasons"] for item in self.archive.compare(first["id"], third["id"])["metrics"]))
+
+    def test_placeholder_hashes_do_not_verify_distinct_experiments(self):
+        for value in ("unknown", "", "x" * 64):
+            with self.subTest(checksum=value):
+                first = self.save(self.payload(data_sha256=value, experiment_id="first"))
+                second = self.save(self.payload(0.2, data_sha256=value, experiment_id="second"))
+                metrics = self.archive.compare(first["id"], second["id"])["metrics"]
+                self.assertTrue(all(not item["comparable"] and "unverified_data_snapshot" in item["reasons"] for item in metrics))
+
+    def test_unknown_or_invalid_configuration_is_not_a_complete_scope(self):
+        for field, value in (("commission", None), ("slippage", ""), ("initial_cash", True),
+                             ("annual_periods", 0), ("max_position", -1), ("end_date", "unknown")):
+            with self.subTest(field=field, value=value):
+                payload = self.payload()
+                payload["config"][field] = value
+                first, second = self.save(payload), self.save(payload)
+                metrics = self.archive.compare(first["id"], second["id"])["metrics"]
+                self.assertTrue(all(not item["comparable"] and "incomplete_backtest_scope" in item["reasons"] for item in metrics))
+        unadjusted = self.payload()
+        unadjusted["config"]["adjust"] = ""
+        first, second = self.save(unadjusted), self.save(unadjusted)
+        self.assertTrue(all(item["comparable"] for item in self.archive.compare(first["id"], second["id"])["metrics"]))
+
+    def test_strategy_changes_are_explicit_scope_changes(self):
+        first = self.save()
+        changed = self.payload()
+        changed["metrics"]["buy_hold"] = changed["metrics"].pop("sma")
+        second = self.save(changed)
+        diff = self.archive.compare(first["id"], second["id"])
+        self.assertTrue(any(item["field"] == "series" for item in diff["scope_changes"]))
+        self.assertTrue(all(not item["comparable"] and "missing_series" in item["reasons"] for item in diff["metrics"]))
 
     def test_missing_values_are_not_zero_and_unknown_metrics_are_not_guessed(self):
         first = self.save()
