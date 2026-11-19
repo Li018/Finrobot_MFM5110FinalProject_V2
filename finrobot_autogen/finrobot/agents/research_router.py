@@ -6,8 +6,9 @@ import sqlite3
 from collections import deque
 
 from .workflow import SingleAssistant
-from .memory_tools import MEMORY_GUIDANCE, register_memory_tool, save_turn
+from .memory_tools import MEMORY_GUIDANCE, register_memory_tool
 from .coverage_tools import COVERAGE_GUIDANCE, coverage_context
+from .archive_tools import save_research_turn
 
 
 DEFAULT_ROLE = "A_Share_Analyst"
@@ -233,9 +234,8 @@ class AutoResearch:
             self.last_run["session_id"] = self.memory.session_id
             if self._memory_read_error:
                 self.last_run["memory_read_error"] = self._memory_read_error
-            error = save_turn(self.memory, question, answer, list(roles), self._current_chats,
-                              "completed" if self.last_run["ok"] else "partial")
-            self._memory_write_failed = bool(error)
-            if error:
-                self.last_run["memory_error"] = error
+            storage = save_research_turn(self.memory, question, answer, list(roles), self._current_chats,
+                                         "completed" if self.last_run["ok"] else "partial")
+            self.last_run.update(storage)
+            self._memory_write_failed = bool(storage.get("memory_error"))
         return answer

@@ -40,6 +40,7 @@ with warnings.catch_warnings(record="--verbose" not in sys.argv) as startup_warn
     from finrobot.agents.memory import ResearchMemory
     from finrobot.agents.memory_tools import context_text, register_memory_tool, save_turn
     from finrobot.agents.coverage_tools import handle_coverage_command
+    from finrobot.agents.archive_tools import handle_archive_command, save_research_turn
     from finrobot.data_source import describe_provider
     from finrobot.utils import register_keys_from_json
 
@@ -161,12 +162,16 @@ def ask(assistant: SingleAssistant, message: str, clear_history: bool = False):
     path.with_suffix(".json").write_text(json.dumps(result.chat_history, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     answer = _final_answer(result, assistant.assistant.name, start_index)
     if memory is not None:
-        error = save_turn(memory, message, answer, [assistant.assistant.name],
+        storage = save_research_turn(memory, message, answer, [assistant.assistant.name],
                           [{"role": assistant.assistant.name, "history": result.chat_history[start_index:]}],
                           "completed" if _final_answer(result, assistant.assistant.name, start_index,
                                                        require_termination=True) else "partial")
-        if error:
-            print(f"本轮记忆未保存（{error}），分析结果仍可查看。")
+        if storage.get("memory_error"):
+            print(f"本轮记忆未保存（{storage['memory_error']}），分析结果仍可查看。")
+        if storage.get("archive_error"):
+            print(f"本轮问答已保存，但研究归档未完成（{storage['archive_error']}）。")
+        if storage.get("report_id"):
+            print(f"研究归档：#{storage['report_id']}（/report {storage['report_id']} 查看）")
     if answer:
         path.with_suffix(".md").write_text(answer + "\n", encoding="utf-8")
         print("\n" + answer)
@@ -239,6 +244,10 @@ def ask_auto(research, question, verbose=False):
         print(f"\n本轮记忆未保存（{record['memory_error']}），分析结果仍可查看。")
     if record.get("memory_read_error"):
         print(f"\n本轮未能读取记忆（{record['memory_read_error']}），已依据当前问题和本次会话作答。")
+    if record.get("archive_error"):
+        print(f"\n本轮问答已保存，但研究归档未完成（{record['archive_error']}）。")
+    if record.get("report_id"):
+        print(f"\n研究归档：#{record['report_id']}（/report {record['report_id']} 查看）")
     print(f"\n本轮记录已保存：{path.with_suffix('.md')}")
     return record
 
@@ -271,7 +280,8 @@ def clear_live_history(assistant):
 
 def handle_local_command(message, memory, *, assistant=None):
     return (handle_memory_command(message, memory, assistant=assistant)
-            or handle_coverage_command(message, memory, on_change=lambda: clear_live_history(assistant)))
+            or handle_coverage_command(message, memory, on_change=lambda: clear_live_history(assistant))
+            or handle_archive_command(message, memory))
 
 
 def handle_memory_command(message, memory, *, assistant=None):
