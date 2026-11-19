@@ -52,6 +52,7 @@ filings/
 config.ini
 venv/
 .venv/
+requirements.local.txt
 
 # Runtime files
 .app.pid
