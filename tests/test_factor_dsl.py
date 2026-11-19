@@ -122,6 +122,51 @@ class FactorDslTests(unittest.TestCase):
             with self.subTest(expression=expression), self.assertRaises(FactorDslError):
                 parse_expression(expression)
 
+    def test_nested_windows_accumulate_history(self):
+        expressions = {
+            "sma(close, 60) > 0": 59,
+            "sma(std(ret(close, 1), 20), 60) > 0": 79,
+            "ret(sma(close, 5), 3) > 0": 7,
+            "shift(delta(close, 7), 10) > 0": 17,
+            "sma(close, 5) > 0 and shift(close, 20) > 0": 20,
+        }
+        for expression, expected in expressions.items():
+            with self.subTest(expression=expression):
+                self.assertEqual(factor_dsl.history_requirements(expression),
+                                 {"minimum_observations": expected, "uses_ema": False})
+        self.assertEqual(factor_dsl.history_requirements("ema(ret(close, 5), 20) > 0"),
+                         {"minimum_observations": 24, "uses_ema": True})
+
+    def test_formal_window_rejects_insufficient_nested_history(self):
+        expression = "sma(std(ret(close, 1), 20), 60) > 0"
+        with self.assertRaisesRegex(FactorDslError, "need 79, got 60"):
+            signal_from_expression(expression, self.data, evaluation_start=self.data.index[60])
+        signal = signal_from_expression(expression, self.data, evaluation_start=self.data.index[79])
+        self.assertTrue((signal.iloc[79:] == 1).all())
+
+    def test_missing_values_cannot_be_hidden_by_comparison_or_not(self):
+        data = self.data.copy()
+        data.loc[data.index[80], "Volume"] = 0
+        for expression in ("close / volume > 0", "close / volume != 0",
+                           "not (close / volume > 0) and close > 0"):
+            with self.subTest(expression=expression), self.assertRaisesRegex(
+                    FactorDslError, "Undefined factor signal"):
+                signal_from_expression(expression, data, evaluation_start=data.index[60])
+
+    def test_where_may_explicitly_handle_undefined_arithmetic(self):
+        data = self.data.copy()
+        data.loc[data.index[80], "Volume"] = 0
+        expression = "where(volume > 0, close / volume, 0) > 0"
+        signal = signal_from_expression(expression, data, evaluation_start=data.index[60])
+        self.assertEqual(signal.iloc[80], 0)
+        self.assertEqual(signal.iloc[81], 1)
+
+    def test_returns_do_not_forward_fill_missing_prices(self):
+        data = self.data.copy()
+        data.loc[data.index[80], "Close"] = np.nan
+        with self.assertRaisesRegex(FactorDslError, "Undefined factor signal"):
+            signal_from_expression("ret(close, 1) > 0", data, evaluation_start=data.index[60])
+
 
 class IdeationValidationTests(unittest.TestCase):
     def test_validate_ideas_keeps_valid_and_reports_invalid(self):

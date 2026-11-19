@@ -118,6 +118,53 @@ class FactorExperimentTests(unittest.TestCase):
         with patch.object(runner, "quant_factor_ideation_prompt", runner.quant_factor_ideation_prompt + "\nUpdated constraints"):
             self.assertTrue(self.evaluate()[0])
 
+    def test_ema_uses_the_same_snapshot_prefix_for_different_warmup_floors(self):
+        expression = "ema(close, 20) > sma(close, 5)"
+        window = self.spec["evaluation_window"]
+        first = runner.run_case(expression, self.data, window, "000001", self.spec, self.root / "ema_10")
+        self.spec["warmup_observations"] = 60
+        second = runner.run_case(expression, self.data, window, "000001", self.spec, self.root / "ema_60")
+        self.assertEqual(first, second)
+        self.assertEqual(first["history"]["used_observations"],
+                         int((self.data.index < pd.Timestamp(window["start"])).sum()))
+        self.assertEqual(first["history"]["start"], "2020-10-01")
+        self.assertIn("full snapshot", first["history"]["ema_initialization"])
+
+    def test_nested_factor_rejects_an_incomplete_snapshot(self):
+        expression = "sma(std(ret(close, 1), 20), 60) > 0"
+        short = self.data.loc["2021-01-01":]
+        with self.assertRaisesRegex(ValueError, "Insufficient historical warm-up"):
+            runner.run_case(expression, short, self.spec["evaluation_window"], "000001",
+                            self.spec, self.root / "incomplete")
+        self.assertFalse((self.root / "incomplete").exists())
+
+
+class SavedFactorHistoryTests(unittest.TestCase):
+    def test_nested_volatility_replays_all_observable_history_for_000651(self):
+        """The old 60-bar slice skipped a profitable January 2024 position."""
+        expression = ("close > sma(close, 60) and std(ret(close, 1), 20) "
+                      "< sma(std(ret(close, 1), 20), 60)")
+        spec = json.loads((ROOT / "finrobot_autogen/experiments/factor_ideation_config.json").read_text())
+        data = pd.read_csv(ROOT / "data/quant_generalization/000651_20200101_20251231_qfq/prices.csv",
+                           index_col="Date", parse_dates=True)
+        evaluated = data.loc["2024-01-01":"2025-12-31"]
+        config = runner.case_config(spec, "000651", evaluated)
+        all_history = data.loc[:evaluated.index[-1]]
+        expected = runner.run_signal_backtest(all_history, runner.signal_from_expression(
+            expression, all_history, evaluation_start=evaluated.index[0]), config)
+        with tempfile.TemporaryDirectory() as folder:
+            result = runner.run_case(expression, data, spec["evaluation_window"], "000651", spec, Path(folder))
+            saved = json.loads((Path(folder) / "idea/result.json").read_text())
+        self.assertEqual(result["history"]["required_observations"], 79)
+        self.assertEqual(result["history"]["used_observations"], 79)
+        self.assertEqual(saved, expected)
+        self.assertEqual(saved["equity"][0]["Date"], "2024-01-02")
+        self.assertEqual(len(saved["equity"]), 485)
+        self.assertEqual(saved["trades"][0]["date"], "2024-01-19")
+        self.assertEqual(saved["metrics"]["executed_orders"], 40)
+        self.assertAlmostEqual(saved["metrics"]["total_return"], 0.10636990016150194)
+        self.assertTrue(result["audit"]["ok"])
+
 
 if __name__ == "__main__":
     unittest.main()
