@@ -2,12 +2,12 @@
 
 面向 MFM5110 小组项目的 A 股投研与量化实验工具。V2 在组员 1 的 V1 上，补齐了交互式 SMA 回测、代码生成与风险检查，并新增独立的 LLM 因子构思、样本外回放和多案例生成稳定性实验，供组员使用和继续开发。
 
-**版本：V2；说明更新：2026-11-19。** `run_finrobot.cmd` 默认自动分派，也可指定六个角色之一。聊天支持参数化 SMA、确定性因子与受限 JSON 规则回测，并新增本地持久 Memory，可恢复会话、查询历史研究和管理显式笔记；`run_factor_ideation.cmd` 的表达式因子样本外实验和 `run_stability.cmd` 的生成稳定性实验仍使用独立批量入口。
+**版本：V2；说明更新：2026-11-19。** `run_finrobot.cmd` 默认自动分派，也可指定六个角色之一。聊天支持参数化 SMA、确定性因子与受限 JSON 规则回测。本地持久 Memory 支持会话恢复、历史查询和显式笔记；新增自选股与研究论点跟踪、研究归档与版本对比，以及通过 `--review` 开启的多空审阅。`run_factor_ideation.cmd` 的表达式因子样本外实验和 `run_stability.cmd` 的生成稳定性实验仍使用独立批量入口。
 
 使用时，你先用自然语言指定股票、日期、均线和资金；程序获取或读取真实行情，运行回测并比较买入持有。你可以继续要求生成同规则 Python 代码、执行代码和检查风险，最后查看分析、交易记录与图表。原有的基本面、市场分析和研究报告角色也保留，具体可用范围见下文。
 
 - [V2 仓库与下载](https://github.com/Li018/Finrobot_MFM5110FinalProject_V2)：使用 Code → Download ZIP，或 `git clone https://github.com/Li018/Finrobot_MFM5110FinalProject_V2.git`。
-- [V1 与 V2 对照](#v2-相较-v1-补充了什么) · [当前完整功能](#当前完整功能) · [首次运行六步](#快速开始) · [交互示例](#第-5-步开始对话) · [本地 Memory](#本地研究记忆memory) · [本轮修复](#本轮缺陷修复2026-11-19) · [实验复现](#实验与复现) · [功能边界](#当前边界与未完成项)。
+- [V1 与 V2 对照](#v2-相较-v1-补充了什么) · [当前完整功能](#当前完整功能) · [首次运行六步](#快速开始) · [交互示例](#第-5-步开始对话) · [本地 Memory](#本地研究记忆memory) · [新增研究工作流](#新增研究工作流) · [本轮修复](#本轮缺陷修复2026-11-19) · [实验复现](#实验与复现) · [功能边界](#当前边界与未完成项)。
 - 开发交接：[项目状态](PROJECT_STATUS.md)、[补全计划](COMPLETION_PLAN.md)、[环境状态](ENVIRONMENT_STATUS.md)。本仓库提供代码、数据与实验记录，课程报告正文尚未编写。
 
 已有项目环境和本地模型 Key 时，在仓库根目录运行：
@@ -28,9 +28,10 @@ V1 来源为[组员 1 分享的项目](https://github.com/yjt2003/Finrobot_MFM51
 | LLM 代码生成与因子构思 | 通用 Agent、编程与执行基础模块 | 新增固定 SMA 代码生成、AST 与因果性检查、限时子进程执行和修正记录；另提供受限 DSL 因子构思及冻结后的样本外回放 |
 | 风险约束 | 原有角色中的风险分析要求，以及基础回测参数 | 在新回测流程落实只做多、整手、资金与开仓预算约束、佣金及滑点；新增独立账本审计和 `check_quant_risk` 工具 |
 | 多轮交互 | 已支持单次提问与保留上下文的 CLI 对话 | 接入用户指定股票、日期、均线、资金和开仓预算；支持继续生成代码、查询风险及切换实验，实验按参数和数据哈希隔离；新增本地会话恢复与显式笔记 |
+| 研究管理与审阅 | 原有角色、报告工具和对话流程 | 新增用户维护的自选股与研究论点、完成研究的不可变归档及版本对比；可显式开启多方、空方和裁定审阅 |
 | 实验与证据 | 保留的投资小组、多因子、组合优化等原有实验脚本 | 原固定案例 5 次生成与 45 次冻结回放；新增 15 次多案例独立生成、12 个因子想法与去重后 27 个样本外比较，保存失败、指标、交易和图表 |
 | 终端输出 | Agent 调用过程直接显示在控制台 | 默认显示等待提示、本轮最终分析和保存位置；详细过程进入日志，支持 `--verbose`；修复最终答复漏显及误取历史文本的问题 |
-| 环境与交接 | 原有依赖表、配置说明和示例 | 新增 Windows / Python 3.11 锁定依赖、根目录启动脚本、完整离线复验、146 项测试、打包脚本及不含真实 Key 的配置模板 |
+| 环境与交接 | 原有依赖表、配置说明和示例 | 新增 Windows / Python 3.11 锁定依赖、根目录启动脚本、完整离线复验、205 项测试、打包脚本及不含真实 Key 的配置模板 |
 
 V2 将已有投研框架扩展为可交互、可复现、可核对的量化实验：既检查固定规则代码的实现，也评价模型提出的受限因子。现有结果尚未证明 LLM 能提高投资收益。
 
@@ -134,7 +135,7 @@ py -3.11 -m venv .venv
 .\.venv\Scripts\python.exe scripts/validate_v2.py
 ```
 
-**这一步完成后：** 控制台 9 项检查的 `ok` 应全部为 `true`，汇总写入 `artifacts/quant_v2/validation_summary.json`。检查覆盖 146 项测试、依赖、交互工具、原 5 份代码、多标的评价、15 份稳定性代码重跑、因子回放与指标汇总；测试包含自动路由、JSON 规则、年报选择、历史财务截止、因子预热和 Memory 隔离与恢复。首次安装不计入复验耗时。
+**这一步完成后：** 控制台 9 项检查的 `ok` 应全部为 `true`，汇总写入 `artifacts/quant_v2/validation_summary.json`。检查覆盖 205 项测试、依赖、交互工具、原 5 份代码、多标的评价、15 份稳定性代码重跑、因子回放与指标汇总；测试包含自动路由、JSON 规则、年报选择、历史财务截止、因子预热、Memory 隔离与恢复，以及自选股、研究归档和多空审阅。首次安装不计入复验耗时。
 
 这一检查以仓库内保存的实验记录完整为前提，不需要先填写模型 Key，也不进行新的模型对话。只想复现已有实验的组员可以做到这一步，再查看[实验与复现](#实验与复现)；要使用自然语言交互，继续第 4 步。
 
@@ -195,7 +196,7 @@ if (-not (Test-Path finrobot_autogen\config_api_keys)) { Copy-Item finrobot_auto
 | `data/quant_dialogue/<experiment_id>/` | 个人交互实验的数据与参数 | 否，Git 忽略 |
 | `artifacts/quant_dialogue/<experiment_id>/` | 个人交互的回测、生成代码、风险检查、事件和图表 | 否，Git 忽略 |
 | `artifacts/quant_dialogue/chats/`、`artifacts/agent_chats/` | 每轮最终分析 `.md`、完整历史 `.json`、详细过程 `.log` | 否，Git 忽略 |
-| `data/memory/research.sqlite3` | 默认本地 Memory 数据库，保存会话、问答、精简工具证据与显式笔记 | 否，个人运行数据 |
+| `data/memory/research.sqlite3` | 默认本地 Memory 数据库，保存会话、问答、精简工具证据、显式笔记、自选股与研究归档 | 否，个人运行数据 |
 
 启动阶段的依赖警告写入 `.cache/agent_startup.log`。公开材料只保留真实对话的脱敏核对摘要，个人聊天和临时实验留在本地。
 
@@ -265,7 +266,7 @@ if (-not (Test-Path finrobot_autogen\config_api_keys)) { Copy-Item finrobot_auto
 
 Memory 保存原始问题、最终回答、角色、完成状态，以及工具返回中的实验 ID、文件位置、数据日期、来源和部分指标。自动提供给模型的是有长度上限的摘要，保留完整实验 ID；恢复时最多使用本会话最近三轮已完成研究。新会话不会自动带入其他会话的问答；用户主动保存的笔记在同一数据库内跨会话可用。Agent 可通过只读 `recall_research` 工具主动查询旧研究，路由仍依据本轮原始问题。
 
-`/forget` 删除笔记后会刷新后续上下文，但**不会删除旧最终回答、会话记录、日志或实验文件**；旧回答如果已经引用该笔记，原文仍保留。`--no-memory` 关闭的是 Memory 数据库访问，原有分析文件与日志保存行为仍然适用。运行中记忆读写失败会提示，已生成的分析仍可保留；启动时无法打开数据库会报错，可用 `--no-memory` 继续。
+`/forget` 删除笔记后会刷新后续上下文，但**不会删除旧最终回答、会话记录、日志或实验文件**；旧回答如果已经引用该笔记，原文仍保留。`--no-memory` 关闭 Memory、自选股和研究归档的数据库访问，原有分析文件与日志保存行为仍然适用；多空审阅本身仍可开启。运行中记忆读写失败会提示，已生成的分析仍可保留；启动时无法打开数据库会报错，可用 `--no-memory` 继续。
 
 这是本地 SQLite 存储与关键词检索，不增加 LLM 或 embedding 请求，不训练模型，也没有自动策略进化。旧价格、收益和结论只是历史资料，记录时间不是行情或财务数据日期；继续实验须通过原工具核对已有产物，不能将历史回答当作实时事实。本轮仅做离线回归，尚未重新进行真实 API 的跨进程会话验收。
 
@@ -273,6 +274,87 @@ Memory 保存原始问题、最终回答、角色、完成状态，以及工具�
 
 - [`finrobot_desktop/finrobot/audit/transcript.py`](https://github.com/AI4Finance-Foundation/FinRobot/blob/63e1884a42ea7b729551a5424b4bd6a65af636e0/finrobot_desktop/finrobot/audit/transcript.py) 与 [`audit/persistence.py`](https://github.com/AI4Finance-Foundation/FinRobot/blob/63e1884a42ea7b729551a5424b4bd6a65af636e0/finrobot_desktop/finrobot/audit/persistence.py)：会话事件记录、列表与恢复。
 - [`finrobot_desktop/finrobot/artifact/sqlite_store.py`](https://github.com/AI4Finance-Foundation/FinRobot/blob/63e1884a42ea7b729551a5424b4bd6a65af636e0/finrobot_desktop/finrobot/artifact/sqlite_store.py) 与 [`coverage/sqlite_store.py`](https://github.com/AI4Finance-Foundation/FinRobot/blob/63e1884a42ea7b729551a5424b4bd6a65af636e0/finrobot_desktop/finrobot/coverage/sqlite_store.py)：SQLite 存储、结构化索引和事务组织。
+
+## 新增研究工作流
+
+以下三项沿用现有 AutoGen CLI。自选股和研究归档与 Memory 共用 `--memory-db` 指定的 SQLite 文件，不增加第三方依赖；管理命令在读取 API 配置前执行，无需模型 Key。多空审阅由 `--review` 显式开启，会增加模型用量。记忆自进化仍未实现，程序不会自行修改用户的研究论点。
+
+### 1. 自选股与研究论点
+
+先添加关注标的，再保存研究论点。下面的命令可分别启动进程执行，记录保存在同一数据库中：
+
+```powershell
+.\run_finrobot.cmd "/watch 000651 跟踪现金流与分红"
+.\run_finrobot.cmd "/thesis 000651 经营现金流持续覆盖分红是研究假设"
+.\run_finrobot.cmd "/watchlist"
+.\run_finrobot.cmd "/thesis 000651"
+```
+
+在 FinRobot 的交互提示符中，也可直接输入以下命令；JSON 只更新提供的字段：
+
+```text
+/thesis 000651 {"catalysts":"下一期财报与分红方案","invalidation":"连续两期经营现金流不足以覆盖分红","status":"researching","priority":4}
+/watchlist 000651
+/unwatch 000651
+```
+
+| 命令或字段 | 行为 |
+| --- | --- |
+| `/watch SYMBOL [备注]` | 添加标的；重复添加会提示，避免覆盖已保存的研究内容 |
+| `/watchlist [关键词或代码]` | 按优先级和更新时间列出，最多 100 项，可筛选 |
+| `/thesis SYMBOL` | 查看该标的的完整跟踪记录 |
+| `/thesis SYMBOL TEXT` | 更新研究论点；也可提供 JSON 更新 `note`、`thesis`、`catalysts`、`invalidation`、`status`、`priority` |
+| `status` / `priority` | 状态为 `watching`、`researching`、`archived`；优先级为 0–5，数值越大越靠前 |
+| `/unwatch SYMBOL` | 删除当前跟踪记录；历史回答、研究归档与日志仍保留 |
+
+字段未提供时保留原值，文本字段传空字符串可清空。A 股代码会统一格式，亦接受美股 ticker；自然语言问题中的美股标的宜写为 `$AAPL` 或 `ticker=AAPL`，避免把普通英文词误当股票。代码格式校验不等于核实股票真实上市。
+
+研究角色可通过只读 `get_coverage`、`list_coverage` 查询记录；提及标的时会获得有长度上限的研究背景，同会话的明确追问也能沿用最近标的。只有用户命令可增删改，更新后会刷新后续上下文。论点、催化因素和失效条件都是用户提供的待验证假设；更新时间不代表行情日期。
+
+### 2. 研究归档与版本对比
+
+启用 Memory 后，新的**已完成研究轮次**会自动建立不可变快照并获得研究 ID，保存问题、完整最终回答、角色、会话、日期及已有工具证据。实验 ID 和文件路径保留完整引用；归档不复制 PDF、行情或图表文件，也不自动重跑实验。失败或部分完成的轮次仍可留在会话记录中，但不进入研究归档。
+
+```powershell
+.\run_finrobot.cmd "/reports 000651"
+.\run_finrobot.cmd "/reports --query SMA"
+# 将 1、2 替换为 /reports 返回的实际研究 ID
+.\run_finrobot.cmd "/report 1"
+.\run_finrobot.cmd "/compare 1 2"
+# 旧 Memory 轮次按需导入；42 须替换为 /recall 返回的实际轮次 ID
+.\run_finrobot.cmd "/archive 42"
+```
+
+`/reports` 最多返回 20 条，结果会标明是否还有更多；`--query` 明确按关键词查询，适合 `SMA` 这类也符合 ticker 格式的英文词。研究 ID 与 Memory 轮次 ID 是不同编号；同一轮次重复归档返回原有快照。旧 Memory 记录不批量自动导入。归档失败时会提示，已保存的 Memory 轮次和当前分析仍保留。
+
+`/compare` 展示回答文本、来源和数值的变化。数值比较只覆盖已有 Backtrader 结果中的已知指标；必须能够核对股票、区间、策略、资金费用、单位，以及同一实验或同一有效数据哈希。缺少信息或口径不同会标为不可比较，缺失值不补零。收益率等小数指标的差异使用百分点；不会仅凭收益变化推断改进原因。用户问题中指定的股票与工具返回中的股票分别标注，避免把提问当作已验证事实。
+
+研究角色可使用只读 `find_reports`、`read_report`、`diff_reports`，提供给模型的结果有长度上限。归档内容是历史研究，仍须通过原工具核实数据时点与当前实验条件。
+
+### 3. 可选多空审阅
+
+```powershell
+# 自动分派完成后，增加多方、空方和裁定三个审阅阶段
+.\run_finrobot.cmd --review "分析000651的现金流与分红，列出关键不确定性"
+# 固定量化角色也可启用
+.\run_finrobot.cmd --role Quant_Analyst --review
+# 恢复时保持原模式、角色和数据库；保留 --review 才继续启用审阅
+.\run_finrobot.cmd --role Quant_Analyst --review --session "上次的量化会话ID"
+```
+
+多方与空方分别读取相同的本轮研究材料，各自提出带来源 ID 的观点；裁定角色再整理争议、待补证据、条件性结论及会改变结论的证据。专家原文与工具返回分别标记为 `S...` 和 `T...`，专家说法不会自动变成核实事实。引用校验只保证 ID 存在，不能证明模型对材料的理解正确，也不强制给出买卖指令。
+
+默认不开启审阅。启用后最多增加 3 个模型阶段，底层 SDK 的重试仍可能增加实际请求数和用量；审阅角色不注册取数工具，关闭代码执行，并移除会强制工具调用的模型配置。某阶段失败、输出格式不符、引用未知来源或材料超过上限时，会保留原始分析并注明审阅未完成；多空两方未完成时不进入裁定。这类回答不会作为完成研究归档。
+
+### 与官方后续版本的对应关系
+
+本轮参考官方固定提交 [`63e1884`](https://github.com/AI4Finance-Foundation/FinRobot/tree/63e1884a42ea7b729551a5424b4bd6a65af636e0)，按本项目结构实现：
+
+| 参考内容 | 本项目接入范围 |
+| --- | --- |
+| [Coverage 数据模型](https://github.com/AI4Finance-Foundation/FinRobot/blob/63e1884a42ea7b729551a5424b4bd6a65af636e0/finrobot_desktop/finrobot/coverage/models.py)与[SQLite 存储](https://github.com/AI4Finance-Foundation/FinRobot/blob/63e1884a42ea7b729551a5424b4bd6a65af636e0/finrobot_desktop/finrobot/coverage/sqlite_store.py) | 本地自选股与显式研究字段；未迁移桌面 Coverage UI 或实时价格总览 |
+| [研究产物存储](https://github.com/AI4Finance-Foundation/FinRobot/blob/63e1884a42ea7b729551a5424b4bd6a65af636e0/finrobot_desktop/finrobot/artifact/sqlite_store.py)与[语义差异模块](https://github.com/AI4Finance-Foundation/FinRobot/blob/63e1884a42ea7b729551a5424b4bd6a65af636e0/finrobot_desktop/finrobot/artifact/semantic_diff.py) | 已完成研究的保存、检索和限定口径比较；未迁移完整 DCF 重估归因 |
+| [Bull](https://github.com/AI4Finance-Foundation/FinRobot/blob/63e1884a42ea7b729551a5424b4bd6a65af636e0/finrobot_desktop/finrobot/engine/agents/instructions/bull_agent.md)、[Bear](https://github.com/AI4Finance-Foundation/FinRobot/blob/63e1884a42ea7b729551a5424b4bd6a65af636e0/finrobot_desktop/finrobot/engine/agents/instructions/bear_agent.md)、[Judge](https://github.com/AI4Finance-Foundation/FinRobot/blob/63e1884a42ea7b729551a5424b4bd6a65af636e0/finrobot_desktop/finrobot/engine/agents/instructions/judge_agent.md) 角色设计 | 在当前 AutoGen CLI 中新增并接通审阅；该参考版本提供了角色设计，其活动 Agent 工厂尚未接入这些角色，不能描述为直接移植一条已运行的官方流水线 |
 
 ## 本轮缺陷修复（2026-11-19）
 
@@ -377,7 +459,7 @@ Memory 保存原始问题、最终回答、角色、完成状态，以及工具�
 .\run_generalization.cmd evaluate --resume
 # 离线检查交互工具，使用保存的模型代码
 .\.venv\Scripts\python.exe scripts/validate_quant_dialogue.py --offline
-# 运行现有 146 项离线测试
+# 运行现有 205 项离线测试
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
 # 完整离线复验：共 9 项检查，含新增稳定性和因子实验
 .\.venv\Scripts\python.exe scripts/validate_v2.py
@@ -400,7 +482,9 @@ Memory 保存原始问题、最终回答、角色、完成状态，以及工具�
 
 固定案例入口支持 `fetch`、`baseline`、`generate`、`repair`、`verify`、`evaluate`、`all` 和 `--resume`；`--refresh-data` 会重新取数。多标的入口支持 `fetch`、`evaluate`、`all`、`--config` 和 `--resume`。
 
-本轮缺陷与 Memory 的复验记录见 [bugfix_memory_validation.json](artifacts/quant_v2/bugfix_memory_validation.json)：Python 3.11.18 / Linux 环境下 **146 项测试与全部 8 项功能检查通过**；9 项中的依赖检查未通过，因为此次精简验证环境未安装项目原有的完整依赖，并有两个既有包的版本不匹配。依赖清单未改动，本轮未重新完成 Windows 锁定环境安装或真实模型 API 验收。执行复验命令时生成的汇总仍写入 [validation_summary.json](artifacts/quant_v2/validation_summary.json)。此前 PR #1 整合后的 96 项测试和完整 9 项复验记录见 [pr1_integration_validation.json](artifacts/quant_v2/pr1_integration_validation.json)。更早的 67 项版本在主环境约 107 秒、新建环境与解压副本约 112 秒，其历史记录保留于 [optimization_validation.json](artifacts/quant_v2/optimization_validation.json)。上述时间不含首次依赖安装，也不代表其他机器的运行时间。
+本轮研究工作流的验证记录见 [research_workflows_validation.json](artifacts/quant_v2/research_workflows_validation.json)：**205 项测试与 27 次独立 CLI 进程检查全部通过**，覆盖跨进程跟踪记录、归档/对比、审阅配置与恢复提示，以及关闭 Memory 后不创建数据库。验证仅使用本地数据库、明确标记的合成记录、冻结数据与模拟模型边界，没有新模型或行情请求。12 个数据文件、174 个冻结模型证据文件和 5 份依赖声明与上一轮基线一致；量化代码未改，未再次运行旧的 9 项量化复验。精简 Linux 环境的依赖检查仍有 14 个缺失依赖与 2 个版本冲突，因此验证文件明确标记“功能检查通过，环境不完整”，没有将整体状态标为成功；Windows 锁定环境和真实 API 尚未重新验收。
+
+上一轮缺陷与 Memory 的复验记录见 [bugfix_memory_validation.json](artifacts/quant_v2/bugfix_memory_validation.json)：Python 3.11.18 / Linux 环境下 **146 项测试与全部 8 项功能检查通过**，依赖检查未通过。执行完整复验命令时生成的汇总仍写入 [validation_summary.json](artifacts/quant_v2/validation_summary.json)。此前 PR #1 整合后的 96 项测试和完整 9 项复验记录见 [pr1_integration_validation.json](artifacts/quant_v2/pr1_integration_validation.json)。更早的 67 项版本在主环境约 107 秒、新建环境与解压副本约 112 秒，其历史记录保留于 [optimization_validation.json](artifacts/quant_v2/optimization_validation.json)。上述时间不含首次依赖安装，也不代表其他机器的运行时间。
 
 ## 环境补充
 
@@ -455,6 +539,9 @@ flowchart LR
 | [run_agent.py](finrobot_autogen/run_agent.py) | 单次/多轮 CLI、角色与模型选择、最终分析与日志保存 |
 | [agent_library.py](finrobot_autogen/finrobot/agents/agent_library.py)、[prompts.py](finrobot_autogen/finrobot/agents/prompts.py) | 角色、工具注册和实际使用的量化提示词 |
 | [memory.py](finrobot_autogen/finrobot/agents/memory.py)、[memory_tools.py](finrobot_autogen/finrobot/agents/memory_tools.py) | 本地会话与笔记存储、有界上下文及只读历史查询工具 |
+| [coverage.py](finrobot_autogen/finrobot/agents/coverage.py)、[coverage_tools.py](finrobot_autogen/finrobot/agents/coverage_tools.py) | 自选股、研究论点、催化因素和失效条件；用户命令修改，Agent 只读 |
+| [research_archive.py](finrobot_autogen/finrobot/agents/research_archive.py)、[archive_tools.py](finrobot_autogen/finrobot/agents/archive_tools.py) | 已完成研究快照、历史检索和限定口径的版本对比 |
+| [research_review.py](finrobot_autogen/finrobot/agents/research_review.py)、[research_router.py](finrobot_autogen/finrobot/agents/research_router.py) | 可选多空审阅、本轮来源引用与失败处理，接入自动和固定角色模式 |
 | [data_source/](finrobot_autogen/finrobot/data_source/) | 原有投研数据源、A 股路由与行情兼容修复 |
 | [quant_tools.py](finrobot_autogen/finrobot/functional/quant_tools.py) | 固定案例数据清洗、快照与三个工具 |
 | [quant_dialogue.py](finrobot_autogen/finrobot/functional/quant_dialogue.py) | 参数化交互实验、对照、独立风险查询与代码执行 |
@@ -475,6 +562,7 @@ flowchart LR
 - 费用、成交及复权采用明确的简化假设；未完整模拟涨跌停、流动性、印花税、实际现金分红和公司行动。风险检查通过表示符合这些实验约束。
 - 9 个案例与 45 次回放只说明固定代码在这些输入上可复用，不能推出任意市场有效或投资收益提升。
 - 原有基本面、市场分析、PDF 研究报告、OCR/RAG 与多 Agent 示例未全部端到端验证。OCR/embedding 权重未预下载，环境初次检查未找到 `wkhtmltopdf`；仅安装相关 Python 包不代表 PDF/OCR 功能已经跑通。
+- Memory、自选股与归档为本地存储；不含向量检索、自动改写论点或记忆自进化。多空审阅增加观点检查，但不保证事实正确或提高投资收益；新工作流尚未进行真实模型 API 的在线验收。
 - 当前交付为命令行代码与实验材料，网页界面、课程报告正文和文献综述尚未完成。
 
 项目版本标识为 [V2](VERSION)，沿用的 FinRobot Python 包版本为 `0.1.5`，两者分别记录。原有许可与归属信息见 [LICENSE](LICENSE)、[NOTICE](NOTICE) 和 [TRADEMARK_POLICY.md](TRADEMARK_POLICY.md)。组员可按上述命令复现，后续扩展应保留原始失败记录、数据来源与传统对照。

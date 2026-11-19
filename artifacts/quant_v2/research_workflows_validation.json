@@ -1,0 +1,283 @@
+{
+  "ok": false,
+  "status": "functional_checks_passed_environment_incomplete",
+  "validated_at": "2026-11-19T12:32:27.993049+00:00",
+  "functional_checks_ok": true,
+  "source": {
+    "published_runtime_commit": "386ebda830924d5b7cf88ae9427aeb486f27278e",
+    "local_runtime_commit": "23c7034e9d328cde03e4fd63b64909da29da68c6",
+    "runtime_tree_sha": "41f9d459e40b9c04119944b9b57780783fe76b72",
+    "comparison_baseline": "c0133f53be96b240d9ab122dd52db3031fb9c139"
+  },
+  "environment": {
+    "os": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "python": "3.11.18 (main, Nov 11 2026, 00:16:37) [Clang 23.1.3 ]",
+    "kind": "Existing incomplete Linux review environment; dependencies not installed or changed in this run"
+  },
+  "unit_tests": {
+    "ok": true,
+    "tests": 205,
+    "seconds": 7.217
+  },
+  "cli_smoke": {
+    "ok": true,
+    "separate_process_invocations": 27,
+    "fixture_kind": "Explicitly labelled synthetic completed and partial memory turns in a temporary SQLite database; numeric values are test fixtures, not market results.",
+    "checks": [
+      {
+        "check": "watch_add",
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 1.771,
+        "ok": true
+      },
+      {
+        "check": "thesis_text",
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 1.972,
+        "ok": true
+      },
+      {
+        "check": "thesis_json_update",
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 1.995,
+        "ok": true
+      },
+      {
+        "check": "watchlist_filter",
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 1.985,
+        "ok": true
+      },
+      {
+        "check": "thesis_read",
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 2.042,
+        "ok": true
+      },
+      {
+        "check": "thesis_reject_unknown_field",
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 2.279,
+        "ok": true
+      },
+      {
+        "check": "watch_remove",
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 2.067,
+        "ok": true
+      },
+      {
+        "check": "watchlist_after_removal",
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 1.949,
+        "ok": true
+      },
+      {
+        "check": "archive_first_existing_turn",
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 1.857,
+        "ok": true
+      },
+      {
+        "check": "archive_second_existing_turn",
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 2.016,
+        "ok": true
+      },
+      {
+        "check": "archive_idempotence",
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 2.058,
+        "ok": true
+      },
+      {
+        "check": "reports_symbol_filter",
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 2.181,
+        "ok": true
+      },
+      {
+        "check": "report_read",
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 2.501,
+        "ok": true
+      },
+      {
+        "check": "report_compare",
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 2.094,
+        "ok": true
+      },
+      {
+        "check": "reports_keyword_query",
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 2.006,
+        "ok": true
+      },
+      {
+        "check": "partial_turn_not_archived",
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 1.897,
+        "ok": true
+      },
+      {
+        "check": "review_help_flag",
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 2.133,
+        "ok": true
+      },
+      {
+        "check": "review_auto_resume_hint",
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 2.034,
+        "ok": true
+      },
+      {
+        "check": "review_single_resume_hint",
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 2.226,
+        "ok": true
+      },
+      {
+        "check": "no_memory_watch",
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 2.455,
+        "ok": true
+      },
+      {
+        "check": "no_memory_watchlist",
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 2.469,
+        "ok": true
+      },
+      {
+        "check": "no_memory_unwatch",
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 2.37,
+        "ok": true
+      },
+      {
+        "check": "no_memory_thesis",
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 2.279,
+        "ok": true
+      },
+      {
+        "check": "no_memory_reports",
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 2.326,
+        "ok": true
+      },
+      {
+        "check": "no_memory_report",
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 2.325,
+        "ok": true
+      },
+      {
+        "check": "no_memory_compare",
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 2.315,
+        "ok": true
+      },
+      {
+        "check": "no_memory_archive",
+        "return_code": 0,
+        "expected_return_code": 0,
+        "seconds": 1.914,
+        "ok": true
+      }
+    ]
+  },
+  "dependency_check": {
+    "ok": false,
+    "return_code": 1,
+    "output_lines": [
+      "finrobot 0.1.5 requires aiohttp, which is not installed.",
+      "finrobot 0.1.5 requires akshare, which is not installed.",
+      "finrobot 0.1.5 requires huggingface-hub, which is not installed.",
+      "finrobot 0.1.5 requires langchain, which is not installed.",
+      "finrobot 0.1.5 requires langchain-chroma, which is not installed.",
+      "finrobot 0.1.5 requires marker-pdf, which is not installed.",
+      "finrobot 0.1.5 requires pdfkit, which is not installed.",
+      "finrobot 0.1.5 requires pypdf2, which is not installed.",
+      "finrobot 0.1.5 requires scikit-learn, which is not installed.",
+      "finrobot 0.1.5 requires starlette, which is not installed.",
+      "finrobot 0.1.5 requires tenacity, which is not installed.",
+      "finrobot 0.1.5 requires tushare, which is not installed.",
+      "finrobot 0.1.5 requires unstructured, which is not installed.",
+      "finrobot 0.1.5 requires wheel, which is not installed.",
+      "finrobot 0.1.5 has requirement Requests==2.31.0, but you have requests 2.34.2.",
+      "finrobot 0.1.5 has requirement tqdm==4.66.1, but you have tqdm 4.70.1."
+    ],
+    "declarations_unchanged_from_baseline": true
+  },
+  "offline_scope": {
+    "new_model_requests": 0,
+    "new_market_data_requests": 0,
+    "private_key_files_absent": true,
+    "blocked_connection_attempts": 0,
+    "network_guard": "Temporary validation-only socket guard in ordinary Python processes. Isolated -I workers in existing unit tests replay saved constrained code.",
+    "quantitative_pipelines_rerun": false,
+    "review_validation": "Real AutoGen registration/workflow boundaries exercised by tests with model client/replies mocked; no online review answer was requested."
+  },
+  "integrity": {
+    "hash_algorithm": "SHA-256; aggregate digest is sorted compact JSON of path to file SHA-256",
+    "source_and_config_during_validation": {
+      "files_checked": 230,
+      "changed": [],
+      "manifest_sha256_before": "ce9d2eb2bfab1cd1da70cc2dcf9344607a8f4e05e2b646d0ca4543aeddc474e1",
+      "manifest_sha256_after": "ce9d2eb2bfab1cd1da70cc2dcf9344607a8f4e05e2b646d0ca4543aeddc474e1"
+    },
+    "tracked_data_against_baseline": {
+      "files_checked": 12,
+      "changed": [],
+      "manifest_sha256_before": "740b8de4249a9ffc2f66e5c6bf15c827063d6db8ea62ddc402155c597099d131",
+      "manifest_sha256_after": "740b8de4249a9ffc2f66e5c6bf15c827063d6db8ea62ddc402155c597099d131"
+    },
+    "frozen_model_inputs_against_baseline": {
+      "files_checked": 174,
+      "changed": [],
+      "manifest_sha256_before": "504c766b54d53e042b8c1e42d2becf18c59288b89d502c8dbfe283f35d0213d1",
+      "manifest_sha256_after": "504c766b54d53e042b8c1e42d2becf18c59288b89d502c8dbfe283f35d0213d1"
+    },
+    "dependency_declarations_against_baseline": {
+      "files_checked": 5,
+      "changed": [],
+      "manifest_sha256_before": "1f80f3e7dab7ea7b70f32d7288c959551e093cfd7d16d8e5b5b9c523a26a5160",
+      "manifest_sha256_after": "1f80f3e7dab7ea7b70f32d7288c959551e093cfd7d16d8e5b5b9c523a26a5160"
+    }
+  },
+  "limits": [
+    "Live-model output quality was not tested.",
+    "Full Windows locked dependencies and Windows CMD execution were not repeated.",
+    "Existing quantitative experiment pipelines were not rerun because their source and inputs are unchanged in this feature update."
+  ],
+  "artifact_policy": "Only this new validation JSON is committed. CLI fixtures and full logs remain temporary validation intermediates."
+}

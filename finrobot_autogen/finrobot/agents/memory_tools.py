@@ -6,6 +6,8 @@ from typing import Annotated
 from autogen import register_function
 
 from .memory import MAX_CONTEXT_CHARS
+from .coverage_tools import COVERAGE_GUIDANCE, coverage_context, register_coverage_tools
+from .archive_tools import register_archive_tools
 
 
 MEMORY_GUIDANCE = (
@@ -14,6 +16,7 @@ MEMORY_GUIDANCE = (
     "不等于行情/财务数据日期；旧收益、价格和结论不能当成当前事实。"
     "继续实验时可复用完整 experiment_id，但需通过原工具核对已有产物。"
     "用户询问以前的研究时可调用 recall_research 按股票或关键词查找；"
+    "需要查询研究版本、查看旧结论或比较变化时，用 find_reports / read_report / diff_reports；"
     "没有记录就明确说明，不推测或编造历史。"
 )
 
@@ -56,11 +59,15 @@ def register_memory_tool(assistant, memory):
 
     register_function(recall_research, caller=assistant.assistant,
                       executor=assistant.user_proxy, description=recall_research.__doc__)
+    register_coverage_tools(assistant, memory)
+    register_archive_tools(assistant, memory)
 
 
 def context_text(memory, question, *, include_recent=True):
-    return MEMORY_GUIDANCE + "\nmemory_context=" + json.dumps(
+    return (MEMORY_GUIDANCE + "\nmemory_context=" + json.dumps(
         memory.context(question, include_recent=include_recent), ensure_ascii=False)
+        + "\n" + COVERAGE_GUIDANCE + "\ncoverage_context="
+        + json.dumps(coverage_context(memory, question), ensure_ascii=False))
 
 
 def save_turn(memory, question, answer, roles, chats, status):

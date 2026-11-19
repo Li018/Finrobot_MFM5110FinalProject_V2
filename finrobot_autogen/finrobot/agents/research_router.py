@@ -6,7 +6,11 @@ import sqlite3
 from collections import deque
 
 from .workflow import SingleAssistant
-from .memory_tools import MEMORY_GUIDANCE, register_memory_tool, save_turn
+from .memory_tools import MEMORY_GUIDANCE, register_memory_tool
+from .coverage_tools import COVERAGE_GUIDANCE, coverage_context
+from .archive_tools import save_research_turn
+from .memory import _extract_evidence
+from .research_review import REVIEW_ROLE_NAMES, run_research_review
 
 
 DEFAULT_ROLE = "A_Share_Analyst"
@@ -103,10 +107,11 @@ SYNTHESIZER = {
 
 
 class AutoResearch:
-    def __init__(self, llm_config, memory=None):
+    def __init__(self, llm_config, memory=None, review=False):
         self.llm_config = {**llm_config, "cache_seed": None}
         self.history = deque(maxlen=3)
         self.memory = memory
+        self.review_enabled = review
         self._memory_read_error = None
         if memory is not None:
             known_roles = set(SCOPES) | {REPORT_ROLE, FACTOR_IDEA_ROLE}
@@ -128,20 +133,34 @@ class AutoResearch:
 
     def _reply(self, role, prompt):
         try:
+            role_name = role.get("name") if isinstance(role, dict) else role
+            is_review = role_name in REVIEW_ROLE_NAMES
+            llm_config = dict(self.llm_config)
+            if is_review:
+                tool_settings = {"tools", "functions", "tool_choice", "function_call", "parallel_tool_calls"}
+                llm_config = {key: value for key, value in llm_config.items() if key not in tool_settings}
+                if llm_config.get("config_list"):
+                    # Provider-specific settings override the top-level config.
+                    # Copy each entry so review never alters the research agent.
+                    llm_config["config_list"] = [
+                        {key: value for key, value in config.items() if key not in tool_settings}
+                        for config in llm_config["config_list"]
+                    ]
             agent = SingleAssistant(
                 dict(role) if isinstance(role, dict) else role,
-                llm_config=self.llm_config,
+                llm_config=llm_config,
                 is_termination_msg=finished_reply,
-                max_consecutive_auto_reply=8,
+                max_consecutive_auto_reply=1 if is_review else 8,
                 code_execution_config=False,
             )
-            if self.memory is not None and agent.assistant.name != "Research_Synthesizer":
+            if self.memory is not None and agent.assistant.name not in REVIEW_ROLE_NAMES | {"Research_Synthesizer"}:
                 register_memory_tool(agent, self.memory)
             chat = agent.user_proxy.initiate_chat(
                 agent.assistant,
                 message=f"{prompt}\n\n答复末尾单独一行输出 TERMINATE。",
                 clear_history=True,
                 silent=True,
+                **({"max_turns": 1} if is_review else {}),
             )
             self._current_chats.append({"role": agent.assistant.name, "history": chat.chat_history})
             last_tool = max((i for i, message in enumerate(chat.chat_history)
@@ -172,6 +191,7 @@ class AutoResearch:
             ],
         }
         if self.memory is not None:
+            context_data["coverage_context"] = coverage_context(self.memory, question)
             try:
                 context_data["memory_context"] = self.memory.context(question)
                 self._memory_read_error = None
@@ -182,7 +202,7 @@ class AutoResearch:
                 self._memory_read_error = type(exc).__name__
         context = json.dumps(context_data, ensure_ascii=False)
         if self.memory is not None:
-            context = MEMORY_GUIDANCE + "\n" + context
+            context = MEMORY_GUIDANCE + "\n" + COVERAGE_GUIDANCE + "\n" + context
         if len(roles) == 1:
             prompt = (
                 "回答本轮 question。仅在本轮依赖前文时参考 previous_turns；不要用旧数据替代本轮取数。\n"
@@ -222,18 +242,28 @@ class AutoResearch:
             if failures:
                 answer += "\n\n未完成的分项：" + "、".join(failures)
 
+        base_answer = answer
+        base_ok = (all("answer" in item for item in results.values())
+                   and (len(roles) == 1 or "answer" in summary))
+        review_result = None
+        if self.review_enabled:
+            # Capture only this turn's original tool evidence before reviewers
+            # run. Reviewer agents have no tools or persisted conversation.
+            review_result = run_research_review(question, results, self._reply,
+                                                tool_evidence=_extract_evidence(self._current_chats))
+            answer = base_answer + "\n\n" + review_result["answer"]
         self.history.append((question, answer, roles))
         self.last_run = {"question": question, "roles": list(roles), "answer": answer,
                          "results": results, "summary": summary, "chats": self._current_chats,
-                         "ok": all("answer" in item for item in results.values())
-                               and (len(roles) == 1 or "answer" in summary)}
+                         "ok": base_ok and (review_result is None or review_result["ok"])}
+        if review_result is not None:
+            self.last_run.update(base_answer=base_answer, review=review_result)
         if self.memory is not None:
             self.last_run["session_id"] = self.memory.session_id
             if self._memory_read_error:
                 self.last_run["memory_read_error"] = self._memory_read_error
-            error = save_turn(self.memory, question, answer, list(roles), self._current_chats,
-                              "completed" if self.last_run["ok"] else "partial")
-            self._memory_write_failed = bool(error)
-            if error:
-                self.last_run["memory_error"] = error
+            storage = save_research_turn(self.memory, question, answer, list(roles), self._current_chats,
+                                         "completed" if self.last_run["ok"] else "partial")
+            self.last_run.update(storage)
+            self._memory_write_failed = bool(storage.get("memory_error"))
         return answer

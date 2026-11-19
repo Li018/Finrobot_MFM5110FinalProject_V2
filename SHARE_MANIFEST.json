@@ -31,13 +31,13 @@
   },
   {
     "path": "PROJECT_STATUS.md",
-    "bytes": 27447,
-    "sha256": "7be54c258c15a29897c5ac1629a224ea07c1399de45210234368900b2ff44a9a"
+    "bytes": 31218,
+    "sha256": "e56c0fbe0ed82c5834e682e21575093b1d25697b927598109a689331c302d9ad"
   },
   {
     "path": "README.md",
-    "bytes": 47978,
-    "sha256": "c3d0d65179172a63929b7f740446e3fc2523f50c169d4c675928988319e2440c"
+    "bytes": 57584,
+    "sha256": "8f29bc9e1d1a9e22c13ab8719e3c5f0db14157cd30a88c606262bca25abd41d8"
   },
   {
     "path": "TRADEMARK_POLICY.md",
@@ -5105,6 +5105,11 @@
     "sha256": "5b338009381582336eeb62e017786e7778f71eacf1350fb0ef4b21ed4e5c6aa8"
   },
   {
+    "path": "artifacts/quant_v2/research_workflows_validation.json",
+    "bytes": 9001,
+    "sha256": "c7ba8366dcbe97b89b3a1a30c0018b9ff57fc23fbfeda509cbe756719d8266f3"
+  },
+  {
     "path": "artifacts/quant_v2/resume_pipeline.txt",
     "bytes": 3719,
     "sha256": "057d7c9f0a218e5a9ceda6ed51b7485c53fd20fc16dad992607b25b0d485104b"
@@ -6505,14 +6510,29 @@
     "sha256": "e38d6bb38c8f96b3403775f634a52a6dc6730a6176f0425a154f980bd4cbad78"
   },
   {
+    "path": "finrobot_autogen/finrobot/agents/archive_tools.py",
+    "bytes": 4580,
+    "sha256": "be653d4bf4befc77ceb9337f08b8c4bb7b7b6dc30d083a2259e12c3e572bfbd0"
+  },
+  {
+    "path": "finrobot_autogen/finrobot/agents/coverage.py",
+    "bytes": 8264,
+    "sha256": "e989a3c1bbe506c38492186efb1d424c0cf686147080e5abc32c7559ad264081"
+  },
+  {
+    "path": "finrobot_autogen/finrobot/agents/coverage_tools.py",
+    "bytes": 6477,
+    "sha256": "268ef5520de4a40c30cd17d27f4a0e44d0cc33a5c7fdad025a899ef93a3c8d1c"
+  },
+  {
     "path": "finrobot_autogen/finrobot/agents/memory.py",
     "bytes": 15388,
     "sha256": "96cf56b9af8d2d117881abc9e96aa3fa3a14b24209fd7dbef6bb9c4a144c8d5a"
   },
   {
     "path": "finrobot_autogen/finrobot/agents/memory_tools.py",
-    "bytes": 3259,
-    "sha256": "10f655beef15db778176b9e677d2b3cd53f8e7fd1dfe21d33c09b20970026b15"
+    "bytes": 3747,
+    "sha256": "8f703591f888463130dd06dcd3265194da2aebe650a4faadc2ffe70d796c527d"
   },
   {
     "path": "finrobot_autogen/finrobot/agents/prompts.py",
@@ -6520,9 +6540,19 @@
     "sha256": "6ec9a3c545f743fc0229ffcbc2af073b6b3b3d393e9a4c88ed4ce376e5f237bc"
   },
   {
+    "path": "finrobot_autogen/finrobot/agents/research_archive.py",
+    "bytes": 18216,
+    "sha256": "b5bf22c77a9b56964ddbfecb01c6d2af0fd97840d54508863b141372bbdc4af8"
+  },
+  {
+    "path": "finrobot_autogen/finrobot/agents/research_review.py",
+    "bytes": 11894,
+    "sha256": "968355b5f42b9099b697ee5533dbb84d01f06ef842f7c52ebf76c68e2584fe17"
+  },
+  {
     "path": "finrobot_autogen/finrobot/agents/research_router.py",
-    "bytes": 13043,
-    "sha256": "1b7d0cf57edaffe9230daf9b55062d8a761236073afd1457ae9bb9264bb718a8"
+    "bytes": 15070,
+    "sha256": "e23954043bf7cb323d1b4888193cca0777a88263be7aa11503e8716214b430b4"
   },
   {
     "path": "finrobot_autogen/finrobot/agents/utils.py",
@@ -6776,8 +6806,8 @@
   },
   {
     "path": "finrobot_autogen/run_agent.py",
-    "bytes": 18315,
-    "sha256": "6cbd0c1e996a1f5413743f30ae1879b12da30fc1cd82588ceca48e790b55573a"
+    "bytes": 20293,
+    "sha256": "dbd24edb20312e3ea6c38f8d1dfecc73f6b9f260be4796e2a73cfb4864cf216d"
   },
   {
     "path": "finrobot_autogen/test_module.py",
@@ -6840,6 +6870,11 @@
     "sha256": "0bf351a2d06d03782bba110c75ffa6f9458216303419bc455e6e23c5cf70b30c"
   },
   {
+    "path": "tests/test_archive_cli.py",
+    "bytes": 6080,
+    "sha256": "f9a0b5b898ff6cca019f0c4a2072a4140e3813f1ae9cc60d553ef0463ed453ae"
+  },
+  {
     "path": "tests/test_cli_image_tools.py",
     "bytes": 2322,
     "sha256": "045eaf41cf518f836f8f101bfe441050c72854e795bef0c052b0078adf29a707"
@@ -6848,6 +6883,11 @@
     "path": "tests/test_console_output.py",
     "bytes": 5861,
     "sha256": "04f6170abe0c99f9c1033578f441e6f36b2821cd6a133d950728c1115014f06d"
+  },
+  {
+    "path": "tests/test_coverage_cli.py",
+    "bytes": 7506,
+    "sha256": "ab8b85043147577b0e8ed4358b7d0469131249178f1934f8b9f9d63b7787a577"
   },
   {
     "path": "tests/test_factor_dsl.py",
@@ -6905,9 +6945,29 @@
     "sha256": "4279a24d87b0bf2e8f2e3a8963b44ee5ffa64c464920d9aaec4568923cddf4b7"
   },
   {
+    "path": "tests/test_research_archive.py",
+    "bytes": 16133,
+    "sha256": "f8e8bc9b6333ec47039b1086db03f765e5fd261a6b6d9af603020a8a55d8fb66"
+  },
+  {
+    "path": "tests/test_research_coverage.py",
+    "bytes": 6528,
+    "sha256": "c6c4d1d7c24d29adb631e1da4ccc4a2eb688974ca90fb0b7b14540e94ee2c0a8"
+  },
+  {
+    "path": "tests/test_research_review.py",
+    "bytes": 8974,
+    "sha256": "39c2b13a37d526a6313eeaec4e6fd6a97dd76202a26ffcc47e71949d13541d23"
+  },
+  {
     "path": "tests/test_research_router.py",
     "bytes": 5706,
     "sha256": "c1d6efa22f74d2b3c020fe7fa3ee1e25192f1fb0f36c66f7ee8a28c35aa505c8"
+  },
+  {
+    "path": "tests/test_review_cli.py",
+    "bytes": 10696,
+    "sha256": "cb51d1dc74f5c538b478113b1a77aa34029ee2059b07afc9f7f3fd963ce4cd83"
   },
   {
     "path": "tests/test_rule_backtest.py",
