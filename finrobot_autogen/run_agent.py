@@ -217,13 +217,13 @@ def repl(assistant: SingleAssistant):
         first_turn = False
 
 
-def ask_auto(research, question, verbose=False):
+def ask_auto(research, question, verbose=False, fixed_role=None):
     import json
 
     folder = BASE_DIR.parent / "artifacts/agent_chats"
     folder.mkdir(parents=True, exist_ok=True)
     path = folder / (datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%f") + "_" + uuid4().hex[:8])
-    roles = research.plan(question)
+    roles = (fixed_role,) if fixed_role else research.plan(question)
     print("\n正在分析，请稍候…", flush=True)
     try:
         with contextlib.nullcontext() if verbose else _capture_output(path.with_suffix(".log")):
@@ -252,15 +252,21 @@ def ask_auto(research, question, verbose=False):
     return record
 
 
-def run_auto(llm_config, prompt, verbose=False, memory=None):
-    research = AutoResearch(llm_config, memory=memory) if memory is not None else AutoResearch(llm_config)
+def run_auto(llm_config, prompt, verbose=False, memory=None, review=False, fixed_role=None):
+    options = {"memory": memory} if memory is not None else {}
+    if review:
+        options["review"] = True
+    research = AutoResearch(llm_config, **options)
     if prompt is None:
-        print("已进入交互模式（自动分派）。输入 exit / quit / :q 退出。")
+        label = f"固定角色：{fixed_role}" if fixed_role else "自动分派"
+        print(f"已进入交互模式（{label}）。输入 exit / quit / :q 退出。")
+    if review:
+        print("多空审查已开启：每轮研究后最多增加3个模型审查阶段。")
     for question in interactive_questions() if prompt is None else (prompt,):
         if handle_local_command(question, memory):
             continue
         try:
-            record = ask_auto(research, question, verbose)
+            record = ask_auto(research, question, verbose, fixed_role=fixed_role)
         except Exception:
             if verbose:
                 raise
@@ -337,6 +343,8 @@ def main():
     )
     parser.add_argument("--model", default="deepseek-flash")
     parser.add_argument("--verbose", action="store_true", help="显示工具调用和调试信息；默认仅显示最终分析")
+    parser.add_argument("--review", action="store_true",
+                        help="研究完成后进行多方、空方和裁定审查，最多增加3个模型阶段")
     parser.add_argument("--session", help="继续指定会话；省略则创建新会话")
     parser.add_argument("--no-memory", action="store_true", help="关闭持久记忆，不读取或写入记忆数据库")
     parser.add_argument("--memory-db", type=Path, default=BASE_DIR.parent / "data/memory/research.sqlite3",
@@ -388,7 +396,13 @@ def main():
         llm_config.update(cache_seed=None, max_tokens=3500)
 
     if mode == "auto":
-        run_auto(llm_config, args.prompt, verbose=args.verbose, memory=memory)
+        run_auto(llm_config, args.prompt, verbose=args.verbose, memory=memory,
+                 **({"review": True} if args.review else {}))
+        return
+
+    if args.review:
+        run_auto(llm_config, args.prompt, verbose=args.verbose, memory=memory,
+                 review=True, fixed_role=args.role or DEFAULT_ROLE)
         return
 
     with contextlib.nullcontext() if args.verbose else _capture_output(BASE_DIR.parent / ".cache/agent_startup.log"):
