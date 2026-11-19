@@ -7,12 +7,12 @@
 - 普通 CLI 的图片工具返回绝对路径，Python 工具在无现成 IPython 环境时仍能执行；修正 52 周区间的最高/最低价列。相关原模块通过模拟数据与运行环境做回归，未扩大到完整 PDF/OCR 在线验收。
 - 历史 BVPS 无过去报告期时返回无可用值，不再回退未来记录。A 股报告财务表按 `filing_date` 同时过滤报告期和披露日期，再截取年度；未提供 `as_of` 的旧调用兼容。BVPS 报告期与披露可得性仍须区分，当前数据接口也不能还原历史修订版本；本轮未改 Revenue 财务口径或迁移其他数据源。
 - 旧 `portfolio_optimization.py` 正确解包 `get_rag_function`，实际向 AutoGen 注册 callable；原 PDD 演示、模型及数据路径保留，未将其改造成完整 A 股 RAG 流程。
-- 因子预热按嵌套表达式推导，EMA 使用冻结快照的完整历史前缀；历史不足或评价期信号未定义时明确失败，预热不进入交易和绩效。原始模型生成证据保留，修复后的回放可能改变旧因子指标。
+- 因子预热按嵌套表达式推导，EMA 使用冻结快照的完整历史前缀；历史不足或评价期信号未定义时明确失败，预热不进入交易和绩效。原始模型生成证据保留；`idea_40ed2052` 的 `000651` 样本外收益由 6.4934% 修正为 10.6370%，构思窗 `000001` 由 −21.1193% 修正为 −22.6195%，相关净值、交易、图表和方法论聚合已同步。27 个比较、0 胜买入持有和 12 胜 SMA 不变。
 - 新增 `finrobot_autogen/finrobot/agents/memory.py` 与 `memory_tools.py`，接入 `run_agent.py` 和自动分派。默认新建本地 SQLite 会话；`--session` 按原模式/角色恢复，`--memory-db` 指定数据库，`--no-memory` 完全跳过数据库读写。固定角色恢复示例：`run_finrobot.cmd --role Quant_Analyst --session <会话ID>`。
 - `/remember TEXT`、`/recall QUERY`、`/forget ID`、`/sessions`、`/memory` 支持交互使用，也可作为单次命令在读取 API 配置前运行，无需 Key。新会话不自动引入旧会话问答；显式笔记在同一数据库共享，历史研究可按股票/关键词跨会话检索。只将完成的研究轮次纳入恢复和检索，并保留实验 ID、来源与日期等精简证据。
 - 给模型的 Memory 上下文与查询结果有长度上限；数据库保留问答原文。`/forget` 删除显式笔记并刷新后续上下文，但不抹除旧最终回答、日志或实验产物。失败或部分完成的分析不作为完成研究恢复；运行中记忆读写异常不应丢弃已生成分析。原问题继续用于路由。
 - 本地 Memory 不引入额外 LLM/embedding 请求，不训练模型或自动进化策略；旧分析不得当作实时行情，恢复实验须用原工具核验产物。设计参考官方 `AI4Finance-Foundation/FinRobot@63e1884a42ea7b729551a5424b4bd6a65af636e0` 的 `finrobot_desktop/finrobot/audit/transcript.py`、`audit/persistence.py`、`artifact/sqlite_store.py` 和 `coverage/sqlite_store.py`，按现有 AutoGen CLI 独立实现；固定版本链接与完整用法见 [README 的 Memory 说明](README.md#本地研究记忆memory)。
-- 本轮 145 项测试已在 Python 3.11.18 / Linux 环境通过，使用本地 SQLite、模拟模型/数据边界和冻结行情，没有新增真实 API 请求。完整 9 项离线复验另行记录。下方的测试数量、在线对话与模型生成结果是各轮历史验收记录，不把旧在线结果视为 Memory 或其他新修复的在线验收。
+- 本轮 146 项测试已在 Python 3.11.18 / Linux 环境通过，使用本地 SQLite、模拟模型/数据边界和冻结行情，没有新增真实 API 请求。完整复验中的 8 项功能检查通过；依赖检查因精简 Linux 验证环境缺少原项目完整依赖及两个版本不匹配而未通过，依赖清单本轮未改。当前记录见 [bugfix_memory_validation.json](artifacts/quant_v2/bugfix_memory_validation.json)。下方的测试数量、在线对话与模型生成结果是各轮历史验收记录，不把旧在线结果视为 Memory 或其他新修复的在线验收。
 
 ## PR #1 整合与回归（2026-11-19）
 

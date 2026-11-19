@@ -6,7 +6,7 @@
 
 使用时，你先用自然语言指定股票、日期、均线和资金；程序获取或读取真实行情，运行回测并比较买入持有。你可以继续要求生成同规则 Python 代码、执行代码和检查风险，最后查看分析、交易记录与图表。原有的基本面、市场分析和研究报告角色也保留，具体可用范围见下文。
 
-- [V2 仓库与下载](https://github.com/ohayoo335/Finrobot_MFM5110FinalProject_V2)：使用 Code → Download ZIP，或 `git clone https://github.com/ohayoo335/Finrobot_MFM5110FinalProject_V2.git`。
+- [V2 仓库与下载](https://github.com/Li018/Finrobot_MFM5110FinalProject_V2)：使用 Code → Download ZIP，或 `git clone https://github.com/Li018/Finrobot_MFM5110FinalProject_V2.git`。
 - [V1 与 V2 对照](#v2-相较-v1-补充了什么) · [当前完整功能](#当前完整功能) · [首次运行六步](#快速开始) · [交互示例](#第-5-步开始对话) · [本地 Memory](#本地研究记忆memory) · [本轮修复](#本轮缺陷修复2026-11-19) · [实验复现](#实验与复现) · [功能边界](#当前边界与未完成项)。
 - 开发交接：[项目状态](PROJECT_STATUS.md)、[补全计划](COMPLETION_PLAN.md)、[环境状态](ENVIRONMENT_STATUS.md)。本仓库提供代码、数据与实验记录，课程报告正文尚未编写。
 
@@ -30,7 +30,7 @@ V1 来源为[组员 1 分享的项目](https://github.com/yjt2003/Finrobot_MFM51
 | 多轮交互 | 已支持单次提问与保留上下文的 CLI 对话 | 接入用户指定股票、日期、均线、资金和开仓预算；支持继续生成代码、查询风险及切换实验，实验按参数和数据哈希隔离；新增本地会话恢复与显式笔记 |
 | 实验与证据 | 保留的投资小组、多因子、组合优化等原有实验脚本 | 原固定案例 5 次生成与 45 次冻结回放；新增 15 次多案例独立生成、12 个因子想法与去重后 27 个样本外比较，保存失败、指标、交易和图表 |
 | 终端输出 | Agent 调用过程直接显示在控制台 | 默认显示等待提示、本轮最终分析和保存位置；详细过程进入日志，支持 `--verbose`；修复最终答复漏显及误取历史文本的问题 |
-| 环境与交接 | 原有依赖表、配置说明和示例 | 新增 Windows / Python 3.11 锁定依赖、根目录启动脚本、完整离线复验、145 项测试、打包脚本及不含真实 Key 的配置模板 |
+| 环境与交接 | 原有依赖表、配置说明和示例 | 新增 Windows / Python 3.11 锁定依赖、根目录启动脚本、完整离线复验、146 项测试、打包脚本及不含真实 Key 的配置模板 |
 
 V2 将已有投研框架扩展为可交互、可复现、可核对的量化实验：既检查固定规则代码的实现，也评价模型提出的受限因子。现有结果尚未证明 LLM 能提高投资收益。
 
@@ -103,7 +103,7 @@ AST 限制和进程超时用于约束此任务，不等同于通用操作系统�
 若已从 GitHub 下载 ZIP，先解压，再在解压后的项目文件夹中打开 PowerShell。若使用 Git，运行：
 
 ```powershell
-git clone https://github.com/ohayoo335/Finrobot_MFM5110FinalProject_V2.git
+git clone https://github.com/Li018/Finrobot_MFM5110FinalProject_V2.git
 cd Finrobot_MFM5110FinalProject_V2
 ```
 
@@ -134,7 +134,7 @@ py -3.11 -m venv .venv
 .\.venv\Scripts\python.exe scripts/validate_v2.py
 ```
 
-**这一步完成后：** 控制台 9 项检查的 `ok` 应全部为 `true`，汇总写入 `artifacts/quant_v2/validation_summary.json`。检查覆盖 145 项测试、依赖、交互工具、原 5 份代码、多标的评价、15 份稳定性代码重跑、因子回放与指标汇总；测试包含自动路由、JSON 规则、年报选择、历史财务截止、因子预热和 Memory 隔离与恢复。首次安装不计入复验耗时。
+**这一步完成后：** 控制台 9 项检查的 `ok` 应全部为 `true`，汇总写入 `artifacts/quant_v2/validation_summary.json`。检查覆盖 146 项测试、依赖、交互工具、原 5 份代码、多标的评价、15 份稳定性代码重跑、因子回放与指标汇总；测试包含自动路由、JSON 规则、年报选择、历史财务截止、因子预热和 Memory 隔离与恢复。首次安装不计入复验耗时。
 
 这一检查以仓库内保存的实验记录完整为前提，不需要先填写模型 Key，也不进行新的模型对话。只想复现已有实验的组员可以做到这一步，再查看[实验与复现](#实验与复现)；要使用自然语言交互，继续第 4 步。
 
@@ -330,7 +330,7 @@ Memory 保存原始问题、最终回答、角色、完成状态，以及工具�
 
 结果在 `artifacts/factor_ideation/<name>_<hash>/`：各 `ideation_XX/ideas.json` 保存想法的逻辑、表达式、参数和风险；`idea_revalidation.json` 保存当前校验结果；`summary.json` 区分计划、已完成、成功、缺失和失败的生成次数，并报告有效想法交付率及样本外表现。`comparison.csv`、`comparison.png` 为对照表和图。
 
-此前 3 次生成返回 12 个有效想法，去重后 9 个；原回放与三个标的配对共 **27 个样本外比较，0/27 优于买入持有，12/27 优于 SMA（44.44%）**。这表示当时未观察到相对买入持有的收益优势，不足以证明不存在 alpha。首轮退化表达式及修正前记录保留；本轮预热修复后的回放指标以对应结果文件为准，未新增模型请求。
+保存的 3 次生成返回 12 个有效想法，去重后 9 个。本轮修复预热后，用相同模型输出和行情重算，仍为 **27 个样本外比较，0/27 优于买入持有，12/27 优于 SMA（44.44%）**。嵌套低波动因子 `idea_40ed2052` 在 `000651` 的 2024–2025 年收益由 6.4934% 修正为 10.6370%，构思窗 `000001` 的收益由 −21.1193% 修正为 −22.6195%；两处变化均来自信号历史准备修正。对应的交易、净值、对照图和方法论汇总已更新，原始模型响应和行情快照未改动，也未新增模型请求。这些结果仍未证明相对买入持有的收益优势。
 
 表达式由 [factor_dsl.py](finrobot_autogen/finrobot/functional/factor_dsl.py) 的 AST 白名单解释，不支持属性、下标、导入、字符串、任意 Python 或乘幂；长度上限 4,000 字符，AST 上限 256 个节点、32 层，数值字面量须有限且绝对值不超过 `1e12`。常量信号在剔除预热后的构思区间判断。限制用于这套表达式任务，不等同于操作系统沙箱。
 
@@ -377,7 +377,7 @@ Memory 保存原始问题、最终回答、角色、完成状态，以及工具�
 .\run_generalization.cmd evaluate --resume
 # 离线检查交互工具，使用保存的模型代码
 .\.venv\Scripts\python.exe scripts/validate_quant_dialogue.py --offline
-# 运行现有 145 项离线测试
+# 运行现有 146 项离线测试
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
 # 完整离线复验：共 9 项检查，含新增稳定性和因子实验
 .\.venv\Scripts\python.exe scripts/validate_v2.py
@@ -400,7 +400,7 @@ Memory 保存原始问题、最终回答、角色、完成状态，以及工具�
 
 固定案例入口支持 `fetch`、`baseline`、`generate`、`repair`、`verify`、`evaluate`、`all` 和 `--resume`；`--refresh-data` 会重新取数。多标的入口支持 `fetch`、`evaluate`、`all`、`--config` 和 `--resume`。
 
-最新检查数量、测试数和逐项耗时见 [validation_summary.json](artifacts/quant_v2/validation_summary.json)。本轮缺陷与 Memory 修复后的 145 项测试已在 Python 3.11.18 / Linux 环境通过，完整 9 项复验结果另行记录。此前 PR #1 整合后的 96 项测试和完整 9 项复验记录见 [pr1_integration_validation.json](artifacts/quant_v2/pr1_integration_validation.json)。更早的 67 项版本在主环境约 107 秒、新建环境与解压副本约 112 秒，其历史记录保留于 [optimization_validation.json](artifacts/quant_v2/optimization_validation.json)。上述时间不含首次依赖安装，也不代表其他机器的运行时间。
+本轮缺陷与 Memory 的复验记录见 [bugfix_memory_validation.json](artifacts/quant_v2/bugfix_memory_validation.json)：Python 3.11.18 / Linux 环境下 **146 项测试与全部 8 项功能检查通过**；9 项中的依赖检查未通过，因为此次精简验证环境未安装项目原有的完整依赖，并有两个既有包的版本不匹配。依赖清单未改动，本轮未重新完成 Windows 锁定环境安装或真实模型 API 验收。执行复验命令时生成的汇总仍写入 [validation_summary.json](artifacts/quant_v2/validation_summary.json)。此前 PR #1 整合后的 96 项测试和完整 9 项复验记录见 [pr1_integration_validation.json](artifacts/quant_v2/pr1_integration_validation.json)。更早的 67 项版本在主环境约 107 秒、新建环境与解压副本约 112 秒，其历史记录保留于 [optimization_validation.json](artifacts/quant_v2/optimization_validation.json)。上述时间不含首次依赖安装，也不代表其他机器的运行时间。
 
 ## 环境补充
 
@@ -470,7 +470,7 @@ flowchart LR
 
 ## 当前边界与未完成项
 
-- 因子思路与稳定性实验已实际运行并保存历史结果（稳定性 15/15 通过；此前因子回放相对买入持有胜率 0%、相对 SMA 胜率 44.44%）。本轮预热修复后的回放指标以结果文件为准；这些实验仍不证明 LLM 产生投资收益。
+- 因子思路与稳定性实验已有真实生成记录，本轮仅使用冻结输出重跑（稳定性 15/15 通过；修复后因子回放相对买入持有胜率 0%、相对 SMA 胜率 44.44%）。这些实验仍不证明 LLM 产生投资收益。
 - 聊天入口支持参数化 SMA、确定性因子、固定动量与受限 JSON 规则回测；独立因子入口支持表达式构思及固定样本外窗口回放。任意 Python 策略生成、自动参数搜索、样本外策略选择、多资产组合策略与实盘下单尚未完成；原有组合优化脚本未纳入这一验收。
 - 费用、成交及复权采用明确的简化假设；未完整模拟涨跌停、流动性、印花税、实际现金分红和公司行动。风险检查通过表示符合这些实验约束。
 - 9 个案例与 45 次回放只说明固定代码在这些输入上可复用，不能推出任意市场有效或投资收益提升。
