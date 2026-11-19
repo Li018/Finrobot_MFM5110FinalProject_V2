@@ -7,6 +7,7 @@ from collections import deque
 
 from .workflow import SingleAssistant
 from .memory_tools import MEMORY_GUIDANCE, register_memory_tool, save_turn
+from .coverage_tools import COVERAGE_GUIDANCE, coverage_context
 
 
 DEFAULT_ROLE = "A_Share_Analyst"
@@ -172,6 +173,7 @@ class AutoResearch:
             ],
         }
         if self.memory is not None:
+            context_data["coverage_context"] = coverage_context(self.memory, question)
             try:
                 context_data["memory_context"] = self.memory.context(question)
                 self._memory_read_error = None
@@ -182,7 +184,7 @@ class AutoResearch:
                 self._memory_read_error = type(exc).__name__
         context = json.dumps(context_data, ensure_ascii=False)
         if self.memory is not None:
-            context = MEMORY_GUIDANCE + "\n" + context
+            context = MEMORY_GUIDANCE + "\n" + COVERAGE_GUIDANCE + "\n" + context
         if len(roles) == 1:
             prompt = (
                 "回答本轮 question。仅在本轮依赖前文时参考 previous_turns；不要用旧数据替代本轮取数。\n"

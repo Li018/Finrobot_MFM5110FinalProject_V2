@@ -39,6 +39,7 @@ with warnings.catch_warnings(record="--verbose" not in sys.argv) as startup_warn
     from finrobot.agents.workflow import SingleAssistant
     from finrobot.agents.memory import ResearchMemory
     from finrobot.agents.memory_tools import context_text, register_memory_tool, save_turn
+    from finrobot.agents.coverage_tools import handle_coverage_command
     from finrobot.data_source import describe_provider
     from finrobot.utils import register_keys_from_json
 
@@ -199,7 +200,7 @@ def repl(assistant: SingleAssistant):
         print("后续可输入：继续生成并运行同规则Python代码，再检查生成策略的风险。")
     first_turn = True
     for message in interactive_questions():
-        if handle_memory_command(message, getattr(assistant, "research_memory", None), assistant=assistant):
+        if handle_local_command(message, getattr(assistant, "research_memory", None), assistant=assistant):
             continue
         try:
             ask(assistant, message, clear_history=first_turn)
@@ -247,7 +248,7 @@ def run_auto(llm_config, prompt, verbose=False, memory=None):
     if prompt is None:
         print("已进入交互模式（自动分派）。输入 exit / quit / :q 退出。")
     for question in interactive_questions() if prompt is None else (prompt,):
-        if handle_memory_command(question, memory):
+        if handle_local_command(question, memory):
             continue
         try:
             record = ask_auto(research, question, verbose)
@@ -259,6 +260,18 @@ def run_auto(llm_config, prompt, verbose=False, memory=None):
             continue
         if prompt is not None and not record["ok"]:
             raise SystemExit(1)
+
+
+def clear_live_history(assistant):
+    if assistant is not None:
+        assistant.assistant.clear_history()
+        assistant.user_proxy.clear_history()
+        assistant.memory_reset_history = True
+
+
+def handle_local_command(message, memory, *, assistant=None):
+    return (handle_memory_command(message, memory, assistant=assistant)
+            or handle_coverage_command(message, memory, on_change=lambda: clear_live_history(assistant)))
 
 
 def handle_memory_command(message, memory, *, assistant=None):
@@ -277,9 +290,7 @@ def handle_memory_command(message, memory, *, assistant=None):
             if deleted and assistant is not None:
                 # A previous recall tool response can still contain this note.
                 # Rebuild the next turn from the store, not stale tool messages.
-                assistant.assistant.clear_history()
-                assistant.user_proxy.clear_history()
-                assistant.memory_reset_history = True
+                clear_live_history(assistant)
             print("笔记已删除。" if deleted else "没有找到该笔记。")
         elif command == "/recall":
             print(json.dumps(memory.recall(argument.strip()), ensure_ascii=False, indent=2))
@@ -347,7 +358,7 @@ def main():
             resume_args += f" --role {args.role or DEFAULT_ROLE}"
         print(f"会话：{memory.session_id}（{resume_args} 可继续；使用相同 --memory-db）")
     # Local memory management must also work before API keys are configured.
-    if args.prompt is not None and handle_memory_command(args.prompt, memory):
+    if args.prompt is not None and handle_local_command(args.prompt, memory):
         return
 
     register_keys_from_json(str(BASE_DIR / "config_api_keys"))

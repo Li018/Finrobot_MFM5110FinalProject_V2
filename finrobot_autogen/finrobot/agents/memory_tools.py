@@ -6,6 +6,7 @@ from typing import Annotated
 from autogen import register_function
 
 from .memory import MAX_CONTEXT_CHARS
+from .coverage_tools import COVERAGE_GUIDANCE, coverage_context, register_coverage_tools
 
 
 MEMORY_GUIDANCE = (
@@ -56,11 +57,14 @@ def register_memory_tool(assistant, memory):
 
     register_function(recall_research, caller=assistant.assistant,
                       executor=assistant.user_proxy, description=recall_research.__doc__)
+    register_coverage_tools(assistant, memory)
 
 
 def context_text(memory, question, *, include_recent=True):
-    return MEMORY_GUIDANCE + "\nmemory_context=" + json.dumps(
+    return (MEMORY_GUIDANCE + "\nmemory_context=" + json.dumps(
         memory.context(question, include_recent=include_recent), ensure_ascii=False)
+        + "\n" + COVERAGE_GUIDANCE + "\ncoverage_context="
+        + json.dumps(coverage_context(memory, question), ensure_ascii=False))
 
 
 def save_turn(memory, question, answer, roles, chats, status):
