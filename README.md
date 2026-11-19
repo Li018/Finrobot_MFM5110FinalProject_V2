@@ -472,4 +472,8 @@ flowchart LR
 | `finrobot_autogen/finrobot/agents/workflow.py` | 修改 | 量化角色禁用通用代码执行 |
 | `finrobot_autogen/run_agent.py` | 修改 | 默认自动分派，新增 `--mode auto/single` |
 
-修改日志：`get_sec_report` 改为按报告年份匹配，优先正式年报并排除摘要/英文版/更正/取消；路由补充股价走势、进场时机等关键词。
+### 修改日志
+
+- 修复 `get_sec_report` 年报选择：`fyear` 按**报告年份**匹配，检索窗口覆盖到报告年后两年；优先正式年报，排除摘要、英文版、更正和取消公告。
+- 优化路由命中规则，补充股价走势、行情、盘面、进场时机等关键词，行情类问题分派到 `Market_Analyst`。
+- 涉及文件：`finrobot_autogen/finrobot/data_source/akshare_utils.py`、`finrobot_autogen/finrobot/agents/research_router.py`。
