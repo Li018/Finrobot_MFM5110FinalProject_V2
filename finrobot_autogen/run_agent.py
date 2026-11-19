@@ -319,7 +319,7 @@ def main():
     parser.add_argument("--session", help="继续指定会话；省略则创建新会话")
     parser.add_argument("--no-memory", action="store_true", help="关闭持久记忆，不读取或写入记忆数据库")
     parser.add_argument("--memory-db", type=Path, default=BASE_DIR.parent / "data/memory/research.sqlite3",
-                        help="本地记忆数据库位置")
+                        help="本地记忆数据库位置；相对路径按仓库根目录解析")
     parser.add_argument(
         "--provider",
         choices=["auto", "akshare", "tushare"],
@@ -335,7 +335,10 @@ def main():
     memory = None
     if not args.no_memory:
         try:
-            memory = ResearchMemory(args.memory_db, session_id=args.session, mode=mode,
+            memory_path = args.memory_db.expanduser()
+            if not memory_path.is_absolute():
+                memory_path = BASE_DIR.parent / memory_path
+            memory = ResearchMemory(memory_path, session_id=args.session, mode=mode,
                                     role=(args.role or DEFAULT_ROLE) if mode == "single" else None)
         except (ValueError, sqlite3.Error, OSError) as exc:
             parser.error(f"无法打开记忆：{exc}。可用 --no-memory 临时关闭。")

@@ -238,7 +238,7 @@ if (-not (Test-Path finrobot_autogen\config_api_keys)) { Copy-Item finrobot_auto
 # 固定角色会话：恢复时也必须指定原角色
 .\run_finrobot.cmd --role Quant_Analyst
 .\run_finrobot.cmd --role Quant_Analyst --session "上次的量化会话ID"
-# 可指定另一份本地数据库，恢复时继续使用同一路径
+# 可指定另一份本地数据库；相对路径按仓库根目录解析，恢复时使用同一路径
 .\run_finrobot.cmd --memory-db .\data\memory\project.sqlite3
 # 本次启动完全不读写 Memory 数据库；不能与 --session 同用
 .\run_finrobot.cmd --role Quant_Analyst --no-memory

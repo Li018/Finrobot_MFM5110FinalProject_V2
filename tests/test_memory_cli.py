@@ -2,6 +2,7 @@
 import contextlib
 import io
 import json
+import os
 import runpy
 import sqlite3
 import sys
@@ -146,6 +147,22 @@ class MemoryCliTests(unittest.TestCase):
                 contextlib.redirect_stdout(io.StringIO()):
             API["main"]()
         self.assertFalse(self.db.exists())
+
+    def test_relative_database_path_is_independent_of_launcher_working_directory(self):
+        argv = ["run_agent.py", "/remember 独立项目记忆", "--memory-db", "data/memory/project.sqlite3"]
+        previous = Path.cwd()
+        try:
+            # The Windows launcher changes into finrobot_autogen before Python.
+            os.chdir(self.base)
+            with patch.object(sys, "argv", argv), patch.dict(API["main"].__globals__,
+                    {"BASE_DIR": self.base}), contextlib.redirect_stdout(io.StringIO()):
+                API["main"]()
+        finally:
+            os.chdir(previous)
+        expected = self.folder / "data/memory/project.sqlite3"
+        self.assertTrue(expected.is_file())
+        self.assertFalse((self.base / "data/memory/project.sqlite3").exists())
+        self.assertEqual(ResearchMemory(expected).recall("独立项目")["notes"][0]["text"], "独立项目记忆")
 
     def test_recall_tool_is_registered_and_reads_previous_research(self):
         self.seed(ResearchMemory(self.db, session_id="old"))
